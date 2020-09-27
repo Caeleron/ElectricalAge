@@ -31,11 +31,12 @@ public class PowerSocketDescriptor extends SixNodeDescriptor {
         if (obj != null) {
             base = obj.getPart("SocketBase");
             switch (subID) {
-                case 1:
+                // TODO: Refactor this crap
+                case 0:
                     socket = obj.getPart("Socket50V");
                     voltageLevelColor = VoltageLevelColor.LowVoltage;
                     break;
-                case 2:
+                case 1:
                     socket = obj.getPart("Socket200V");
                     voltageLevelColor = VoltageLevelColor.MediumVoltage;
                     break;

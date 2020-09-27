@@ -2,7 +2,6 @@ package mods.eln.registry
 
 import cpw.mods.fml.common.registry.GameRegistry
 import mods.eln.Eln
-import mods.eln.cable.CableRenderDescriptor
 import mods.eln.crafting.CraftingRegistry
 import mods.eln.generic.GenericItemUsingDamageDescriptor
 import mods.eln.generic.GenericItemUsingDamageDescriptorWithComment
@@ -16,6 +15,7 @@ import mods.eln.item.ConfigCopyToolDescriptor
 import mods.eln.item.CopperCableDescriptor
 import mods.eln.item.DielectricItem
 import mods.eln.item.ElectricalDrillDescriptor
+import mods.eln.item.ElectricalFuseDescriptor
 import mods.eln.item.EntitySensorFilterDescriptor
 import mods.eln.item.FerromagneticCoreDescriptor
 import mods.eln.item.FuelBurnerDescriptor
@@ -37,12 +37,10 @@ import mods.eln.item.electricalitem.ElectricalAxe
 import mods.eln.item.electricalitem.ElectricalLampItem
 import mods.eln.item.electricalitem.ElectricalPickaxe
 import mods.eln.item.electricalitem.PortableOreScannerItem
-import mods.eln.item.regulator.IRegulatorDescriptor
 import mods.eln.item.regulator.RegulatorAnalogDescriptor
 import mods.eln.item.regulator.RegulatorOnOffDescriptor
 import mods.eln.mechanical.ClutchPinItem
 import mods.eln.mechanical.ClutchPlateItem
-import mods.eln.sixnode.PortableNaNDescriptor
 import mods.eln.sixnode.electricaldatalogger.DataLogsPrintDescriptor
 import mods.eln.sixnode.lampsocket.LampSocketType
 import mods.eln.sixnode.wirelesssignal.WirelessSignalAnalyserItemDescriptor
@@ -50,8 +48,6 @@ import mods.eln.wiki.Data
 import net.minecraft.entity.monster.IMob
 import net.minecraft.entity.passive.EntityAnimal
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.init.Blocks
-import net.minecraft.init.Items
 import net.minecraft.item.Item.ToolMaterial
 import net.minecraft.item.ItemArmor
 import net.minecraft.item.ItemArmor.ArmorMaterial
@@ -64,36 +60,70 @@ import net.minecraftforge.oredict.OreDictionary
 
 class ItemRegistry {
     companion object {
+
+        enum class IID (val id: Int) {
+            HEATING_CORES(0),
+            REGULATORS(1),
+            LAMPS(2),
+            PROTECTION(3),
+            COMBUSTION_CHAMBER(4),
+            FERROMAGNETIC_CORES(5),
+            INGOTS(6),
+            DUSTS(7),
+            MOTOR_ITEM(8),
+            SOLAR_TRACKER(9),
+            METERS(10),
+            DRILLS(11),
+            ORE_SCANNER(12),
+            MINING_PIPES(13),
+            RESIN_RUBBER(14),
+            RAW_CABLE(15),
+            ARC_ITEMS(16),
+            BRUSHES(17),
+            MISC(18),
+            ELECTRICAL_TOOLS(19),
+            PORTABLE(20),
+            FUEL_BURNERS(21),
+            FUSES(22)
+        }
+
         fun register() {
-            //ITEM REGISTRATION
-            //Sub-UID must be unique in this section only.
-            //============================================
-            registerHeatingCorp(1)
-            registerRegulatorItem(3)
-            registerLampItem(4)
-            registerProtection(5)
-            registerCombustionChamber(6)
-            registerFerromagneticCore(7)
-            registerIngot(8)
-            registerDust(9)
-            registerElectricalMotor(10)
-            registerSolarTracker(11)
-            registerMeter(14)
-            registerElectricalDrill(15)
-            registerOreScanner(16)
-            registerMiningPipe(17)
-            registerTreeResinAndRubber(64)
-            registerRawCable(65)
-            registerArc(69)
-            registerBrush(119)
-            registerMiscItem(120)
-            registerElectricalTool(121)
-            registerPortableItem(122)
-            registerFuelBurnerItem(124)
-            registerPortableNaN() // 125
+            registerHeatingCorp(IID.HEATING_CORES.id)
+            registerRegulatorItem(IID.REGULATORS.id)
+            registerLampItem(IID.LAMPS.id)
+            registerProtection(IID.PROTECTION.id)
+            registerCombustionChamber(IID.COMBUSTION_CHAMBER.id)
+            registerFerromagneticCore(IID.FERROMAGNETIC_CORES.id)
+            registerIngot(IID.INGOTS.id)
+            registerDust(IID.DUSTS.id)
+            registerElectricalMotor(IID.MOTOR_ITEM.id)
+            registerSolarTracker( IID.SOLAR_TRACKER.id)
+            registerMeter(IID.METERS.id)
+            registerElectricalDrill(IID.DRILLS.id)
+            registerOreScanner(IID.ORE_SCANNER.id)
+            registerMiningPipe(IID.MINING_PIPES.id)
+            registerTreeResinAndRubber(IID.RESIN_RUBBER.id)
+            registerRawCable(IID.RAW_CABLE.id)
+            registerArc(IID.ARC_ITEMS.id)
+            registerBrush(IID.BRUSHES.id)
+            registerMiscItem(IID.MISC.id)
+            registerElectricalTool(IID.ELECTRICAL_TOOLS.id)
+            registerPortableItem(IID.PORTABLE.id)
+            registerFuelBurnerItem(IID.FUEL_BURNERS.id)
+            registerFuses(IID.FUSES.id)
 
             registerArmor()
             registerTool()
+        }
+
+        @Suppress("MemberVisibilityCanBePrivate")
+        fun registerItem(group: Int, subId: Int, element: GenericItemUsingDamageDescriptor) {
+            Eln.sharedItem.addElement(subId + (group shl 6), element)
+        }
+
+        @Suppress("MemberVisibilityCanBePrivate")
+        fun registerHiddenItem(group: Int, subId: Int, element: GenericItemUsingDamageDescriptor) {
+            Eln.sharedItem.addWithoutRegistry(subId + (group shl 6), element)
         }
 
         private fun registerArmor() {
@@ -122,10 +152,8 @@ class ItemRegistry {
                 GameRegistry.registerItem(Eln.bootsCopper, "Eln.$name")
                 GameRegistry.registerCustomItemStack(name, ItemStack(Eln.bootsCopper))
             }
-            val t1: String
-            val t2: String
-            t1 = "eln:textures/armor/ecoal_layer_1.png"
-            t2 = "eln:textures/armor/ecoal_layer_2.png"
+            val t1 = "eln:textures/armor/ecoal_layer_1.png"
+            val t2 = "eln:textures/armor/ecoal_layer_2.png"
             val energyPerDamage = 500.0
             var armor: Int
             val eCoalMaterial = EnumHelper.addArmorMaterial("ECoal", 10, intArrayOf(3, 8, 6, 3), 9)
@@ -210,204 +238,143 @@ class ItemRegistry {
         }
 
         private fun registerHeatingCorp(id: Int) {
-            var subId: Int
-            var completId: Int
-            var element: HeatingCorpElement
             run {
-                subId = 0
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Copper Heating Corp"),  // iconId,
-                    // name,
-                    Eln.LVU, 150.0,  // electricalNominalU, electricalNominalP,
-                    190.0,  // electricalMaximalP)
-                    Eln.lowVoltageCableDescriptor // ElectricalCableDescriptor
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Copper Heating Corp"),
+                    Eln.LVU, 150.0,
+                    190.0,
+                    Eln.lowVoltageCableDescriptor
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 0, element)
             }
             run {
-                subId = 1
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "50V Copper Heating Corp"),  // iconId,
-                    // name,
-                    Eln.LVU, 250.0,  // electricalNominalU, electricalNominalP,
-                    320.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "50V Copper Heating Corp"),
+                    Eln.LVU, 250.0,
+                    320.0,
                     Eln.lowVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 1, element)
             }
             run {
-                subId = 2
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 200V Copper Heating Corp"),  // iconId,
-                    // name,
-                    Eln.MVU, 400.0,  // electricalNominalU, electricalNominalP,
-                    500.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 200V Copper Heating Corp"),
+                    Eln.MVU, 400.0,
+                    500.0,
                     Eln.meduimVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 2, element)
             }
             run {
-                subId = 3
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "200V Copper Heating Corp"),  // iconId,
-                    // name,
-                    Eln.MVU, 600.0,  // electricalNominalU, electricalNominalP,
-                    750.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "200V Copper Heating Corp"),
+                    Eln.MVU, 600.0,
+                    750.0,
                     Eln.highVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 3, element)
             }
             run {
-                subId = 4
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Iron Heating Corp"),  // iconId,
-                    // name,
-                    Eln.LVU, 180.0,  // electricalNominalU, electricalNominalP,
-                    225.0,  // electricalMaximalP)
-                    Eln.lowVoltageCableDescriptor // ElectricalCableDescriptor
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Iron Heating Corp"),
+                    Eln.LVU, 180.0,
+                    225.0,
+                    Eln.lowVoltageCableDescriptor
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 4, element)
             }
             run {
-                subId = 5
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "50V Iron Heating Corp"),  // iconId,
-                    // name,
-                    Eln.LVU, 375.0,  // electricalNominalU, electricalNominalP,
-                    480.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "50V Iron Heating Corp"),
+                    Eln.LVU, 375.0,
+                    480.0,
                     Eln.lowVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 5, element)
             }
             run {
-                subId = 6
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 200V Iron Heating Corp"),  // iconId,
-                    // name,
-                    Eln.MVU, 600.0,  // electricalNominalU, electricalNominalP,
-                    750.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 200V Iron Heating Corp"),
+                    Eln.MVU, 600.0,
+                    750.0,
                     Eln.meduimVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 6, element)
             }
             run {
-                subId = 7
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "200V Iron Heating Corp"),  // iconId,
-                    // name,
-                    Eln.MVU, 900.0,  // electricalNominalU, electricalNominalP,
-                    1050.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "200V Iron Heating Corp"),
+                    Eln.MVU, 900.0,
+                    1050.0,
                     Eln.highVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 7, element)
             }
             run {
-                subId = 8
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Tungsten Heating Corp"),  // iconId,
-                    // name,
-                    Eln.LVU, 240.0,  // electricalNominalU, electricalNominalP,
-                    300.0,  // electricalMaximalP)
-                    Eln.lowVoltageCableDescriptor // ElectricalCableDescriptor
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Tungsten Heating Corp"),
+                    Eln.LVU, 240.0,
+                    300.0,
+                    Eln.lowVoltageCableDescriptor
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 8, element)
             }
             run {
-                subId = 9
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "50V Tungsten Heating Corp"),  // iconId,
-                    // name,
-                    Eln.LVU, 500.0,  // electricalNominalU, electricalNominalP,
-                    640.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "50V Tungsten Heating Corp"),
+                    Eln.LVU, 500.0,
+                    640.0,
                     Eln.lowVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 9, element)
             }
             run {
-                subId = 10
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(
-                    I18N.TR_NAME(I18N.Type.NONE, "Small 200V Tungsten Heating Corp"),  // iconId, name,
-                    Eln.MVU, 800.0,  // electricalNominalU, electricalNominalP,
-                    1000.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(
+                    I18N.TR_NAME(I18N.Type.NONE, "Small 200V Tungsten Heating Corp"),
+                    Eln.MVU, 800.0,
+                    1000.0,
                     Eln.meduimVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 10, element)
             }
             run {
-                subId = 11
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "200V Tungsten Heating Corp"),  // iconId,
-                    // name,
-                    Eln.MVU, 1200.0,  // electricalNominalU, electricalNominalP,
-                    1500.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "200V Tungsten Heating Corp"),
+                    Eln.MVU, 1200.0,
+                    1500.0,
                     Eln.highVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 11, element)
             }
             run {
-                subId = 12
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 800V Tungsten Heating Corp"),  // iconId,
-                    // name,
-                    Eln.HVU, 3600.0,  // electricalNominalU, electricalNominalP,
-                    4800.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 800V Tungsten Heating Corp"),
+                    Eln.HVU, 3600.0,
+                    4800.0,
                     Eln.veryHighVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 12, element)
             }
             run {
-                subId = 13
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "800V Tungsten Heating Corp"),  // iconId,
-                    // name,
-                    Eln.HVU, 4812.0,  // electricalNominalU, electricalNominalP,
-                    6015.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "800V Tungsten Heating Corp"),
+                    Eln.HVU, 4812.0,
+                    6015.0,
                     Eln.veryHighVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 13, element)
             }
             run {
-                subId = 14
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 3.2kV Tungsten Heating Corp"),  // iconId,
-                    // name,
-                    Eln.VVU, 4000.0,  // electricalNominalU, electricalNominalP,
-                    6000.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 3.2kV Tungsten Heating Corp"),
+                    Eln.VVU, 4000.0,
+                    6000.0,
                     Eln.veryHighVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 14, element)
             }
             run {
-                subId = 15
-                completId = subId + (id shl 6)
-                element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "3.2kV Tungsten Heating Corp"),  // iconId,
-                    // name,
-                    Eln.VVU, 12000.0,  // electricalNominalU, electricalNominalP,
-                    15000.0,  // electricalMaximalP)
+                val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "3.2kV Tungsten Heating Corp"),
+                    Eln.VVU, 12000.0,
+                    15000.0,
                     Eln.veryHighVoltageCableDescriptor)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 15, element)
             }
         }
 
         private fun registerRegulatorItem(id: Int) {
-            var subId: Int
-            var completId: Int
-            var element: IRegulatorDescriptor
             run {
-                subId = 0
-                completId = subId + (id shl 6)
-                element = RegulatorOnOffDescriptor(I18N.TR_NAME(I18N.Type.NONE, "On/OFF Regulator 1 Percent"),
+                val element = RegulatorOnOffDescriptor(I18N.TR_NAME(I18N.Type.NONE, "On/OFF Regulator 1 Percent"),
                     "onoffregulator", 0.01)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 0, element)
             }
             run {
-                subId = 1
-                completId = subId + (id shl 6)
-                element = RegulatorOnOffDescriptor(I18N.TR_NAME(I18N.Type.NONE, "On/OFF Regulator 10 Percent"),
+                val element = RegulatorOnOffDescriptor(I18N.TR_NAME(I18N.Type.NONE, "On/OFF Regulator 10 Percent"),
                     "onoffregulator", 0.1)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 1, element)
             }
             run {
-                subId = 8
-                completId = subId + (id shl 6)
-                element = RegulatorAnalogDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Analogic Regulator"),
+                val element = RegulatorAnalogDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Analogic Regulator"),
                     "Analogicregulator")
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 2, element)
             }
         }
 
         private fun registerLampItem(id: Int) {
-            var subId: Int
-            var completId: Int
             val lightPower = doubleArrayOf(0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 15.0, 20.0, 25.0, 30.0, 40.0)
             val lightLevel = DoubleArray(16)
             val economicPowerFactor = 0.5
@@ -415,699 +382,490 @@ class ItemRegistry {
             for (idx in 0..15) {
                 lightLevel[idx] = (idx + 0.49) / 15.0
             }
-            var element: LampDescriptor
             run {
-                subId = 0
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Incandescent Light Bulb"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Incandescent Light Bulb"),
                     "incandescentironlamp", LampDescriptor.Type.INCANDESCENT,
                     LampSocketType.Douille, Eln.LVU, lightPower[12],
                     lightLevel[12], Eln.incandescentLampLife, standardGrowRate
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 0, element)
             }
             run {
-                subId = 1
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Incandescent Light Bulb"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Incandescent Light Bulb"),
                     "incandescentironlamp", LampDescriptor.Type.INCANDESCENT,
                     LampSocketType.Douille, Eln.LVU, lightPower[14],
                     lightLevel[14], Eln.incandescentLampLife, standardGrowRate
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 1, element)
             }
             run {
-                subId = 2
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Incandescent Light Bulb"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Incandescent Light Bulb"),
                     "incandescentironlamp", LampDescriptor.Type.INCANDESCENT,
                     LampSocketType.Douille, Eln.MVU, lightPower[14],
                     lightLevel[14], Eln.incandescentLampLife, standardGrowRate
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 2, element)
             }
             run {
-                subId = 4
-                completId = subId + (id shl 6)
-                element = LampDescriptor(
+                val element = LampDescriptor(
                     I18N.TR_NAME(I18N.Type.NONE, "Small 50V Carbon Incandescent Light Bulb"),
                     "incandescentcarbonlamp", LampDescriptor.Type.INCANDESCENT,
                     LampSocketType.Douille, Eln.LVU, lightPower[11],
                     lightLevel[11], Eln.carbonLampLife, standardGrowRate
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 3, element)
             }
             run {
-                subId = 5
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Carbon Incandescent Light Bulb"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Carbon Incandescent Light Bulb"),
                     "incandescentcarbonlamp", LampDescriptor.Type.INCANDESCENT,
                     LampSocketType.Douille, Eln.LVU, lightPower[13],
                     lightLevel[13], Eln.carbonLampLife, standardGrowRate
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 4, element)
             }
             run {
-                subId = 16
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Economic Light Bulb"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Economic Light Bulb"),
                     "fluorescentlamp", LampDescriptor.Type.ECO,
                     LampSocketType.Douille, Eln.LVU, lightPower[12]
                     * economicPowerFactor,
                     lightLevel[12], Eln.economicLampLife, standardGrowRate
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 5, element)
             }
             run {
-                subId = 17
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Economic Light Bulb"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Economic Light Bulb"),
                     "fluorescentlamp", LampDescriptor.Type.ECO,
                     LampSocketType.Douille, Eln.LVU, lightPower[14]
                     * economicPowerFactor,
                     lightLevel[14], Eln.economicLampLife, standardGrowRate
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 6, element)
             }
             run {
-                subId = 18
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Economic Light Bulb"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Economic Light Bulb"),
                     "fluorescentlamp", LampDescriptor.Type.ECO,
                     LampSocketType.Douille, Eln.MVU, lightPower[14]
                     * economicPowerFactor,
                     lightLevel[14], Eln.economicLampLife, standardGrowRate
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 7, element)
             }
             run {
-                subId = 32
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Farming Lamp"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Farming Lamp"),
                     "farminglamp", LampDescriptor.Type.INCANDESCENT,
                     LampSocketType.Douille, Eln.LVU, 120.0,
                     lightLevel[15], Eln.incandescentLampLife, 0.50
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 8, element)
             }
             run {
-                subId = 36
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Farming Lamp"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Farming Lamp"),
                     "farminglamp", LampDescriptor.Type.INCANDESCENT,
                     LampSocketType.Douille, Eln.MVU, 120.0,
                     lightLevel[15], Eln.incandescentLampLife, 0.50
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 9, element)
             }
             run {
-                subId = 37
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V LED Bulb"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V LED Bulb"),
                     "ledlamp", LampDescriptor.Type.LED,
                     LampSocketType.Douille, Eln.LVU, lightPower[14] / 2,
                     lightLevel[14], Eln.ledLampLife, standardGrowRate
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 10, element)
             }
             run {
-                subId = 38
-                completId = subId + (id shl 6)
-                element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V LED Bulb"),
+                val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V LED Bulb"),
                     "ledlamp", LampDescriptor.Type.LED,
                     LampSocketType.Douille, Eln.MVU, lightPower[14] / 2,
                     lightLevel[14], Eln.ledLampLife, standardGrowRate
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 11, element)
             }
         }
 
         private fun registerProtection(id: Int) {
-            var subId: Int
-            var completId: Int
             run {
-                subId = 0
-                completId = subId + (id shl 6)
                 val element = OverHeatingProtectionDescriptor(
                     I18N.TR_NAME(I18N.Type.NONE, "Overheating Protection"))
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 0, element)
             }
             run {
-                subId = 1
-                completId = subId + (id shl 6)
                 val element = OverVoltageProtectionDescriptor(
                     I18N.TR_NAME(I18N.Type.NONE, "Overvoltage Protection"))
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 1, element)
             }
         }
 
         private fun registerCombustionChamber(id: Int) {
-            var subId: Int
-            var completId: Int
             run {
-                subId = 0
-                completId = subId + (id shl 6)
                 val element = CombustionChamber(I18N.TR_NAME(I18N.Type.NONE, "Combustion Chamber"))
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 0, element)
             }
         }
 
         private fun registerFerromagneticCore(id: Int) {
-            var subId: Int
-            var completId: Int
-            var element: FerromagneticCoreDescriptor
             run {
-                subId = 0
-                completId = subId + (id shl 6)
-                element = FerromagneticCoreDescriptor(
+                val element = FerromagneticCoreDescriptor(
                     I18N.TR_NAME(I18N.Type.NONE, "Cheap Ferromagnetic Core"), Eln.obj.getObj("feromagneticcorea"),  // iconId,
                     // name,
                     100.0)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 0, element)
             }
             run {
-                subId = 1
-                completId = subId + (id shl 6)
-                element = FerromagneticCoreDescriptor(
+                val element = FerromagneticCoreDescriptor(
                     I18N.TR_NAME(I18N.Type.NONE, "Average Ferromagnetic Core"), Eln.obj.getObj("feromagneticcorea"),  // iconId,
                     // name,
                     50.0)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 1, element)
             }
             run {
-                subId = 2
-                completId = subId + (id shl 6)
-                element = FerromagneticCoreDescriptor(
+                val element = FerromagneticCoreDescriptor(
                     I18N.TR_NAME(I18N.Type.NONE, "Optimal Ferromagnetic Core"), Eln.obj.getObj("feromagneticcorea"),  // iconId,
                     // name,
                     1.0)
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 2, element)
             }
         }
 
         private fun registerIngot(id: Int) {
-            var subId: Int
-            var completId: Int
-            var name: String?
-            var element: GenericItemUsingDamageDescriptorWithComment
+            var name: String
             run {
-                subId = 1
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Copper Ingot")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(completId, element)
-                // GameRegistry.registerCustomItemStack(name,
-                // element.newItemStack(1));
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.copperIngot = element
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("ingotCopper", element.newItemStack())
+                registerItem(id, 0, element)
             }
             run {
-                subId = 4
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Lead Ingot")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(completId, element)
-                // GameRegistry.registerCustomItemStack(name,
-                // element.newItemStack(1));
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.plumbIngot = element
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("ingotLead", element.newItemStack())
+                registerItem(id, 1, element)
             }
             run {
-                subId = 5
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Tungsten Ingot")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(completId, element)
-                // GameRegistry.registerCustomItemStack(name,
-                // element.newItemStack(1));
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.tungstenIngot = element
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre(Eln.dictTungstenIngot, element.newItemStack())
+                registerItem(id, 2, element)
             }
             run {
-                subId = 6
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Ferrite Ingot")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf("useless", "Really useless"))
-                Eln.sharedItem.addElement(completId, element)
-                // GameRegistry.registerCustomItemStack(name,
-                // element.newItemStack(1));
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf("useless", "Really useless"))
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("ingotFerrite", element.newItemStack())
+                registerItem(id, 3, element)
             }
             run {
-                subId = 7
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Alloy Ingot")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(completId, element)
-                // GameRegistry.registerCustomItemStack(name,
-                // element.newItemStack(1));
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("ingotAlloy", element.newItemStack())
-            }
-            run {
-                subId = 8
-                completId = subId + (id shl 6)
-                name = I18N.TR_NAME(I18N.Type.NONE, "Mercury")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf("useless", "miaou"))
-                Eln.sharedItem.addElement(completId, element)
-                // GameRegistry.registerCustomItemStack(name,
-                // element.newItemStack(1));
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre("quicksilver", element.newItemStack())
+                registerItem(id, 4, element)
             }
         }
 
         private fun registerDust(id: Int) {
-            var id = id
-            var subId: Int
-            var completId: Int
-            var name: String?
-            var element: GenericItemUsingDamageDescriptorWithComment
+            var name: String
             run {
-                subId = 1
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Copper Dust")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.dustCopper = element
-                Eln.sharedItem.addElement(completId, element)
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("dustCopper", element.newItemStack())
+                registerItem(id, 0, element)
             }
             run {
-                subId = 2
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Iron Dust")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.dustCopper = element
-                Eln.sharedItem.addElement(completId, element)
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("dustIron", element.newItemStack())
+                registerItem(id, 1, element)
             }
             run {
-                subId = 3
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Lapis Dust")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.dustCopper = element
-                Eln.sharedItem.addElement(completId, element)
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("dustLapis", element.newItemStack())
+                registerItem(id, 2, element)
             }
             run {
-                subId = 4
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Diamond Dust")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.dustCopper = element
-                Eln.sharedItem.addElement(completId, element)
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("dustDiamond", element.newItemStack())
+                registerItem(id, 3, element)
             }
             run {
-                id = 5
                 name = I18N.TR_NAME(I18N.Type.NONE, "Lead Dust")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(id, element)
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("dustLead", element.newItemStack())
+                registerItem(id, 4, element)
             }
             run {
-                id = 6
                 name = I18N.TR_NAME(I18N.Type.NONE, "Tungsten Dust")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(id, element)
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre(Eln.dictTungstenDust, element.newItemStack())
+                registerItem(id, 5, element)
             }
             run {
-                id = 7
                 name = I18N.TR_NAME(I18N.Type.NONE, "Gold Dust")
-                element = GenericItemUsingDamageDescriptorWithComment(
+                val element = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(id, element)
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("dustGold", element.newItemStack())
+                registerItem(id, 6, element)
             }
             run {
-                id = 8
                 name = I18N.TR_NAME(I18N.Type.NONE, "Coal Dust")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(id, element)
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("dustCoal", element.newItemStack())
+                registerItem(id, 7, element)
             }
             run {
-                id = 9
                 name = I18N.TR_NAME(I18N.Type.NONE, "Alloy Dust")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(id, element)
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Data.addResource(element.newItemStack())
                 CraftingRegistry.addToOre("dustAlloy", element.newItemStack())
-            }
-            run {
-                id = 10
-                name = I18N.TR_NAME(I18N.Type.NONE, "Cinnabar Dust")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(id, element)
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre("dustCinnabar", element.newItemStack())
+                registerItem(id, 8, element)
             }
         }
 
         private fun registerElectricalMotor(id: Int) {
-            var subId: Int
-            var completId: Int
-            var name: String?
-            var element: GenericItemUsingDamageDescriptorWithComment
+            var name: String
             run {
-                subId = 0
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Motor")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(completId, element)
-                // GameRegistry.registerCustomItemStack(name,
-                // element.newItemStack(1));
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Data.addResource(element.newItemStack())
+                registerItem(id, 0, element)
             }
             run {
-                subId = 1
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Advanced Electrical Motor")
-                element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Eln.sharedItem.addElement(completId, element)
-                // GameRegistry.registerCustomItemStack(name,
-                // element.newItemStack(1));
+                val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Data.addResource(element.newItemStack())
+                registerItem(id, 1, element)
             }
         }
 
         private fun registerSolarTracker(id: Int) {
-            var subId: Int
-            var completId: Int
-            var element: SolarTrackerDescriptor
             run {
-                subId = 0
-                completId = subId + (id shl 6)
-                element = SolarTrackerDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Solar Tracker") // iconId, name,
+                val element = SolarTrackerDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Solar Tracker") // iconId, name,
                 )
-                Eln.sharedItem.addElement(completId, element)
+                registerItem(id, 0, element)
             }
         }
 
         private fun registerMeter(id: Int) {
-            var subId: Int
-            var completId: Int
-            var element: GenericItemUsingDamageDescriptor
             run {
-                subId = 0
-                completId = subId + (id shl 6)
-                element = GenericItemUsingDamageDescriptor(I18N.TR_NAME(I18N.Type.NONE, "MultiMeter"))
-                Eln.sharedItem.addElement(completId, element)
+                val element = GenericItemUsingDamageDescriptor(I18N.TR_NAME(I18N.Type.NONE, "MultiMeter"))
                 Eln.multiMeterElement = element
+                registerItem(id, 0, element)
             }
             run {
-                subId = 1
-                completId = subId + (id shl 6)
-                element = GenericItemUsingDamageDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Thermometer"))
-                Eln.sharedItem.addElement(completId, element)
+                val element = GenericItemUsingDamageDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Thermometer"))
                 Eln.thermometerElement = element
+                registerItem(id, 1, element)
             }
             run {
-                subId = 2
-                completId = subId + (id shl 6)
-                element = GenericItemUsingDamageDescriptor(I18N.TR_NAME(I18N.Type.NONE, "AllMeter"))
-                Eln.sharedItem.addElement(completId, element)
+                val element = GenericItemUsingDamageDescriptor(I18N.TR_NAME(I18N.Type.NONE, "AllMeter"))
                 Eln.allMeterElement = element
+                registerItem(id, 2, element)
             }
             run {
-                subId = 8
-                completId = subId + (id shl 6)
-                element = WirelessSignalAnalyserItemDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Wireless Analyser"))
-                Eln.sharedItem.addElement(completId, element)
+                val element = WirelessSignalAnalyserItemDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Wireless Analyser"))
+                registerItem(id, 3, element)
             }
             run {
-                subId = 16
-                completId = subId + (id shl 6)
-                element = ConfigCopyToolDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Config Copy Tool"))
-                Eln.sharedItem.addElement(completId, element)
+                val element = ConfigCopyToolDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Config Copy Tool"))
                 Eln.configCopyToolElement = element
+                registerItem(id, 4, element)
             }
         }
 
         private fun registerElectricalDrill(id: Int) {
-            var subId: Int
-            var completId: Int
-            var name: String?
-            var descriptor: ElectricalDrillDescriptor
+            var name: String
             run {
-                subId = 0
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Cheap Electrical Drill")
-                descriptor = ElectricalDrillDescriptor(name,  // iconId, name,
-                    8.0, 4000.0 // double operationTime,double operationEnergy
+                val element = ElectricalDrillDescriptor(name,
+                    8.0, 4000.0
                 )
-                Eln.sharedItem.addElement(completId, descriptor)
+                registerItem(id, 0, element)
             }
             run {
-                subId = 1
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Average Electrical Drill")
-                descriptor = ElectricalDrillDescriptor(name,  // iconId, name,
-                    5.0, 5000.0 // double operationTime,double operationEnergy
+                val element = ElectricalDrillDescriptor(name,
+                    5.0, 5000.0
                 )
-                Eln.sharedItem.addElement(completId, descriptor)
+                registerItem(id, 1, element)
             }
             run {
-                subId = 2
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Fast Electrical Drill")
-                descriptor = ElectricalDrillDescriptor(name,  // iconId, name,
-                    3.0, 6000.0 // double operationTime,double operationEnergy
+                val element = ElectricalDrillDescriptor(name,
+                    3.0, 6000.0
                 )
-                Eln.sharedItem.addElement(completId, descriptor)
+                registerItem(id, 2, element)
             }
             run {
-                subId = 3
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Turbo Electrical Drill")
-                descriptor = ElectricalDrillDescriptor(name,  // iconId, name,
-                    1.0, 10000.0 // double operationTime,double operationEnergy
+                val element = ElectricalDrillDescriptor(name,
+                    1.0, 10000.0
                 )
-                Eln.sharedItem.addElement(completId, descriptor)
+                registerItem(id, 3, element)
             }
             run {
-                subId = 4
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Irresponsible Electrical Drill")
-                descriptor = ElectricalDrillDescriptor(name,  // iconId, name,
-                    0.1, 20000.0 // double operationTime,double operationEnergy
+                val element = ElectricalDrillDescriptor(name,
+                    0.1, 20000.0
                 )
-                Eln.sharedItem.addElement(completId, descriptor)
+                registerItem(id, 4, element)
             }
         }
 
         private fun registerOreScanner(id: Int) {
-            var subId: Int
-            var completId: Int
-            var name: String?
-            var descriptor: OreScanner
+            var name: String
             run {
-                subId = 0
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Ore Scanner")
-                descriptor = OreScanner(name
-                )
-                Eln.sharedItem.addElement(completId, descriptor)
+                val element = OreScanner(name)
+                registerItem(id, 0, element)
             }
         }
 
         private fun registerMiningPipe(id: Int) {
-            var subId: Int
-            var completId: Int
-            var name: String?
-            var descriptor: MiningPipeDescriptor
+            var name: String
             run {
-                subId = 0
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Mining Pipe")
-                descriptor = MiningPipeDescriptor(name // iconId, name
-                )
-                Eln.sharedItem.addElement(completId, descriptor)
-                Eln.miningPipeDescriptor = descriptor
+                val element = MiningPipeDescriptor(name)
+                Eln.miningPipeDescriptor = element
+                registerItem(id, 0, element)
             }
         }
 
         private fun registerTreeResinAndRubber(id: Int) {
-            var subId: Int
-            var completId: Int
             var name: String
             run {
-                val descriptor: TreeResin
-                subId = 0
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Tree Resin")
-                descriptor = TreeResin(name)
-                Eln.sharedItem.addElement(completId, descriptor)
-                Eln.treeResin = descriptor
-                CraftingRegistry.addToOre("materialResin", descriptor.newItemStack())
+                val element = TreeResin(name)
+                Eln.treeResin = element
+                CraftingRegistry.addToOre("materialResin", element.newItemStack())
+                registerItem(id, 0, element)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 1
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Rubber")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
-                CraftingRegistry.addToOre("itemRubber", descriptor.newItemStack())
+                val element = GenericItemUsingDamageDescriptor(name)
+                CraftingRegistry.addToOre("itemRubber", element.newItemStack())
+                registerItem(id, 1, element)
             }
         }
 
         private fun registerRawCable(id: Int) {
-            var subId: Int
-            var completId: Int
             var name: String
             run {
-                subId = 0
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Copper Cable")
                 Eln.copperCableDescriptor = CopperCableDescriptor(name)
-                Eln.sharedItem.addElement(completId, Eln.copperCableDescriptor)
                 Data.addResource(Eln.copperCableDescriptor.newItemStack())
+                registerItem(id, 0, Eln.copperCableDescriptor)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 1
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Iron Cable")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
-                Data.addResource(descriptor.newItemStack())
+                val element = GenericItemUsingDamageDescriptor(name)
+                Data.addResource(element.newItemStack())
+                registerItem(id, 1, element)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 2
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Tungsten Cable")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
-                Data.addResource(descriptor.newItemStack())
+                val element = GenericItemUsingDamageDescriptor(name)
+                Data.addResource(element.newItemStack())
+                registerItem(id, 2, element)
             }
         }
 
         private fun registerArc(id: Int) {
-            var subId: Int
-            var completId: Int
             var name: String
             run {
-                subId = 0
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Graphite Rod")
                 Eln.GraphiteDescriptor = GraphiteDescriptor(name)
-                Eln.sharedItem.addElement(completId, Eln.GraphiteDescriptor)
                 Data.addResource(Eln.GraphiteDescriptor.newItemStack())
+                registerItem(id, 0, Eln.GraphiteDescriptor)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 1
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "2x Graphite Rods")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
+                val descriptor = GenericItemUsingDamageDescriptor(name)
                 Data.addResource(descriptor.newItemStack())
+                registerItem(id, 1, descriptor)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 2
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "3x Graphite Rods")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
+                val descriptor = GenericItemUsingDamageDescriptor(name)
                 Data.addResource(descriptor.newItemStack())
+                registerItem(id, 2, descriptor)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 3
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "4x Graphite Rods")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
+                val descriptor = GenericItemUsingDamageDescriptor(name)
                 Data.addResource(descriptor.newItemStack())
+                registerItem(id, 3, descriptor)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 4
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Synthetic Diamond")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
+                val descriptor = GenericItemUsingDamageDescriptor(name)
                 Data.addResource(descriptor.newItemStack())
+                registerItem(id, 4, descriptor)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 5
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "unreleasedium")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
+                val descriptor = GenericItemUsingDamageDescriptor(name)
                 Data.addResource(descriptor.newItemStack())
+                registerItem(id, 5, descriptor)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 6
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Arc Clay Ingot")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
+                val descriptor = GenericItemUsingDamageDescriptor(name)
                 Data.addResource(descriptor.newItemStack())
+                registerItem(id, 6, descriptor)
                 OreDictionary.registerOre("ingotAluminum", descriptor.newItemStack())
                 OreDictionary.registerOre("ingotAluminium", descriptor.newItemStack())
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 7
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Arc Metal Ingot")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
+                val descriptor = GenericItemUsingDamageDescriptor(name)
                 Data.addResource(descriptor.newItemStack())
+                registerItem(id, 7, descriptor)
                 OreDictionary.registerOre("ingotSteel", descriptor.newItemStack())
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 8
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Inert Canister")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
+                val descriptor = GenericItemUsingDamageDescriptor(name)
                 Data.addResource(descriptor.newItemStack())
+                registerItem(id, 8, descriptor)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 11
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Canister of Water")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
+                val descriptor = GenericItemUsingDamageDescriptor(name)
                 Data.addResource(descriptor.newItemStack())
+                registerItem(id, 9, descriptor)
             }
             run {
-                val descriptor: GenericItemUsingDamageDescriptor
-                subId = 12
-                completId = subId + (id shl 6)
                 name = I18N.TR_NAME(I18N.Type.NONE, "Canister of Arc Water")
-                descriptor = GenericItemUsingDamageDescriptor(name)
-                Eln.sharedItem.addElement(completId, descriptor)
+                val descriptor = GenericItemUsingDamageDescriptor(name)
                 Data.addResource(descriptor.newItemStack())
+                registerItem(id, 10, descriptor)
             }
         }
 
         private fun registerBrush(id: Int) {
             var subId: Int
-            var whiteDesc: BrushDescriptor? = null
+            //var whiteDesc: BrushDescriptor? = null
             var name: String
             val subNames = arrayOf(
                 I18N.TR_NAME(I18N.Type.NONE, "Black Brush"),
@@ -1130,8 +888,8 @@ class ItemRegistry {
                 subId = idx
                 name = subNames[idx]
                 val desc = BrushDescriptor(name)
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
-                whiteDesc = desc
+                registerItem(id, subId, desc)
+                //whiteDesc = desc
             }
             /*
             TODO: Re-enable this.
@@ -1153,217 +911,192 @@ class ItemRegistry {
         }
 
         private fun registerMiscItem(id: Int) {
-            var subId: Int
             var name: String
             run {
-                subId = 0
                 name = I18N.TR_NAME(I18N.Type.NONE, "Cheap Chip")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 0, desc)
                 Data.addResource(desc.newItemStack())
                 OreDictionary.registerOre(Eln.dictCheapChip, desc.newItemStack())
             }
             run {
-                subId = 1
                 name = I18N.TR_NAME(I18N.Type.NONE, "Advanced Chip")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 1, desc)
                 Data.addResource(desc.newItemStack())
                 OreDictionary.registerOre(Eln.dictAdvancedChip, desc.newItemStack())
             }
             run {
-                subId = 2
                 name = I18N.TR_NAME(I18N.Type.NONE, "Machine Block")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 2, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("casingMachine", desc.newItemStack())
             }
             run {
-                subId = 3
                 name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Probe Chip")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 3, desc)
                 Data.addResource(desc.newItemStack())
             }
             run {
-                subId = 4
                 name = I18N.TR_NAME(I18N.Type.NONE, "Thermal Probe Chip")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 4, desc)
                 Data.addResource(desc.newItemStack())
             }
             run {
-                subId = 6
                 name = I18N.TR_NAME(I18N.Type.NONE, "Copper Plate")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 5, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateCopper", desc.newItemStack())
             }
             run {
-                subId = 7
                 name = I18N.TR_NAME(I18N.Type.NONE, "Iron Plate")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 6, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateIron", desc.newItemStack())
             }
             run {
-                subId = 8
                 name = I18N.TR_NAME(I18N.Type.NONE, "Gold Plate")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 7, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateGold", desc.newItemStack())
             }
             run {
-                subId = 9
                 name = I18N.TR_NAME(I18N.Type.NONE, "Lead Plate")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 8, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateLead", desc.newItemStack())
             }
             run {
-                subId = 10
                 name = I18N.TR_NAME(I18N.Type.NONE, "Silicon Plate")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 9, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateSilicon", desc.newItemStack())
             }
             run {
-                subId = 11
                 name = I18N.TR_NAME(I18N.Type.NONE, "Alloy Plate")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 10, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateAlloy", desc.newItemStack())
             }
             run {
-                subId = 12
                 name = I18N.TR_NAME(I18N.Type.NONE, "Coal Plate")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 11, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateCoal", desc.newItemStack())
             }
             run {
-                subId = 16
                 name = I18N.TR_NAME(I18N.Type.NONE, "Silicon Dust")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 12, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("dustSilicon", desc.newItemStack())
             }
             run {
-                subId = 17
                 name = I18N.TR_NAME(I18N.Type.NONE, "Silicon Ingot")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 13, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("ingotSilicon", desc.newItemStack())
             }
             run {
-                subId = 22
                 name = I18N.TR_NAME(I18N.Type.NONE, "Machine Booster")
                 val desc = MachineBoosterDescriptor(name)
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 14, desc)
             }
             run {
-                subId = 23
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     I18N.TR_NAME(I18N.Type.NONE, "Advanced Machine Block"), arrayOf()) // TODO: Description.
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 15, desc)
                 Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("casingMachineAdvanced", desc.newItemStack())
             }
             run {
-                subId = 28
                 name = I18N.TR_NAME(I18N.Type.NONE, "Basic Magnet")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 16, desc)
                 Data.addResource(desc.newItemStack())
             }
             run {
-                subId = 29
                 name = I18N.TR_NAME(I18N.Type.NONE, "Advanced Magnet")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 17, desc)
                 Data.addResource(desc.newItemStack())
             }
             run {
-                subId = 32
                 name = I18N.TR_NAME(I18N.Type.NONE, "Data Logger Print")
                 val desc = DataLogsPrintDescriptor(name)
                 Eln.dataLogsPrintDescriptor = desc
                 desc.setDefaultIcon("empty-texture")
-                Eln.sharedItem.addWithoutRegistry(subId + (id shl 6), desc)
+                registerHiddenItem(id, 18, desc)
             }
             run {
-                subId = 33
                 name = I18N.TR_NAME(I18N.Type.NONE, "Signal Antenna")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 19, desc)
                 Data.addResource(desc.newItemStack())
             }
             run {
-                subId = 40
                 name = I18N.TR_NAME(I18N.Type.NONE, "Player Filter")
                 val desc = EntitySensorFilterDescriptor(name, EntityPlayer::class.java, 0f, 1f, 0f)
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 20, desc)
             }
             run {
-                subId = 41
                 name = I18N.TR_NAME(I18N.Type.NONE, "Monster Filter")
                 val desc = EntitySensorFilterDescriptor(name, IMob::class.java, 1f, 0f, 0f)
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 21, desc)
             }
             run {
-                subId = 42
                 name = I18N.TR_NAME(I18N.Type.NONE, "Animal Filter")
                 val desc = EntitySensorFilterDescriptor(name, EntityAnimal::class.java, .3f, .3f, 1f)
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id,  22, desc)
             }
             run {
-                subId = 48
                 name = I18N.TR_NAME(I18N.Type.NONE, "Wrench")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, I18N.TR("Electrical age wrench,\nCan be used to turn\nsmall wall blocks").split("\n".toRegex()).toTypedArray())
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 23, desc)
                 Eln.wrenchItemStack = desc.newItemStack()
             }
             run {
-                subId = 52
                 name = I18N.TR_NAME(I18N.Type.NONE, "Dielectric")
                 val desc = DielectricItem(name, Eln.LVU)
-                Eln.sharedItem.addElement(subId + (id shl 6), desc)
+                registerItem(id, 24, desc)
             }
-            Eln.sharedItem.addElement(53 + (id shl 6), CaseItemDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Casing")))
-            Eln.sharedItem.addElement(54 + (id shl 6), ClutchPlateItem("Iron Clutch Plate", 5120f, 640f, 640f, 160f, 0.0001f, false))
-            Eln.sharedItem.addElement(55 + (id shl 6), ClutchPinItem("Clutch Pin"))
-            Eln.sharedItem.addElement(56 + (id shl 6), ClutchPlateItem("Gold Clutch Plate", 10240f, 2048f, 1024f, 512f, 0.001f, false))
-            Eln.sharedItem.addElement(57 + (id shl 6), ClutchPlateItem("Copper Clutch Plate", 8192f, 4096f, 1024f, 512f, 0.0003f, false))
-            Eln.sharedItem.addElement(58 + (id shl 6), ClutchPlateItem("Lead Clutch Plate", 15360f, 1024f, 1536f, 768f, 0.0015f, false))
-            Eln.sharedItem.addElement(59 + (id shl 6), ClutchPlateItem("Coal Clutch Plate", 1024f, 128f, 128f, 32f, 0.1f, true))
+
+            registerItem(id, 25, CaseItemDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Casing")))
+            registerItem(id, 26, ClutchPinItem("Clutch Pin"))
+            registerItem(id, 27, ClutchPlateItem("Iron Clutch Plate", 5120f, 640f, 640f, 160f, 0.0001f, false))
+            registerItem(id, 28, ClutchPlateItem("Gold Clutch Plate", 10240f, 2048f, 1024f, 512f, 0.001f, false))
+            registerItem(id, 29, ClutchPlateItem("Copper Clutch Plate", 8192f, 4096f, 1024f, 512f, 0.0003f, false))
+            registerItem(id, 30, ClutchPlateItem("Lead Clutch Plate", 15360f, 1024f, 1536f, 768f, 0.0015f, false))
+            registerItem(id, 31, ClutchPlateItem("Coal Clutch Plate", 1024f, 128f, 128f, 32f, 0.1f, true))
         }
 
         private fun registerElectricalTool(id: Int) {
@@ -1474,17 +1207,33 @@ class ItemRegistry {
                 FuelBurnerDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Big Fuel Burner"), 25000 * Eln.fuelHeatFurnacePowerFactor, 0, 1f))
         }
 
-        private fun registerPortableNaN() {
-            val id: Int
-            var subId: Int
+        private fun registerFuses(id: Int) {
             var name: String
-            id = 125
             run {
-                subId = 0
-                name = I18N.TR_NAME(I18N.Type.NONE, "Portable NaN")
-                Eln.stdPortableNaN = CableRenderDescriptor("eln", "sprites/nan.png", 3.95f, 0.95f)
-                Eln.portableNaNDescriptor = PortableNaNDescriptor(name, Eln.stdPortableNaN)
-                Eln.sixNodeItem.addDescriptor(subId + (id shl 6), Eln.portableNaNDescriptor)
+                name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for low voltage cables")
+                val desc = ElectricalFuseDescriptor(name, Eln.lowVoltageCableDescriptor, Eln.obj.getObj("ElectricalFuse"))
+                registerItem(id, 0, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for medium voltage cables")
+                val desc = ElectricalFuseDescriptor(name, Eln.meduimVoltageCableDescriptor, Eln.obj.getObj("ElectricalFuse"))
+                registerItem(id, 1, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for high voltage cables")
+                val desc = ElectricalFuseDescriptor(name, Eln.highVoltageCableDescriptor, Eln.obj.getObj("ElectricalFuse"))
+                registerItem(id, 2, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for very high voltage cables")
+                val desc = ElectricalFuseDescriptor(name, Eln.veryHighVoltageCableDescriptor, Eln.obj.getObj("ElectricalFuse"))
+                registerItem(id, 3, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Blown Lead Fuse")
+                val desc = ElectricalFuseDescriptor(name, null, Eln.obj.getObj("ElectricalFuse"))
+                ElectricalFuseDescriptor.BlownFuse = desc
+                registerItem(id, 4, desc)
             }
         }
     }
