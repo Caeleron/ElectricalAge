@@ -17,7 +17,6 @@ import mods.eln.sim.nbt.NbtElectricalGateInput
 import mods.eln.sim.nbt.NbtElectricalGateOutput
 import mods.eln.sim.nbt.NbtElectricalGateOutputProcess
 import mods.eln.sixnode.AnalogFunction
-import mods.eln.wiki.Data
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.entity.player.EntityPlayer
@@ -79,11 +78,6 @@ open class LogicGateDescriptor(name: String, obj: Obj3D?, functionName: String, 
 
     override fun getFrontFromPlace(side: Direction?, player: EntityPlayer?): LRDU? =
         super.getFrontFromPlace(side, player).left()
-
-    override fun setParent(item: Item?, damage: Int) {
-        super.setParent(item, damage)
-        Data.addSignal(newItemStack())
-    }
 
     override fun addInformation(itemStack: ItemStack?, entityPlayer: EntityPlayer?, list: MutableList<String>?, par4: Boolean) {
         super.addInformation(itemStack, entityPlayer, list, par4)

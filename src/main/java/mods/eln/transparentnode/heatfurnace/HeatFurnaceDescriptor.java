@@ -9,11 +9,11 @@ import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.FurnaceProcess;
 import mods.eln.sim.ThermalLoad;
 import mods.eln.sim.ThermalLoadInitializerByPowerDrop;
-import mods.eln.wiki.Data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -73,12 +73,6 @@ public class HeatFurnaceDescriptor extends TransparentNodeDescriptor {
         thermal.setMaximalPower(nominalPower);
 
         voltageLevelColor = VoltageLevelColor.Thermal;
-    }
-
-    @Override
-    public void setParent(Item item, int damage) {
-        super.setParent(item, damage);
-        Data.addThermal(newItemStack());
     }
 
     public void applyTo(ThermalLoad load) {

@@ -4,7 +4,6 @@ import mods.eln.generic.GenericItemUsingDamageDescriptor;
 import mods.eln.item.electricalinterface.IItemEnergyBattery;
 import mods.eln.misc.Utils;
 import mods.eln.misc.UtilsClient;
-import mods.eln.wiki.Data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.client.IItemRenderer.ItemRendererHelper;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -31,12 +31,6 @@ public class BatteryItem extends GenericItemUsingDamageDescriptor implements IIt
         this.dischargePower = dischargePower;
         this.energyStorage = energyStorage;
         iconResource = new ResourceLocation("eln", "textures/items/" + name.replace(" ", "").toLowerCase() + ".png");
-    }
-
-    @Override
-    public void setParent(Item item, int damage) {
-        super.setParent(item, damage);
-        Data.addPortable(newItemStack());
     }
 
     @Override

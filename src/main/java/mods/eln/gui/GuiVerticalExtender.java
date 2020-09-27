@@ -1,7 +1,5 @@
-package mods.eln.wiki;
+package mods.eln.gui;
 
-import mods.eln.gui.GuiHelper;
-import mods.eln.gui.IGuiObject;
 import mods.eln.gui.IGuiObject.IGuiObjectObserver;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
@@ -10,24 +8,53 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 
-public class GuiGroup extends Gui implements IGuiObject, IGuiObjectObserver {
+public class GuiVerticalExtender extends Gui implements IGuiObject, IGuiObjectObserver {
 
-
+    GuiVerticalTrackBar slider;
     int offX, offY;
 
-    public GuiGroup(int x, int y, int w, int h, GuiHelper helper) {
+    public GuiVerticalExtender(int x, int y, int w, int h, GuiHelper helper) {
         this.posX = x;
         this.posY = y;
         this.h = h;
         this.w = w;
         this.offX = x;
         this.offY = y;
+        slider = new GuiVerticalTrackBar(x + w - 10, y, 10, h, helper);
 
+        slider.setStepIdMax(200);
+        slider.setStepId(200);
+        refreshRange();
+
+        //add(slider);
+        slider.setObserver(observer);
         this.helper = helper;
     }
 
+    public float getSliderPosition() {
+        return (slider.getValue());
+    }
 
-    GuiHelper helper;
+    public void setSliderPosition(float position) {
+        refreshRange();
+        slider.setValue(position);
+    }
+
+    void refreshRange() {
+
+        int maxY = 10;
+        for (IGuiObject o : objectList) {
+            maxY = Math.max(maxY, o.getYMax());
+        }
+        float max = Math.min(0, -(maxY + 10 - h));
+        slider.setRange(max, 0);
+
+
+        slider.setVisible(max != 0);
+
+    }
+
+    public GuiHelper helper;
 
     IGuiObjectObserver observer;
 
@@ -36,7 +63,7 @@ public class GuiGroup extends Gui implements IGuiObject, IGuiObjectObserver {
 
     ArrayList<IGuiObject> objectList = new ArrayList<IGuiObject>();
 
-    void add(IGuiObject o) {
+    public void add(IGuiObject o) {
         objectList.add(o);
     }
 
@@ -49,8 +76,8 @@ public class GuiGroup extends Gui implements IGuiObject, IGuiObjectObserver {
     }
 
     int getYOffset() {
-
-        return posY;
+        int sliderOffset = (int) slider.getValue();
+        return posY + sliderOffset;
     }
 
     IGuiObject[] objectListCopy() {
@@ -64,7 +91,9 @@ public class GuiGroup extends Gui implements IGuiObject, IGuiObjectObserver {
 
     @Override
     public void idraw(int x, int y, float f) {
+        refreshRange();
 
+        slider.idraw(x, y, f);
         x -= getxOffset();
         y -= getYOffset();
         GL11.glPushMatrix();
@@ -86,11 +115,13 @@ public class GuiGroup extends Gui implements IGuiObject, IGuiObjectObserver {
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
         //GL11.glDisable(GL11.GL_SCISSOR_BOX);
         GL11.glPopMatrix();
+
+        //	GL11.glColor3f(1f, 1f, 1f);
     }
 
     @Override
     public void idraw2(int x, int y) {
-
+        slider.idraw2(x, y);
         x -= getxOffset();
         y -= getYOffset();
         GL11.glPushMatrix();
@@ -123,7 +154,7 @@ public class GuiGroup extends Gui implements IGuiObject, IGuiObjectObserver {
 
     @Override
     public void imouseClicked(int x, int y, int code) {
-
+        slider.imouseClicked(x, y, code);
         x -= getxOffset();
         y -= getYOffset();
         for (IGuiObject o : objectListCopy()) {
@@ -133,7 +164,7 @@ public class GuiGroup extends Gui implements IGuiObject, IGuiObjectObserver {
 
     @Override
     public void imouseMove(int x, int y) {
-
+        slider.imouseMove(x, y);
         x -= getxOffset();
         y -= getYOffset();
         for (IGuiObject o : objectList) {
@@ -143,7 +174,7 @@ public class GuiGroup extends Gui implements IGuiObject, IGuiObjectObserver {
 
     @Override
     public void imouseMovedOrUp(int x, int y, int witch) {
-
+        slider.imouseMovedOrUp(x, y, witch);
         x -= getxOffset();
         y -= getYOffset();
         for (IGuiObject o : objectList) {
@@ -153,14 +184,16 @@ public class GuiGroup extends Gui implements IGuiObject, IGuiObjectObserver {
 
     @Override
     public void translate(int x, int y) {
-
+        slider.translate(x, y);
         posX += x;
         posY += y;
     }
 
     @Override
     public void guiObjectEvent(IGuiObject object) {
+        if (object == slider) {
 
+        }
     }
 
     @Override

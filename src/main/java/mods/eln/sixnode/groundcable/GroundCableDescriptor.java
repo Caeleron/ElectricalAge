@@ -4,11 +4,11 @@ import mods.eln.Eln;
 import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.six.SixNodeDescriptor;
-import mods.eln.wiki.Data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,12 +30,6 @@ public class GroundCableDescriptor extends SixNodeDescriptor {
 
     void draw() {
         if (main != null) main.draw();
-    }
-
-    @Override
-    public void setParent(Item item, int damage) {
-        super.setParent(item, damage);
-        Data.addWiring(newItemStack());
     }
 
     @Override

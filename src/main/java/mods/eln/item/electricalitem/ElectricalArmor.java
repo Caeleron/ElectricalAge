@@ -3,7 +3,6 @@ package mods.eln.item.electricalitem;
 import mods.eln.generic.genericArmorItem;
 import mods.eln.item.electricalinterface.IItemEnergyBattery;
 import mods.eln.misc.Utils;
-import mods.eln.wiki.Data;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.common.ISpecialArmor;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -38,7 +38,6 @@ public class ElectricalArmor extends genericArmorItem implements IItemEnergyBatt
         this.ratioMax = ratioMax;
         this.ratioMaxEnergy = ratioMaxEnergy;
         this.energyPerDamage = energyPerDamage;
-        Data.addPortable(new ItemStack(this));
     }
 
     @Override

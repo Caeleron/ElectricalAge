@@ -44,7 +44,6 @@ import mods.eln.mechanical.ClutchPlateItem
 import mods.eln.sixnode.electricaldatalogger.DataLogsPrintDescriptor
 import mods.eln.sixnode.lampsocket.LampSocketType
 import mods.eln.sixnode.wirelesssignal.WirelessSignalAnalyserItemDescriptor
-import mods.eln.wiki.Data
 import net.minecraft.entity.monster.IMob
 import net.minecraft.entity.passive.EntityAnimal
 import net.minecraft.entity.player.EntityPlayer
@@ -534,7 +533,7 @@ class ItemRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Copper Ingot")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.copperIngot = element
-                Data.addResource(element.newItemStack())
+                
                 CraftingRegistry.addToOre("ingotCopper", element.newItemStack())
                 registerItem(id, 0, element)
             }
@@ -542,7 +541,7 @@ class ItemRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Lead Ingot")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.plumbIngot = element
-                Data.addResource(element.newItemStack())
+                
                 CraftingRegistry.addToOre("ingotLead", element.newItemStack())
                 registerItem(id, 1, element)
             }
@@ -550,21 +549,21 @@ class ItemRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Tungsten Ingot")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.tungstenIngot = element
-                Data.addResource(element.newItemStack())
+                
                 CraftingRegistry.addToOre(Eln.dictTungstenIngot, element.newItemStack())
                 registerItem(id, 2, element)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Ferrite Ingot")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf("useless", "Really useless"))
-                Data.addResource(element.newItemStack())
+                
                 CraftingRegistry.addToOre("ingotFerrite", element.newItemStack())
                 registerItem(id, 3, element)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Alloy Ingot")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Data.addResource(element.newItemStack())
+                
                 CraftingRegistry.addToOre("ingotAlloy", element.newItemStack())
                 registerItem(id, 4, element)
             }
@@ -576,69 +575,69 @@ class ItemRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Copper Dust")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.dustCopper = element
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre("dustCopper", element.newItemStack())
+                
                 registerItem(id, 0, element)
+                CraftingRegistry.addToOre("dustCopper", element.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Iron Dust")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.dustCopper = element
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre("dustIron", element.newItemStack())
+                
                 registerItem(id, 1, element)
+                CraftingRegistry.addToOre("dustIron", element.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Lapis Dust")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.dustCopper = element
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre("dustLapis", element.newItemStack())
+                
                 registerItem(id, 2, element)
+                CraftingRegistry.addToOre("dustLapis", element.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Diamond Dust")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
                 Eln.dustCopper = element
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre("dustDiamond", element.newItemStack())
+                
                 registerItem(id, 3, element)
+                CraftingRegistry.addToOre("dustDiamond", element.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Lead Dust")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre("dustLead", element.newItemStack())
+                
                 registerItem(id, 4, element)
+                CraftingRegistry.addToOre("dustLead", element.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Tungsten Dust")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre(Eln.dictTungstenDust, element.newItemStack())
+                
                 registerItem(id, 5, element)
+                CraftingRegistry.addToOre(Eln.dictTungstenDust, element.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Gold Dust")
                 val element = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre("dustGold", element.newItemStack())
+                
                 registerItem(id, 6, element)
+                CraftingRegistry.addToOre("dustGold", element.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Coal Dust")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre("dustCoal", element.newItemStack())
+                
                 registerItem(id, 7, element)
+                CraftingRegistry.addToOre("dustCoal", element.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Alloy Dust")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Data.addResource(element.newItemStack())
-                CraftingRegistry.addToOre("dustAlloy", element.newItemStack())
+                
                 registerItem(id, 8, element)
+                CraftingRegistry.addToOre("dustAlloy", element.newItemStack())
             }
         }
 
@@ -647,13 +646,13 @@ class ItemRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Motor")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Data.addResource(element.newItemStack())
+                
                 registerItem(id, 0, element)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Advanced Electrical Motor")
                 val element = GenericItemUsingDamageDescriptorWithComment(name, arrayOf())
-                Data.addResource(element.newItemStack())
+                
                 registerItem(id, 1, element)
             }
         }
@@ -773,19 +772,18 @@ class ItemRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Copper Cable")
                 Eln.copperCableDescriptor = CopperCableDescriptor(name)
-                Data.addResource(Eln.copperCableDescriptor.newItemStack())
                 registerItem(id, 0, Eln.copperCableDescriptor)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Iron Cable")
                 val element = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(element.newItemStack())
+                
                 registerItem(id, 1, element)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Tungsten Cable")
                 val element = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(element.newItemStack())
+                
                 registerItem(id, 2, element)
             }
         }
@@ -795,43 +793,36 @@ class ItemRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Graphite Rod")
                 Eln.GraphiteDescriptor = GraphiteDescriptor(name)
-                Data.addResource(Eln.GraphiteDescriptor.newItemStack())
                 registerItem(id, 0, Eln.GraphiteDescriptor)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "2x Graphite Rods")
                 val descriptor = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(descriptor.newItemStack())
                 registerItem(id, 1, descriptor)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "3x Graphite Rods")
                 val descriptor = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(descriptor.newItemStack())
                 registerItem(id, 2, descriptor)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "4x Graphite Rods")
                 val descriptor = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(descriptor.newItemStack())
                 registerItem(id, 3, descriptor)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Synthetic Diamond")
                 val descriptor = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(descriptor.newItemStack())
                 registerItem(id, 4, descriptor)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "unreleasedium")
                 val descriptor = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(descriptor.newItemStack())
                 registerItem(id, 5, descriptor)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Arc Clay Ingot")
                 val descriptor = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(descriptor.newItemStack())
                 registerItem(id, 6, descriptor)
                 OreDictionary.registerOre("ingotAluminum", descriptor.newItemStack())
                 OreDictionary.registerOre("ingotAluminium", descriptor.newItemStack())
@@ -839,26 +830,22 @@ class ItemRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Arc Metal Ingot")
                 val descriptor = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(descriptor.newItemStack())
                 registerItem(id, 7, descriptor)
                 OreDictionary.registerOre("ingotSteel", descriptor.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Inert Canister")
                 val descriptor = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(descriptor.newItemStack())
                 registerItem(id, 8, descriptor)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Canister of Water")
                 val descriptor = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(descriptor.newItemStack())
                 registerItem(id, 9, descriptor)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Canister of Arc Water")
                 val descriptor = GenericItemUsingDamageDescriptor(name)
-                Data.addResource(descriptor.newItemStack())
                 registerItem(id, 10, descriptor)
             }
         }
@@ -917,7 +904,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 0, desc)
-                Data.addResource(desc.newItemStack())
                 OreDictionary.registerOre(Eln.dictCheapChip, desc.newItemStack())
             }
             run {
@@ -925,7 +911,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 1, desc)
-                Data.addResource(desc.newItemStack())
                 OreDictionary.registerOre(Eln.dictAdvancedChip, desc.newItemStack())
             }
             run {
@@ -933,7 +918,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 2, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("casingMachine", desc.newItemStack())
             }
             run {
@@ -941,21 +925,18 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 3, desc)
-                Data.addResource(desc.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Thermal Probe Chip")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 4, desc)
-                Data.addResource(desc.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Copper Plate")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 5, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateCopper", desc.newItemStack())
             }
             run {
@@ -963,7 +944,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 6, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateIron", desc.newItemStack())
             }
             run {
@@ -971,7 +951,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 7, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateGold", desc.newItemStack())
             }
             run {
@@ -979,7 +958,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 8, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateLead", desc.newItemStack())
             }
             run {
@@ -987,7 +965,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 9, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateSilicon", desc.newItemStack())
             }
             run {
@@ -995,7 +972,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 10, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateAlloy", desc.newItemStack())
             }
             run {
@@ -1003,7 +979,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 11, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("plateCoal", desc.newItemStack())
             }
             run {
@@ -1011,7 +986,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 12, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("dustSilicon", desc.newItemStack())
             }
             run {
@@ -1019,7 +993,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 13, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("ingotSilicon", desc.newItemStack())
             }
             run {
@@ -1031,7 +1004,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     I18N.TR_NAME(I18N.Type.NONE, "Advanced Machine Block"), arrayOf()) // TODO: Description.
                 registerItem(id, 15, desc)
-                Data.addResource(desc.newItemStack())
                 CraftingRegistry.addToOre("casingMachineAdvanced", desc.newItemStack())
             }
             run {
@@ -1039,14 +1011,12 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 16, desc)
-                Data.addResource(desc.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Advanced Magnet")
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 17, desc)
-                Data.addResource(desc.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Data Logger Print")
@@ -1060,7 +1030,6 @@ class ItemRegistry {
                 val desc = GenericItemUsingDamageDescriptorWithComment(
                     name, arrayOf())
                 registerItem(id, 19, desc)
-                Data.addResource(desc.newItemStack())
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Player Filter")

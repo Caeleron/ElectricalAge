@@ -4,7 +4,6 @@ import mods.eln.Eln
 import mods.eln.generic.GenericItemUsingDamageDescriptor
 import mods.eln.i18n.I18N
 import mods.eln.item.ElectricalFuseDescriptor
-import mods.eln.item.GenericItemUsingDamageDescriptorUpgrade
 import mods.eln.misc.*
 import mods.eln.node.NodeBase
 import mods.eln.node.six.*
@@ -13,7 +12,6 @@ import mods.eln.sim.IProcess
 import mods.eln.sim.ThermalLoad
 import mods.eln.sim.mna.component.Resistor
 import mods.eln.sim.nbt.NbtElectricalLoad
-import mods.eln.wiki.Data
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -23,6 +21,7 @@ import org.lwjgl.opengl.GL11
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
+import javax.xml.crypto.Data
 
 class ElectricalFuseHolderDescriptor(name: String, obj: Obj3D) :
     SixNodeDescriptor(name, ElectricalFuseHolderElement::class.java, ElectricalFuseHolderRender::class.java) {
@@ -33,11 +32,6 @@ class ElectricalFuseHolderDescriptor(name: String, obj: Obj3D) :
 
     init {
         voltageLevelColor = VoltageLevelColor.Neutral
-    }
-
-    override fun setParent(item: Item?, damage: Int) {
-        super.setParent(item, damage)
-        Data.addWiring(newItemStack())
     }
 
     override fun handleRenderType(item: ItemStack?, type: IItemRenderer.ItemRenderType?) = true

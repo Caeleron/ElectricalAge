@@ -43,7 +43,6 @@ import mods.eln.sim.process.destruct.VoltageStateWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sound.LoopedSound
-import mods.eln.wiki.Data
 import net.minecraft.client.audio.ISound
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.entity.player.EntityPlayer
@@ -83,11 +82,6 @@ class LegacyDcDcDescriptor(name: String, objM: Obj3D, coreM: Obj3D, casingM: Obj
         casingRightDoor = casingM.getPart("DoorR")
 
         voltageLevelColor = VoltageLevelColor.Neutral
-    }
-
-    override fun setParent(item: Item, damage: Int) {
-        super.setParent(item, damage)
-        Data.addWiring(newItemStack())
     }
 
     override fun addInformation(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>, par4: Boolean) {

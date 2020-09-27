@@ -6,12 +6,12 @@ import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.sim.mna.component.Resistor;
 import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
-import mods.eln.wiki.Data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
+import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,13 +52,6 @@ public class BatteryChargerDescriptor extends SixNodeDescriptor {
 
         setDefaultIcon("batterycharger");
         voltageLevelColor = VoltageLevelColor.fromVoltage(nominalVoltage);
-    }
-
-    @Override
-    public void setParent(Item item, int damage) {
-        super.setParent(item, damage);
-        Data.addEnergy(newItemStack());
-        Data.addUtilities(newItemStack());
     }
 
     public void draw(boolean[] presence, boolean[] charged) {

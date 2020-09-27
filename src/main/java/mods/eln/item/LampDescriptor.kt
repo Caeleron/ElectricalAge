@@ -7,7 +7,6 @@ import mods.eln.misc.Utils
 import mods.eln.misc.VoltageLevelColor
 import mods.eln.sim.mna.component.Resistor
 import mods.eln.sixnode.lampsocket.LampSocketType
-import mods.eln.wiki.Data
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -39,10 +38,6 @@ class LampDescriptor(
     var stableTime = 0.0
     var vegetableGrowRate: Double
     var serverNominalLife = 0.0
-    override fun setParent(item: Item?, damage: Int) {
-        super.setParent(item, damage)
-        Data.addLight(newItemStack())
-    }
 
     val r: Double
         get() = nominalU * nominalU / nominalP

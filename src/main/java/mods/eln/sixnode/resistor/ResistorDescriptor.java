@@ -7,12 +7,13 @@ import mods.eln.misc.Obj3D;
 import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.series.ISerie;
 import mods.eln.node.six.SixNodeDescriptor;
-import mods.eln.wiki.Data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
+
+import javax.xml.crypto.Data;
 
 /**
  * Created by svein on 05/08/15.
@@ -57,12 +58,6 @@ public class ResistorDescriptor extends SixNodeDescriptor {
 
         if (core == null) return series.getValue(0);
         return series.getValue(core.stackSize);
-    }
-
-    @Override
-    public void setParent(net.minecraft.item.Item item, int damage) {
-        super.setParent(item, damage);
-        Data.addEnergy(newItemStack());
     }
 
     void draw(float wiperPos) {

@@ -2,7 +2,7 @@ package mods.eln.sixnode.modbusrtu;
 
 import mods.eln.gui.*;
 import mods.eln.gui.IGuiObject.IGuiObjectObserver;
-import mods.eln.wiki.GuiVerticalExtender;
+import mods.eln.gui.GuiVerticalExtender;
 import net.minecraft.entity.player.EntityPlayer;
 
 import java.io.ByteArrayOutputStream;

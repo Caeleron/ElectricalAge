@@ -17,7 +17,6 @@ import mods.eln.sim.mna.component.PowerSource
 import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sound.LoopedSound
-import mods.eln.wiki.Data
 import net.minecraft.client.audio.ISound
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -28,6 +27,7 @@ import net.minecraftforge.fluids.FluidRegistry
 import org.lwjgl.opengl.GL11
 import java.io.DataInputStream
 import java.io.DataOutputStream
+import javax.xml.crypto.Data
 
 class FuelGeneratorDescriptor(name: String, internal val obj: Obj3D?, internal val cable: ElectricalCableDescriptor,
                               internal val nominalPower: Double, internal val maxVoltage: Double,
@@ -64,11 +64,6 @@ class FuelGeneratorDescriptor(name: String, internal val obj: Obj3D?, internal v
 
     init {
         voltageLevelColor = VoltageLevelColor.fromCable(cable)
-    }
-
-    override fun setParent(item: net.minecraft.item.Item, damage: Int) {
-        super.setParent(item, damage)
-        Data.addEnergy(newItemStack())
     }
 
     fun draw(on: Boolean = false) {

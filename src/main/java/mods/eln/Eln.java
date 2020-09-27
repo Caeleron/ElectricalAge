@@ -203,6 +203,17 @@ public class Eln {
     public static CableRenderDescriptor stdCableRender800V;
     public static CableRenderDescriptor stdCableRender3200V;
     public static CableRenderDescriptor stdCableRenderCreative;
+
+    public static CableRenderDescriptor uninsulatedLowCurrentRender;
+    public static CableRenderDescriptor uninsulatedMediumCurrentRender;
+    public static CableRenderDescriptor uninsulatedHighCurrentRender;
+    public static CableRenderDescriptor smallInsulationLowCurrentRender;
+    public static CableRenderDescriptor smallInsulationMediumCurrentRender;
+    public static CableRenderDescriptor smallInsulationHighCurrentRender;
+    public static CableRenderDescriptor mediumInsulationLowCurrentRender;
+    public static CableRenderDescriptor mediumInsulationMediumCurrentRender;
+    public static CableRenderDescriptor bigInsulationLowCurrentRender;
+
     public static final double gateOutputCurrent = 0.100;
     public static final double SVU = 50, SVII = gateOutputCurrent / 50,
         SVUinv = 1.0 / SVU;

@@ -31,20 +31,15 @@ import java.util.ArrayList;
 
 public abstract class NodeBase {
 
-    public static final int maskElectricalPower = 1 << 0;
-    public static final int maskThermal = 1 << 1;
+    public static final int maskElectricalPower = 1;
+    public static final int maskThermal = maskElectricalPower;
 
-    public static final int maskElectricalGate = (1 << 2);
-    public static final int maskElectricalAll = maskElectricalPower | maskElectricalGate;
+    public static final int maskElectricalGate = maskElectricalPower;
+    public static final int maskElectricalAll = maskElectricalPower;
 
-    public static final int maskElectricalInputGate = maskElectricalGate;
-    public static final int maskElectricalOutputGate = maskElectricalGate;
+    public static final int maskElectricalInputGate = maskElectricalPower;
+    public static final int maskElectricalOutputGate = maskElectricalPower;
 
-    public static final int maskWire = 0;
-    public static final int maskElectricalWire = (1 << 3);
-    public static final int maskThermalWire = maskWire + maskThermal;
-
-    public static final int maskSignal = (1 << 9);
     public static final int maskRs485 = (1 << 10);
 
     public static final int maskSignalBus = (1 << 11);

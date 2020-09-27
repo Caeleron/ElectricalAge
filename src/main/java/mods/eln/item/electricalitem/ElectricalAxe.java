@@ -1,23 +1,18 @@
 package mods.eln.item.electricalitem;
 
 import mods.eln.misc.Utils;
-import mods.eln.wiki.Data;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import javax.xml.crypto.Data;
 
 public class ElectricalAxe extends ElectricalTool {
 
     public ElectricalAxe(String name, float strengthOn, float strengthOff,
                          double energyStorage, double energyPerBlock, double chargePower) {
         super(name, strengthOn, strengthOff, energyStorage, energyPerBlock, chargePower);
-    }
-
-    @Override
-    public void setParent(Item item, int damage) {
-        super.setParent(item, damage);
-        Data.addPortable(newItemStack());
     }
 
     @Override

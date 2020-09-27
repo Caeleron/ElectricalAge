@@ -6,22 +6,18 @@ import mods.eln.misc.Utils;
 import mods.eln.misc.VoltageLevelColor;
 import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.sim.ThermalLoad;
-import mods.eln.wiki.Data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
 
 public class ThermalCableDescriptor extends SixNodeDescriptor {
-
-    boolean addToDataEnabled = true;
-
     double thermalRp = 1, thermalRs = 1, thermalC = 1;
-
     double thermalWarmLimit, thermalCoolLimit;
     double thermalStdT, thermalStdPower;
     double thermalStdDrop, thermalStdLost;
@@ -55,7 +51,6 @@ public class ThermalCableDescriptor extends SixNodeDescriptor {
 
         thermalRs = thermalStdDrop / 2 / thermalStdPower;
         thermalRp = thermalStdT / thermalStdLost;
-        //thermalC = thermalTao / (thermalRs * 2) ;
         thermalC = Eln.simulator.getMinimalThermalC(thermalRs, thermalRp);
         if (!Eln.simulator.checkThermalLoad(thermalRs, thermalRp, thermalC)) {
             Utils.println("Bad thermalCable setup");
@@ -64,35 +59,10 @@ public class ThermalCableDescriptor extends SixNodeDescriptor {
         voltageLevelColor = VoltageLevelColor.Thermal;
     }
 
-    public void addToData(boolean enable) {
-        this.addToDataEnabled = enable;
-    }
-
-    @Override
-    public void setParent(Item item, int damage) {
-        super.setParent(item, damage);
-        if (addToDataEnabled) {
-            Data.addWiring(newItemStack());
-            Data.addThermal(newItemStack());
-        }
-    }
-
     public static ThermalCableDescriptor getDescriptorFrom(ItemStack itemStack) {
         return list[(itemStack.getItemDamage() >> 8) & 0xFF];
     }
 
-    /*
-    static void setThermalLoadFrom(ItemStack itemStack, ThermalLoad thermalLoad) {
-        if (itemStack == null || itemStack.itemID != Eln.sixNodeBlock.blockID || (itemStack.getItemDamage() & 0xFF) != Eln.electricalCableId) {
-            thermalLoad.setHighImpedance();
-        } else {
-            ThermalCableDescriptor cableDescriptor = ThermalCableDescriptor.list[(itemStack.getItemDamage() >> 8) & 0xFF];
-            thermalLoad.Rp = cableDescriptor.thermalRp;
-            thermalLoad.Rs = cableDescriptor.thermalRs;
-            thermalLoad.C = cableDescriptor.thermalC;
-        }
-    }
-    */
     public void setThermalLoad(ThermalLoad thermalLoad) {
         thermalLoad.Rp = thermalRp;
         thermalLoad.Rs = thermalRs;

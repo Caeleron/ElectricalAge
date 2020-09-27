@@ -1138,3 +1138,8 @@ Christmas_Tree.name=Christmas Tree
 Holiday_Candle.name=Holiday Candle
 String_Lights.name=String Lights
 Rotary_Motor.name=Rotary Motor
+
+death.attack.Flywheel=%s was thrown clear of the flywheel!
+death.attack.Cable="%s was electrocuted by the electrical cable!
+
+Low_Current_Copper_Uninsulated_Cable.name=Low Current Copper Uninsulated Cable

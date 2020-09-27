@@ -7,10 +7,10 @@ import mods.eln.misc.Utils;
 import mods.eln.misc.VoltageLevelColor;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.ThermalLoad;
-import mods.eln.wiki.Data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -47,11 +47,6 @@ public class ThermalDissipatorPassiveDescriptor extends TransparentNodeDescripto
 
     public void applyTo(ThermalLoad load) {
         load.set(thermalRs, thermalRp, thermalC);
-    }
-
-    public void setParent(net.minecraft.item.Item item, int damage) {
-        super.setParent(item, damage);
-        Data.addThermal(newItemStack());
     }
 
     @Override

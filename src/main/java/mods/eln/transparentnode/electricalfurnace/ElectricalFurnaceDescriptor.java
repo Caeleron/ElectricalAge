@@ -5,11 +5,11 @@ import mods.eln.misc.IFunction;
 import mods.eln.misc.VoltageLevelColor;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.ThermalLoad;
-import mods.eln.wiki.Data;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
+import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,12 +39,6 @@ public class ElectricalFurnaceDescriptor extends TransparentNodeDescriptor {
         double Rp = (load.Tc / thermalPlostfT.getValue(load.Tc)) / conductionFactor;
         if (Rp < 0.1) Rp = 0.1;
         load.setRp(Rp);
-    }
-
-    @Override
-    public void setParent(Item item, int damage) {
-        super.setParent(item, damage);
-        Data.addMachine(newItemStack());
     }
 
     @Override

@@ -2,20 +2,15 @@ package mods.eln.transparentnode.computercraftio;
 
 import mods.eln.misc.Obj3D;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
-import mods.eln.wiki.Data;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+
+import javax.xml.crypto.Data;
 
 public class ComputerCraftIoDescriptor extends TransparentNodeDescriptor {
 
     public ComputerCraftIoDescriptor(String name, Obj3D obj) {
         super(name, ComputerCraftIoElement.class, ComputerCraftIoRender.class);
-    }
-
-    @Override
-    public void setParent(Item item, int damage) {
-        super.setParent(item, damage);
-        Data.addSignal(newItemStack());
     }
 
     @Override
