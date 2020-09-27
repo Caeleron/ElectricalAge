@@ -435,7 +435,7 @@ class VariableDcDcRender(tileEntity: TransparentNodeEntity, val descriptor: Tran
         GL11.glPopMatrix()
         cableRenderType = drawCable(front.down(), priRender, priConn, cableRenderType)
         cableRenderType = drawCable(front.down(), secRender, secConn, cableRenderType)
-        cableRenderType = drawCable(front.down(), Eln.instance.stdCableRenderSignal, controlConn, cableRenderType)
+        cableRenderType = drawCable(front.down(), Eln.stdCableRenderSignal, controlConn, cableRenderType)
     }
 
     override fun networkUnserialize(stream: DataInputStream) {

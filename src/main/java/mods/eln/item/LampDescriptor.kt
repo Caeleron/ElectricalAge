@@ -126,7 +126,7 @@ class LampDescriptor(
             }
             Type.LED -> minimalU = nominalU * 0.75
         }
-        Eln.instance.configShared.add(this)
+        Eln.configShared.add(this)
         voltageLevelColor = VoltageLevelColor.fromVoltage(nominalU)
     }
 }

@@ -113,7 +113,6 @@ class PortableNaNElement(sixNode: SixNode, side: Direction, descriptor: SixNodeD
 
     override fun getWaila(): Map<String, String>? {
         val info = HashMap<String, String>()
-
         info[tr("Current")] = Utils.plotAmpere("", electricalLoad.i)
         info[tr("Temperature")] = Utils.plotCelsius("", thermalLoad.t)
         if (Eln.wailaEasyMode) {
@@ -121,21 +120,15 @@ class PortableNaNElement(sixNode: SixNode, side: Direction, descriptor: SixNodeD
         }
         try {
             val subSystemSize = electricalLoad.subSystem!!.componentSize()
-            var textColor = ""
-            if (subSystemSize <= 8) {
-                textColor = "§a"
-            } else if (subSystemSize <= 15) {
-                textColor = "§6"
-            } else {
-                textColor = "§c"
+            val textColor = when {
+                subSystemSize <= 8 -> "§a"
+                subSystemSize <= 15 -> "§6"
+                else -> "§c"
             }
             info[tr("Subsystem Matrix Size: ")] = textColor + subSystemSize
-
-
         } catch (e: Exception) {
             info[tr("Subsystem Matrix Size: ")] = "§cNot part of a subsystem!?"
         }
-
         return info
     }
 }

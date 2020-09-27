@@ -172,47 +172,51 @@ abstract class GridElement(transparentNode: TransparentNode, descriptor: Transpa
     // not just the ones being rendered here.
     /* Compute a rendering angle that minimizes any straight-on cables. */
     fun updateIdealRenderAngle() {
-        if (desc.rotationIsFixed()) {
-            when (front) {
-                Direction.XN -> idealRenderingAngle = 0f
-                Direction.XP -> idealRenderingAngle = 180f
-                Direction.YN -> idealRenderingAngle = 90f
-                Direction.YP -> idealRenderingAngle = 90f
-                Direction.ZN -> idealRenderingAngle = 270f
-                Direction.ZP -> idealRenderingAngle = 90f
-            }
-            //System.out.println(idealRenderingAngle);
-        } else if (gridLinkList.size == 0) {
-            idealRenderingAngle = 0f
-        } else {
-            // Compute angles.
-            val angles = DoubleArray(gridLinkList.size)
-            var i = 0
-            for (link in gridLinkList) {
-                var vec = link.a.subtract(link.b)
-                // Angles 180 degrees apart are equivalent.
-                if (vec.z < 0)
-                    vec = vec.negate()
-                val h = Math.sqrt((vec.x * vec.x + vec.z * vec.z).toDouble())
-                angles[i++] = Math.acos(vec.x / h)
-            }
-            // This could probably be optimised with a bit of math, but w.e.
-            var optAngle = 0.0
-            var optErr = java.lang.Double.POSITIVE_INFINITY
-            i = 0
-            while (i < 128) {
-                // Check a half-circle.
-                val angle = Math.PI * i / 128.0
-                val error = angles
-                    .map { Math.abs(Math.sin(angle - it)) }
-                    .sumByDouble { it * it * it }
-                if (error < optErr) {
-                    optAngle = angle
-                    optErr = error
+        when {
+            desc.rotationIsFixed() -> {
+                idealRenderingAngle = when (front) {
+                    Direction.XN, null -> 0f
+                    Direction.XP -> 180f
+                    Direction.YN -> 90f
+                    Direction.YP -> 90f
+                    Direction.ZN -> 270f
+                    Direction.ZP -> 90f
                 }
-                i++
+                //System.out.println(idealRenderingAngle);
             }
-            idealRenderingAngle = Math.toDegrees(-optAngle).toFloat()
+            gridLinkList.size == 0 -> {
+                idealRenderingAngle = 0f
+            }
+            else -> {
+                // Compute angles.
+                val angles = DoubleArray(gridLinkList.size)
+                var i = 0
+                for (link in gridLinkList) {
+                    var vec = link.a.subtract(link.b)
+                    // Angles 180 degrees apart are equivalent.
+                    if (vec.z < 0)
+                        vec = vec.negate()
+                    val h = Math.sqrt((vec.x * vec.x + vec.z * vec.z).toDouble())
+                    angles[i++] = Math.acos(vec.x / h)
+                }
+                // This could probably be optimised with a bit of math, but w.e.
+                var optAngle = 0.0
+                var optErr = java.lang.Double.POSITIVE_INFINITY
+                i = 0
+                while (i < 128) {
+                    // Check a half-circle.
+                    val angle = Math.PI * i / 128.0
+                    val error = angles
+                        .map { Math.abs(Math.sin(angle - it)) }
+                        .sumByDouble { it * it * it }
+                    if (error < optErr) {
+                        optAngle = angle
+                        optErr = error
+                    }
+                    i++
+                }
+                idealRenderingAngle = Math.toDegrees(-optAngle).toFloat()
+            }
         }
     }
 

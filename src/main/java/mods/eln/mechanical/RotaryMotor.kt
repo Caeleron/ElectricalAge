@@ -188,7 +188,7 @@ class RotaryMotorElement(node: TransparentNode, desc_: TransparentNodeDescriptor
 
 // TODO: Particles flying out the exhaust pipe
 class RotaryMotorRender(entity: TransparentNodeEntity, desc: TransparentNodeDescriptor) : ShaftRender(entity, desc) {
-    override val cableRender = Eln.instance.stdCableRenderSignal
+    override val cableRender = Eln.stdCableRenderSignal
 
     override fun networkUnserialize(stream: DataInputStream) {
         super.networkUnserialize(stream)

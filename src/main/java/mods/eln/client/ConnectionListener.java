@@ -7,6 +7,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.Type;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientConnectedToServerEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent.ClientDisconnectionFromServerEvent;
 import mods.eln.Eln;
+import mods.eln.item.electricalitem.OreScannerTasks;
 import mods.eln.misc.Utils;
 import mods.eln.misc.UtilsClient;
 
@@ -26,7 +27,7 @@ public class ConnectionListener {
     @SubscribeEvent
     public void onConnectedToServerEvent(ClientConnectedToServerEvent event) {
         Utils.println("Connected to server " + FMLCommonHandler.instance().getEffectiveSide());
-        Eln.instance.regenOreScannerFactors();
+        OreScannerTasks.Companion.regenOreScannerFactors();
 
         timer = 20;
         newConnection = true;

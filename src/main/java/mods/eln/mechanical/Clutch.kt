@@ -67,15 +67,15 @@ class ClutchPlateItem(
         if(itemStack != null) {
             val wear = getWear(itemStack)
             if(wear < 0.2) {
-                list?.add(tr("Condition:") + " " + tr("New"))
+                list.add(tr("Condition:") + " " + tr("New"))
             } else if(wear < 0.5) {
-                list?.add(tr("Condition:") + " " + tr("Good"))
+                list.add(tr("Condition:") + " " + tr("Good"))
             } else if(wear < 0.8) {
-                list?.add(tr("Condition:") + " " + tr("Used"))
+                list.add(tr("Condition:") + " " + tr("Used"))
             } else if(wear < 0.9) {
-                list?.add(tr("Condition:") + " " + tr("End of life"))
+                list.add(tr("Condition:") + " " + tr("End of life"))
             } else {
-                list?.add(tr("Condition:") + " " + tr("Bad"))
+                list.add(tr("Condition:") + " " + tr("Bad"))
             }
         }
     }
@@ -447,7 +447,7 @@ class ClutchElement(node: TransparentNode, desc_: TransparentNodeDescriptor) : S
 class ClutchRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescriptor) : ShaftRender(entity, desc_) {
     val desc = desc_ as ClutchDescriptor
     val connectedSides = DirectionSet()
-    override val cableRender = Eln.instance.stdCableRenderSignal
+    override val cableRender = Eln.stdCableRenderSignal
     val inv = TransparentNodeElementInventory(2, 1, this)
     override fun getInventory() = inv
 
