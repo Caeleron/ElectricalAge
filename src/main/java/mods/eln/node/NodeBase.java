@@ -30,19 +30,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public abstract class NodeBase {
+    // MASK_NONE is 0, do not use it.
+    public static final int MASK_ELECTRIC = 1;
+    public static final int MASK_THERMAL = 2;
 
-    public static final int maskElectricalPower = 1;
-    public static final int maskThermal = maskElectricalPower;
-
-    public static final int maskElectricalGate = maskElectricalPower;
-    public static final int maskElectricalAll = maskElectricalPower;
-
-    public static final int maskElectricalInputGate = maskElectricalPower;
-    public static final int maskElectricalOutputGate = maskElectricalPower;
-
-    public static final int maskRs485 = (1 << 10);
-
-    public static final int maskSignalBus = (1 << 11);
+    public static final int maskElectricalGate = MASK_ELECTRIC;
+    public static final int maskElectricalAll = MASK_ELECTRIC;
 
     public static final int maskColorData = 0xF << 16;
     public static final int maskColorShift = 16;

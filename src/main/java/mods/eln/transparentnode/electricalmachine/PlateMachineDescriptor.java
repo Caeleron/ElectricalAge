@@ -4,6 +4,7 @@ import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.sim.ThermalLoadInitializer;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.item.EntityItem;
 
 public class PlateMachineDescriptor extends ElectricalMachineDescriptor {
@@ -12,7 +13,7 @@ public class PlateMachineDescriptor extends ElectricalMachineDescriptor {
     private Obj3DPart rot2;
 
     public PlateMachineDescriptor(String name, Obj3D obj, double nominalU, double nominalP, double maximalU,
-                                  ThermalLoadInitializer thermal, ElectricalCableDescriptor cable, RecipesList recipe) {
+                                  ThermalLoadInitializer thermal, GenericCableDescriptor cable, RecipesList recipe) {
         super(name, nominalU, nominalP, maximalU, thermal, cable, recipe);
 
         if (obj != null) {

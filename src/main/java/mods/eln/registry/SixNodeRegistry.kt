@@ -158,11 +158,13 @@ class SixNodeRegistry {
 
         @Suppress("MemberVisibilityCanBePrivate")
         fun registerSixNode(group: Int, subId: Int, descriptor: SixNodeDescriptor) {
+            println("Registering SixNode: ${descriptor.name}")
             Eln.sixNodeItem.addDescriptor(subId + (group shl 6), descriptor)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
         fun registerHiddenSixNode(group: Int, subId: Int, descriptor: SixNodeDescriptor) {
+            println("Shadow registering SixNode: ${descriptor.name}")
             Eln.sixNodeItem.addWithoutRegistry(subId + (group shl 6), descriptor)
         }
 
@@ -368,6 +370,60 @@ class SixNodeRegistry {
                 val desc = ElectricCableDescriptor(name, Eln.bigInsulationLowCurrentRender)
                 desc.insulationVoltage = 20_000.0
                 registerSixNode(id, 15, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Aluminum Uninsulated Cable")
+                val desc = ElectricCableDescriptor(name, Eln.uninsulatedLowCurrentRender, material = "aluminum")
+                desc.insulationVoltage = 0.0
+                registerSixNode(id, 16, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Aluminum Uninsulated Cable")
+                val desc = ElectricCableDescriptor(name, Eln.uninsulatedMediumCurrentRender, material = "aluminum")
+                desc.insulationVoltage = 0.0
+                registerSixNode(id, 17, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "High Current Aluminum Uninsulated Cable")
+                val desc = ElectricCableDescriptor(name, Eln.uninsulatedHighCurrentRender, material = "aluminum")
+                desc.insulationVoltage = 0.0
+                registerSixNode(id, 18, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Aluminum 300v Insulated Cable")
+                val desc = ElectricCableDescriptor(name, Eln.smallInsulationLowCurrentRender, material = "aluminum")
+                desc.insulationVoltage = 300.0
+                registerSixNode(id, 19, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Aluminum 300v Insulated Cable")
+                val desc = ElectricCableDescriptor(name, Eln.smallInsulationMediumCurrentRender, material = "aluminum")
+                desc.insulationVoltage = 300.0
+                registerSixNode(id, 20, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "High Current Aluminum 300v Insulated Cable")
+                val desc = ElectricCableDescriptor(name, Eln.smallInsulationHighCurrentRender, material = "aluminum")
+                desc.insulationVoltage = 300.0
+                registerSixNode(id, 21, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Aluminum 1kV Insulated Cable")
+                val desc = ElectricCableDescriptor(name, Eln.mediumInsulationLowCurrentRender, material = "aluminum")
+                desc.insulationVoltage = 1_000.0
+                registerSixNode(id, 22, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Aluminum 1kV Insulated Cable")
+                val desc = ElectricCableDescriptor(name, Eln.mediumInsulationMediumCurrentRender, material = "aluminum")
+                desc.insulationVoltage = 1_000.0
+                registerSixNode(id, 23, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Aluminum 20kV Insulated Cable")
+                val desc = ElectricCableDescriptor(name, Eln.bigInsulationLowCurrentRender, material = "aluminum")
+                desc.insulationVoltage = 20_000.0
+                registerSixNode(id, 24, desc)
             }
         }
 
@@ -847,7 +903,7 @@ class SixNodeRegistry {
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Signal Switch")
-                val desc = ElectricalSwitchDescriptor(name, Eln.stdCableRenderSignal,
+                val desc = ElectricalSwitchDescriptor(name, Eln.smallInsulationLowCurrentRender,
                     Eln.obj.getObj("LowVoltageSwitch"), Eln.SVU, Eln.SVP, 0.02,
                     Eln.SVU * 1.5, Eln.SVP * 1.2,
                     Eln.cableThermalLoadInitializer.copy(), true)
@@ -855,7 +911,7 @@ class SixNodeRegistry {
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Signal Switch with LED")
-                val desc = ElectricalSwitchDescriptor(name, Eln.stdCableRenderSignal,
+                val desc = ElectricalSwitchDescriptor(name, Eln.smallInsulationLowCurrentRender,
                     Eln.obj.getObj("ledswitch"), Eln.SVU, Eln.SVP, 0.02,
                     Eln.SVU * 1.5, Eln.SVP * 1.2,
                     Eln.cableThermalLoadInitializer.copy(), true)
@@ -965,52 +1021,34 @@ class SixNodeRegistry {
                 }
             }
             run {
-                var desc: ElectricalWeatherSensorDescriptor
-                {
-                    name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Weather Sensor")
-                    desc = ElectricalWeatherSensorDescriptor(name, Eln.obj.getObj("electricalweathersensor"))
-                    registerSixNode(id, 2, desc)
-                }
+                name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Weather Sensor")
+                val desc = ElectricalWeatherSensorDescriptor(name, Eln.obj.getObj("electricalweathersensor"))
+                registerSixNode(id, 2, desc)
             }
             run {
-                var desc: ElectricalWindSensorDescriptor
-                {
-                    name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Anemometer Sensor")
-                    desc = ElectricalWindSensorDescriptor(name, Eln.obj.getObj("Anemometer"), 25.0)
-                    registerSixNode(id, 3, desc)
-                }
+                name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Anemometer Sensor")
+                val desc = ElectricalWindSensorDescriptor(name, Eln.obj.getObj("Anemometer"), 25.0)
+                registerSixNode(id, 3, desc)
             }
             run {
-                var desc: ElectricalEntitySensorDescriptor
-                {
-                    name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Entity Sensor")
-                    desc = ElectricalEntitySensorDescriptor(name, Eln.obj.getObj("ProximitySensor"), 10.0)
-                    registerSixNode(id, 4, desc)
-                }
+                name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Entity Sensor")
+                val desc = ElectricalEntitySensorDescriptor(name, Eln.obj.getObj("ProximitySensor"), 10.0)
+                registerSixNode(id, 4, desc)
             }
             run {
-                var desc: ElectricalFireDetectorDescriptor
-                {
-                    name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Fire Detector")
-                    desc = ElectricalFireDetectorDescriptor(name, Eln.obj.getObj("FireDetector"), 15.0, false)
-                    registerSixNode(id, 5, desc)
-                }
+                name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Fire Detector")
+                val desc = ElectricalFireDetectorDescriptor(name, Eln.obj.getObj("FireDetector"), 15.0, false)
+                registerSixNode(id, 5, desc)
             }
             run {
-                var desc: ElectricalFireDetectorDescriptor
-                {
-                    name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Fire Buzzer")
-                    desc = ElectricalFireDetectorDescriptor(name, Eln.obj.getObj("FireDetector"), 15.0, true)
-                    registerSixNode(id, 6, desc)
-                }
+                name = I18N.TR_NAME(I18N.Type.NONE, "Electrical Fire Buzzer")
+                val desc = ElectricalFireDetectorDescriptor(name, Eln.obj.getObj("FireDetector"), 15.0, true)
+                registerSixNode(id, 6, desc)
             }
             run {
-                var desc: ScannerDescriptor
-                {
-                    name = I18N.TR_NAME(I18N.Type.NONE, "Scanner")
-                    desc = ScannerDescriptor(name, Eln.obj.getObj("scanner"))
-                    registerSixNode(id, 7, desc)
-                }
+                name = I18N.TR_NAME(I18N.Type.NONE, "Scanner")
+                val desc = ScannerDescriptor(name, Eln.obj.getObj("scanner"))
+                registerSixNode(id, 7, desc)
             }
         }
 

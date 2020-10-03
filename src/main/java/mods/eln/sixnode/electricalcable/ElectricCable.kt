@@ -9,6 +9,7 @@ import mods.eln.misc.Direction
 import mods.eln.misc.LRDU
 import mods.eln.misc.Utils
 import mods.eln.misc.UtilsClient
+import mods.eln.misc.VoltageLevelColor
 import mods.eln.node.NodeBase
 import mods.eln.node.six.SixNode
 import mods.eln.node.six.SixNodeDescriptor
@@ -33,13 +34,32 @@ import net.minecraft.util.DamageSource
 import org.lwjgl.opengl.GL11
 import java.util.*
 
-class ElectricCableDescriptor(name: String, render: CableRenderDescriptor): GenericCableDescriptor(name, ElectricCableElement::class.java, ElectricCableRender::class.java) {
+class ElectricCableDescriptor(name: String, render: CableRenderDescriptor, val material: String = "Copper"): GenericCableDescriptor(name, ElectricCableElement::class.java, ElectricCableRender::class.java) {
 
     var insulationVoltage = 0.0
+        set(x) {
+            field = x
+            voltageLevelColor = when {
+                insulationVoltage <= 0.0 -> {
+                    // No insulation means no voltage limits!
+                    VoltageLevelColor.Neutral
+                }
+                insulationVoltage <= 300.0 -> {
+                    VoltageLevelColor.LowVoltage
+                }
+                insulationVoltage <= 1_000.0 -> {
+                    VoltageLevelColor.MediumVoltage
+                }
+                else -> {
+                    VoltageLevelColor.HighVoltage
+                }
+            }
+        }
 
     init {
         this.render = render
         this.electricalRs = 0.1
+        this.voltageLevelColor = VoltageLevelColor.Neutral
     }
 
     override fun applyTo(electricalLoad: ElectricalLoad, rsFactor: Double) {
@@ -65,7 +85,7 @@ class ElectricCableDescriptor(name: String, render: CableRenderDescriptor): Gene
     }
 
     override fun getNodeMask(): Int {
-        return NodeBase.maskElectricalPower
+        return NodeBase.MASK_ELECTRIC
     }
 
     override fun addInformation(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>, par4: Boolean) {
@@ -155,7 +175,18 @@ class ElectricCableRender(tileEntity: SixNodeEntity, side: Direction, descriptor
 
     override fun draw() {
         if (descriptor.insulationVoltage < 0.1) {
-            GL11.glColor3f(0.722f, 0.451f, 0.20f)
+            when (descriptor.material.toLowerCase()) {
+                "copper" -> {
+                    GL11.glColor3f(0.722f, 0.451f, 0.20f)
+                }
+                "aluminum" -> {
+                    GL11.glColor3f(0.815f, 0.835f, 0.858f)
+                }
+                else -> {
+                    // Same as copper
+                    GL11.glColor3f(0.722f, 0.451f, 0.20f)
+                }
+            }
         } else {
             Utils.setGlColorFromDye(0, 1.0f)
         }
@@ -176,11 +207,9 @@ class ElectricCableRender(tileEntity: SixNodeEntity, side: Direction, descriptor
     }
 }
 
-class PlayerHarmer(val electricalLoad: ElectricalLoad, val insulationVoltage: Double, val location: Coordonate): IProcess {
+class PlayerHarmer(val electricalLoad: ElectricalLoad, private val insulationVoltage: Double, val location: Coordonate): IProcess {
 
-    private fun harmFunction(distance: Double): Double {
-        return 1.0 - ( distance / 3.0)
-    }
+    private fun harmFunction(distance: Double) = 1.0 - ( distance / 3.0)
 
     override fun process(time: Double) {
         val harmLevel = Math.max(0.0, (electricalLoad.u - 50 - insulationVoltage) / 500.0)
@@ -188,8 +217,9 @@ class PlayerHarmer(val electricalLoad: ElectricalLoad, val insulationVoltage: Do
         for(obj in objects) {
             val ent = obj as Entity
             val distance = location.distanceTo(ent)
-            if (distance < 3) {
-                ent.attackEntityFrom(DamageSource("Cable"), (harmFunction(distance) * harmLevel).toFloat())
+            val pain = (harmFunction(distance) * harmLevel).toFloat()
+            if (distance < 3 && pain > 0.05) {
+                ent.attackEntityFrom(DamageSource("Cable"), pain)
             }
         }
     }

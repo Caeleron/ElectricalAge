@@ -35,7 +35,7 @@ public class ElectricalDigitalDisplayRender extends SixNodeElementRender {
 
     @Override
     public CableRenderDescriptor getCableRender(LRDU lrdu) {
-        return Eln.instance.stdCableRenderSignal;
+        return Eln.smallInsulationLowCurrentRender;
     }
 
     @Override

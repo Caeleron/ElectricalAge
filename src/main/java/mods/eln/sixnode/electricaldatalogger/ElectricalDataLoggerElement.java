@@ -128,7 +128,7 @@ public class ElectricalDataLoggerElement extends SixNodeElement implements IConf
 
     @Override
     public int getConnectionMask(LRDU lrdu) {
-        if (front.inverse() == lrdu) return NodeBase.maskElectricalInputGate;
+        if (front.inverse() == lrdu) return NodeBase.MASK_ELECTRIC;
         return 0;
     }
 

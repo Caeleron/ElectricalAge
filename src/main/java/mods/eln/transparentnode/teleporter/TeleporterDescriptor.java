@@ -6,6 +6,7 @@ import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,7 @@ public class TeleporterDescriptor extends TransparentNodeDescriptor {
 
     public TeleporterDescriptor(
         String name, Obj3D obj,
-        ElectricalCableDescriptor cable,
+        GenericCableDescriptor cable,
         Coordonate areaCoordonate, Coordonate lightCoordonate,
         int areaH,
         Coordonate[] powerCoordonate,
@@ -101,7 +102,7 @@ public class TeleporterDescriptor extends TransparentNodeDescriptor {
         return temp;
     }
 
-    public ElectricalCableDescriptor cable;
+    public GenericCableDescriptor cable;
 
     public void draw() {
         if (main != null) main.draw();

@@ -1,7 +1,6 @@
 package mods.eln.sixnode.lampsocket;
 
 import mods.eln.Eln;
-import mods.eln.generic.GenericItemBlockUsingDamageDescriptor;
 import mods.eln.generic.GenericItemUsingDamageDescriptor;
 import mods.eln.i18n.I18N;
 import mods.eln.item.*;
@@ -20,6 +19,7 @@ import mods.eln.sim.ThermalLoad;
 import mods.eln.sim.mna.component.Resistor;
 import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
@@ -28,7 +28,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.world.WorldSettings;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -52,7 +51,7 @@ public class LampSocketElement extends SixNodeElement implements IConfigurable {
     private AutoAcceptInventoryProxy acceptingInventory =
         (new AutoAcceptInventoryProxy(new SixNodeElementInventory(2, 64, this)))
             .acceptIfEmpty(0, LampDescriptor.class)
-            .acceptIfEmpty(1, ElectricalCableDescriptor.class);
+            .acceptIfEmpty(1, GenericCableDescriptor.class);
 
     LampDescriptor lampDescriptor = null;
     public String channel = lastSocketName;
@@ -201,10 +200,10 @@ public class LampSocketElement extends SixNodeElement implements IConfigurable {
     public int getConnectionMask(LRDU lrdu) {
         if (acceptingInventory.getInventory().getStackInSlot(LampSocketContainer.cableSlotId) == null) return 0;
         if (poweredByLampSupply) return 0;
-        if (grounded) return NodeBase.maskElectricalPower;
+        if (grounded) return NodeBase.MASK_ELECTRIC;
 
-        if (front == lrdu) return NodeBase.maskElectricalPower;
-        if (front == lrdu.inverse()) return NodeBase.maskElectricalPower;
+        if (front == lrdu) return NodeBase.MASK_ELECTRIC;
+        if (front == lrdu.inverse()) return NodeBase.MASK_ELECTRIC;
 
         return 0;
     }
@@ -269,7 +268,7 @@ public class LampSocketElement extends SixNodeElement implements IConfigurable {
         ItemStack lamp = acceptingInventory.getInventory().getStackInSlot(LampSocketContainer.lampSlotId);
         ItemStack cable = acceptingInventory.getInventory().getStackInSlot(LampSocketContainer.cableSlotId);
 
-        ElectricalCableDescriptor cableDescriptor = (ElectricalCableDescriptor) Eln.sixNodeItem.getDescriptor(cable);
+        GenericCableDescriptor cableDescriptor = (GenericCableDescriptor) Eln.sixNodeItem.getDescriptor(cable);
 
         if (cableDescriptor == null) {
             positiveLoad.highImpedance();

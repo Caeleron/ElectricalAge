@@ -11,6 +11,7 @@ import mods.eln.node.NodeBlock;
 import mods.eln.node.NodeBlockEntity;
 import mods.eln.node.NodeManager;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import mods.eln.sound.SoundCommand;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,7 +53,7 @@ public class ConfigCopyToolDescriptor extends GenericItemUsingDamageDescriptor {
             int type = compound.getInteger(name + "Type");
             ItemStack stackInSlot = inv.getStackInSlot(slot);
             if (stackInSlot != null) {
-                GenericItemBlockUsingDamageDescriptor thisCableDesc = GenericItemBlockUsingDamageDescriptor.getDescriptor(stackInSlot, ElectricalCableDescriptor.class);
+                GenericItemBlockUsingDamageDescriptor thisCableDesc = GenericItemBlockUsingDamageDescriptor.getDescriptor(stackInSlot, GenericCableDescriptor.class);
                 if(thisCableDesc != null) {
                     (new ItemMovingHelper() {
                         @Override

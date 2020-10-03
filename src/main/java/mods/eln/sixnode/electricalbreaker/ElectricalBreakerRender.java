@@ -7,6 +7,7 @@ import mods.eln.node.six.SixNodeElementInventory;
 import mods.eln.node.six.SixNodeElementRender;
 import mods.eln.node.six.SixNodeEntity;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -69,7 +70,8 @@ public class ElectricalBreakerRender extends SixNodeElementRender {
 
             ItemStack itemStack = Utils.unserialiseItemStack(stream);
             if (itemStack != null) {
-                ElectricalCableDescriptor desc = (ElectricalCableDescriptor) ElectricalCableDescriptor.getDescriptor(itemStack, ElectricalCableDescriptor.class);
+                GenericCableDescriptor desc = (GenericCableDescriptor) GenericCableDescriptor.getDescriptor(itemStack, GenericCableDescriptor.class);
+                //ElectricalCableDescriptor desc = (ElectricalCableDescriptor) ElectricalCableDescriptor.getDescriptor(itemStack, ElectricalCableDescriptor.class);
                 if (desc == null)
                     cableRender = null;
                 else

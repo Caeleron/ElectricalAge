@@ -10,6 +10,7 @@ import mods.eln.sim.ThermalLoad;
 import mods.eln.sim.ThermalLoadInitializer;
 import mods.eln.sim.mna.component.Resistor;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import mods.eln.sound.SoundCommand;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,7 +28,7 @@ public class ElectricalMachineDescriptor extends TransparentNodeDescriptor {
     final double nominalU;
     final double nominalP;
     private final ThermalLoadInitializer thermal;
-    final ElectricalCableDescriptor cable;
+    final GenericCableDescriptor cable;
     final int outStackCount;
 
     private final double resistorR;
@@ -41,7 +42,7 @@ public class ElectricalMachineDescriptor extends TransparentNodeDescriptor {
     private Object defaultHandle = null;
 
     ElectricalMachineDescriptor(String name, double nominalU, double nominalP, double maximalU,
-                                ThermalLoadInitializer thermal, ElectricalCableDescriptor cable,
+                                ThermalLoadInitializer thermal, GenericCableDescriptor cable,
                                 RecipesList recipe) {
         super(name, ElectricalMachineElement.class, ElectricalMachineRender.class);
         outStackCount = 4;

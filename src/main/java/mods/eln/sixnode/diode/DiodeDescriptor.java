@@ -10,6 +10,7 @@ import mods.eln.sim.ThermalLoad;
 import mods.eln.sim.ThermalLoadInitializer;
 import mods.eln.sim.mna.component.ResistorSwitch;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,7 @@ public class DiodeDescriptor extends SixNodeDescriptor {
     private Obj3DPart diodeCore;
 
     double stdI, stdU;
-    ElectricalCableDescriptor cable;
+    GenericCableDescriptor cable;
     String descriptor;
     IFunction IfU;
 
@@ -39,7 +40,7 @@ public class DiodeDescriptor extends SixNodeDescriptor {
                            double Imax,
                            double stdU, double stdI,
                            ThermalLoadInitializer thermal,
-                           ElectricalCableDescriptor cable, Obj3D obj) {
+                           GenericCableDescriptor cable, Obj3D obj) {
         super(name, DiodeElement.class, DiodeRender.class);
 
         this.IfU = IfU;
@@ -56,12 +57,7 @@ public class DiodeDescriptor extends SixNodeDescriptor {
         base = obj.getPart("Base");
         diodeCables = obj.getPart("DiodeCables");
         diodeCore = obj.getPart("DiodeCore");
-
-        if (cable.signalWire) {
-            voltageLevelColor = VoltageLevelColor.SignalVoltage;
-        } else {
-            voltageLevelColor = VoltageLevelColor.Neutral;
-        }
+        voltageLevelColor = VoltageLevelColor.Neutral;
     }
 
     @Override

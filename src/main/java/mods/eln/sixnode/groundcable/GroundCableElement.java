@@ -83,7 +83,7 @@ public class GroundCableElement extends SixNodeElement {
     @Override
     public int getConnectionMask(LRDU lrdu) {
         //if (inventory.getStackInSlot(GroundCableContainer.cableSlotId) == null) return 0;
-        return NodeBase.maskElectricalPower + (color << NodeBase.maskColorShift) + (colorCare << NodeBase.maskColorCareShift);
+        return NodeBase.MASK_ELECTRIC + (color << NodeBase.maskColorShift) + (colorCare << NodeBase.maskColorCareShift);
     }
 
     @Override

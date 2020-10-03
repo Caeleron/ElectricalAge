@@ -67,9 +67,11 @@ public class TutorialSignOverlay {
             oldRender.lightInterpol.setTarget(1f);
             GL11.glPushMatrix();
             GL11.glScalef(0.5f, 0.5f, 0.5f);
-            int y = 0;
+            //int y = 0;
+            int y = event.resolution.getScaledHeight();
             for (String str : best.texts) {
-                Minecraft.getMinecraft().fontRenderer.drawString(str, 10/* event.resolution.getScaledWidth() / 2 - 50*/, 10 + y, 0xFFFFFF);
+                Minecraft.getMinecraft().fontRenderer.drawString(str, 5 + event.resolution.getScaledWidth(), 3 + y, 0xFFFFFF);
+                //Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(str, 10/* event.resolution.getScaledWidth() / 2 - 50*/, 10 + y, 0xFFFFFF);
                 y += 10;
             }
             GL11.glPopMatrix();

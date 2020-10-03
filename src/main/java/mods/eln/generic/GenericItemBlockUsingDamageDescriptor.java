@@ -50,6 +50,10 @@ public class GenericItemBlockUsingDamageDescriptor {
         } else {
             this.iconName = iconName;
         }
+        if (getClass().getClassLoader().getResource("assets/eln/textures/blocks/" + iconName + ".png") == null) {
+            System.out.println("There's an image missing!: assets/eln/textures/blocks/" + iconName + ".png");
+        }
+
     }
 
     public NBTTagCompound getDefaultNBT() {

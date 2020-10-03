@@ -18,6 +18,7 @@ import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.sim.process.destruct.VoltageStateWatchDog;
 import mods.eln.sim.process.destruct.WorldExplosion;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import mods.eln.sound.SoundCommand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -43,7 +44,7 @@ public class ElectricalRelayElement extends SixNodeElement implements IConfigura
 
     boolean switchState = false, defaultOutput = false;
 
-    public ElectricalCableDescriptor cableDescriptor = null;
+    public GenericCableDescriptor cableDescriptor = null;
 
     public static final byte toogleOutputDefaultId = 3;
 
@@ -110,7 +111,7 @@ public class ElectricalRelayElement extends SixNodeElement implements IConfigura
     public int getConnectionMask(LRDU lrdu) {
         if (front.left() == lrdu) return descriptor.cable.getNodeMask();
         if (front.right() == lrdu) return descriptor.cable.getNodeMask();
-        if (front == lrdu) return NodeBase.maskElectricalInputGate;
+        if (front == lrdu) return NodeBase.MASK_ELECTRIC;
         return 0;
     }
 

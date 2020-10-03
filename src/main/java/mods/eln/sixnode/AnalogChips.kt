@@ -2,13 +2,27 @@ package mods.eln.sixnode
 
 import mods.eln.Eln
 import mods.eln.cable.CableRenderDescriptor
-import mods.eln.gui.*
+import mods.eln.gui.GuiHelper
+import mods.eln.gui.GuiScreenEln
+import mods.eln.gui.GuiTextFieldEln
+import mods.eln.gui.GuiVerticalCustomValuesBar
+import mods.eln.gui.GuiVerticalTrackBar
+import mods.eln.gui.IGuiObject
 import mods.eln.i18n.I18N
 import mods.eln.item.IConfigurable
-import mods.eln.misc.*
+import mods.eln.misc.Direction
+import mods.eln.misc.INBTTReady
+import mods.eln.misc.LRDU
+import mods.eln.misc.Obj3D
+import mods.eln.misc.Utils
+import mods.eln.misc.VoltageLevelColor
 import mods.eln.node.Node
 import mods.eln.node.Synchronizable
-import mods.eln.node.six.*
+import mods.eln.node.six.SixNode
+import mods.eln.node.six.SixNodeDescriptor
+import mods.eln.node.six.SixNodeElement
+import mods.eln.node.six.SixNodeElementRender
+import mods.eln.node.six.SixNodeEntity
 import mods.eln.sim.ElectricalLoad
 import mods.eln.sim.IProcess
 import mods.eln.sim.ThermalLoad
@@ -18,7 +32,6 @@ import mods.eln.sim.nbt.NbtElectricalGateOutputProcess
 import mods.eln.sixnode.SummingUnitElement.Companion.GainChangedEvents
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.nbt.NBTTagDouble
@@ -127,10 +140,10 @@ open class AnalogChipElement(node: SixNode, side: Direction, sixNodeDescriptor: 
     }
 
     override fun getConnectionMask(lrdu: LRDU?): Int = when (lrdu) {
-        front -> Node.maskElectricalOutputGate
-        front.inverse() -> if (inputPins[0] != null) Node.maskElectricalInputGate else 0
-        front.left() -> if (inputPins[1] != null) Node.maskElectricalInputGate else 0
-        front.right() -> if (inputPins[2] != null) Node.maskElectricalInputGate else 0
+        front -> Node.MASK_ELECTRIC
+        front.inverse() -> if (inputPins[0] != null) Node.MASK_ELECTRIC else 0
+        front.left() -> if (inputPins[1] != null) Node.MASK_ELECTRIC else 0
+        front.right() -> if (inputPins[2] != null) Node.MASK_ELECTRIC else 0
         else -> 0
     }
 
@@ -282,7 +295,7 @@ class PIDRegulatorElement(node: SixNode, side: Direction, sixNodeDescriptor: Six
                 stream?.writeFloat(Ki.toFloat())
                 stream?.writeFloat(Kd.toFloat())
             }
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
         }
     }
@@ -304,7 +317,7 @@ class PIDRegulatorElement(node: SixNode, side: Direction, sixNodeDescriptor: Six
     override fun readConfigTool(compound: NBTTagCompound, invoker: EntityPlayer) {
         with(function as PIDRegulator) {
             if(compound.hasKey("kp")) {
-                Kp = compound.getDouble ("kp")
+                Kp = compound.getDouble("kp")
             }
             if(compound.hasKey("ki")) {
                 Ki = compound.getDouble("ki")
@@ -471,7 +484,7 @@ class AmplifierElement(node: SixNode, side: Direction, sixNodeDescriptor: SixNod
             with(function as Amplifier) {
                 stream?.writeFloat(gain.toFloat())
             }
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
         }
     }
@@ -610,7 +623,7 @@ class SummingUnitElement(node: SixNode, side: Direction, sixNodeDescriptor: SixN
                     stream?.writeFloat(it.toFloat())
                 }
             }
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
         }
     }
@@ -778,7 +791,7 @@ class FilterElement(node: SixNode, side: Direction, sixNodeDescriptor: SixNodeDe
 
         try {
             stream?.writeFloat(cutOffFrequency.toFloat())
-        } catch(e: IOException) {
+        } catch (e: IOException) {
             e.printStackTrace()
         }
     }

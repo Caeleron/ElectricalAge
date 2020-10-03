@@ -96,8 +96,8 @@ class ConfigHelper {
             Eln.economicLampLife = config.get("lamp", "economicLifeInHours", 64.0).getDouble(64.0)
             Eln.carbonLampLife = config.get("lamp", "carbonLifeInHours", 6.0).getDouble(6.0)
             Eln.ledLampLife = config.get("lamp", "ledLifeInHours", 512.0).getDouble(512.0)
-            Eln.ledLampInfiniteLife = config.get("lamp", "infiniteLedLife", false).getBoolean()
-            Eln.allowSwingingLamps = config.get("lamp", "swingingLamps", true).getBoolean()
+            Eln.ledLampInfiniteLife = config.get("lamp", "infiniteLedLife", false).boolean
+            Eln.allowSwingingLamps = config.get("lamp", "swingingLamps", true).boolean
 
             Eln.fuelGeneratorTankCapacity = config.get("fuelGenerator",
                 "tankCapacityInSecondsAtNominalPower", 20 * 60).getDouble(20 * 60.toDouble())
@@ -111,18 +111,19 @@ class ConfigHelper {
             Eln.electricalInterSystemOverSampling = config.get("simulation", "electricalInterSystemOverSampling", 50).getInt(50)
             Eln.thermalFrequency = config.get("simulation", "thermalFrequency", 400).getDouble(400.0)
 
-            Eln.wirelessTxRange = config.get("wireless", "txRange", 32).getInt()
+            Eln.wirelessTxRange = config.get("wireless", "txRange", 32).int
 
             Eln.wailaEasyMode = config.get("balancing", "wailaEasyMode", false, "Display more detailed WAILA info on some machines").getBoolean(false)
             Eln.cablePowerFactor = config.get("balancing", "cablePowerFactor", 1.0, "Multiplication factor for cable power capacity. We recommend 2.0 to 4.0 for larger modpacks, but 1.0 for Eln standalone, or if you like a challenge.", 0.5, 4.0).getDouble(1.0)
 
             Eln.fuelHeatValueFactor = config.get("balancing", "fuelHeatValueFactor", 0.0000675,
-                "Factor to apply when converting real word heat values to Minecraft heat values (1mB = 1l).").getDouble()
+                "Factor to apply when converting real word heat values to Minecraft heat values (1mB = 1l).").double
 
             Eln.noSymbols = config.get("general", "noSymbols", false).getBoolean()
-            Eln.noVoltageBackground = config.get("general", "noVoltageBackground", false).getBoolean()
+            Eln.noVoltageBackground = config.get("general", "noVoltageBackground", false).boolean
 
-            Eln.maxSoundDistance = config.get("debug", "maxSoundDistance", 16.0).getDouble()
+            Eln.maxSoundDistance = config.get("debug", "maxSoundDistance", 16.0).double
+            Eln.cableConnectionNodes = config.get("general", "cableNodes", false).boolean
             config.save()
         }
     }

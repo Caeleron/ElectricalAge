@@ -70,7 +70,7 @@ open class TachometerElement(node: TransparentNode, desc_: TransparentNodeDescri
     override fun getThermalLoad(side: Direction?, lrdu: LRDU?): ThermalLoad? = null
 
     override fun getConnectionMask(side: Direction?, lrdu: LRDU?): Int = if (side == front || side == front.inverse) {
-        NodeBase.maskElectricalOutputGate
+        NodeBase.MASK_ELECTRIC
     } else {
         0
     }
@@ -141,7 +141,7 @@ class TachometerRender(entity: TransparentNodeEntity, desc: TransparentNodeDescr
     internal var maxRads = TachometerElement.DefaultMaxRads
 
     override fun draw() {
-        renderPreProcess = drawCable(Direction.YN, Eln.stdCableRenderSignal, connections, renderPreProcess)
+        renderPreProcess = drawCable(Direction.YN, Eln.smallInsulationLowCurrentRender, connections, renderPreProcess)
         super.draw()
     }
 

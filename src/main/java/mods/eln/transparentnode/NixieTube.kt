@@ -132,7 +132,7 @@ class NixieTubeElement(node: TransparentNode, _descriptor: TransparentNodeDescri
 
     override fun getConnectionMask(side: Direction?, lrdu: LRDU?): Int {
         if(lrdu != LRDU.Down) return 0
-        return NodeBase.maskElectricalInputGate
+        return NodeBase.MASK_ELECTRIC
     }
 
     override fun networkSerialize(stream: DataOutputStream) {
@@ -222,6 +222,6 @@ class NixieTubeRender(entity: TransparentNodeEntity, _descriptor: TransparentNod
     }
 
     override fun getCableRender(side: Direction?, lrdu: LRDU?): CableRenderDescriptor? {
-        return if (connection.get(lrdu)) { Eln.stdCableRenderSignal } else { null }
+        return if (connection.get(lrdu)) { Eln.smallInsulationLowCurrentRender } else { null }
     }
 }

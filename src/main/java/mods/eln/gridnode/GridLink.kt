@@ -11,6 +11,7 @@ import mods.eln.sim.ElectricalConnection
 import mods.eln.sim.ElectricalLoad
 import mods.eln.sim.mna.misc.MnaConst
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 
@@ -190,7 +191,7 @@ class GridLink : INBTTReady {
             }
         }
 
-        fun addLink(a: GridElement, b: GridElement, `as`: Direction, bs: Direction, cable: ElectricalCableDescriptor, cableLength: Int) {
+        fun addLink(a: GridElement, b: GridElement, `as`: Direction, bs: Direction, cable: GenericCableDescriptor, cableLength: Int) {
             // Check if these two nodes are already linked.
             (a.gridLinkList + b.gridLinkList)
                 .filter { it.links(a, b) }

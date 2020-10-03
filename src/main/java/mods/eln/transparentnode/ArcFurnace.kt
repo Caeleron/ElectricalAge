@@ -110,7 +110,7 @@ class ArcFurnaceElement(node: TransparentNode, descriptor: TransparentNodeDescri
 
     override fun getConnectionMask(side: Direction?, lrdu: LRDU): Int {
         if (lrdu != LRDU.Down) return 0
-        return NodeBase.maskElectricalPower
+        return NodeBase.MASK_ELECTRIC
     }
 
     override fun initialize() {

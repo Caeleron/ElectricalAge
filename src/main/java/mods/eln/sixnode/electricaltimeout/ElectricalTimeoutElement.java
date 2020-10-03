@@ -83,8 +83,8 @@ public class ElectricalTimeoutElement extends SixNodeElement {
 
     @Override
     public int getConnectionMask(LRDU lrdu) {
-        if (front == lrdu) return NodeBase.maskElectricalInputGate;
-        if (front.inverse() == lrdu) return NodeBase.maskElectricalOutputGate;
+        if (front == lrdu) return NodeBase.MASK_ELECTRIC;
+        if (front.inverse() == lrdu) return NodeBase.MASK_ELECTRIC;
         return 0;
     }
 

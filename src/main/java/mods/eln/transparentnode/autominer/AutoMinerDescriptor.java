@@ -5,6 +5,7 @@ import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.ElectricalLoad;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -40,7 +41,7 @@ public class AutoMinerDescriptor extends TransparentNodeDescriptor {
     private final int deltaX;
     private final int deltaY;
     private final int deltaZ;
-    private final ElectricalCableDescriptor cable;
+    private final GenericCableDescriptor cable;
 
     final double nominalVoltage;
     final double pipeOperationEnergy;
@@ -50,7 +51,7 @@ public class AutoMinerDescriptor extends TransparentNodeDescriptor {
 
     public AutoMinerDescriptor(String name, Obj3D obj, Coordonate[] powerCoord, Coordonate lightCoord,
                                Coordonate miningCoord, int deltaX, int deltaY, int deltaZ,
-                               ElectricalCableDescriptor cable, double pipeOperationTime, double pipeOperationEnergy) {
+                               GenericCableDescriptor cable, double pipeOperationTime, double pipeOperationEnergy) {
         super(name, AutoMinerElement.class, AutoMinerRender.class);
         this.nominalVoltage = cable.electricalNominalVoltage;
         this.pipeOperationEnergy = pipeOperationEnergy;

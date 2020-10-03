@@ -2,6 +2,7 @@ package mods.eln.misc;
 
 import mods.eln.Eln;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
@@ -29,7 +30,7 @@ public enum VoltageLevelColor {
         }
     }
 
-    private String voltageLevel;
+    private final String voltageLevel;
 
     public static VoltageLevelColor fromVoltage(double voltage) {
         if (voltage < 0) {
@@ -47,13 +48,9 @@ public enum VoltageLevelColor {
         }
     }
 
-    public static VoltageLevelColor fromCable(ElectricalCableDescriptor descriptor) {
+    public static VoltageLevelColor fromCable(GenericCableDescriptor descriptor) {
         if (descriptor != null) {
-            if (descriptor.signalWire) {
-                return SignalVoltage;
-            } else {
-                return fromVoltage(descriptor.electricalNominalVoltage);
-            }
+            return fromVoltage(descriptor.electricalNominalVoltage);
         } else {
             return None;
         }
@@ -65,6 +62,7 @@ public enum VoltageLevelColor {
             case Neutral:
                 break;
 
+                // TODO: Remove this tier.
             case SignalVoltage:
                 GL11.glColor3f(.80f, .87f, .82f);
                 break;
@@ -74,15 +72,16 @@ public enum VoltageLevelColor {
                 break;
 
             case MediumVoltage:
-                GL11.glColor3f(.55f, .74f, .85f);
-                break;
-
-            case HighVoltage:
                 GL11.glColor3f(.96f, .80f, .56f);
                 break;
 
-            case VeryHighVoltage:
+            case HighVoltage:
                 GL11.glColor3f(.86f, .58f, .55f);
+                break;
+
+                // TODO: Remove this tier.
+            case VeryHighVoltage:
+                GL11.glColor3f(.55f, .74f, .85f);
                 break;
 
         }

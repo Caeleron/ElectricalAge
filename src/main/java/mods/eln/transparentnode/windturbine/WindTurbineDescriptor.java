@@ -5,6 +5,7 @@ import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,7 +22,7 @@ public class WindTurbineDescriptor extends TransparentNodeDescriptor {
     private final Obj3DPart rot;
     private final Obj3DPart halo;
 
-    public final ElectricalCableDescriptor cable;
+    public final GenericCableDescriptor cable;
 
     final double nominalPower;
     final double maxVoltage;
@@ -37,7 +38,7 @@ public class WindTurbineDescriptor extends TransparentNodeDescriptor {
     final FunctionTable PfW;
     double speed;
 
-    public WindTurbineDescriptor(String name, Obj3D obj, ElectricalCableDescriptor cable, FunctionTable PfW,
+    public WindTurbineDescriptor(String name, Obj3D obj, GenericCableDescriptor cable, FunctionTable PfW,
                                  double nominalPower, double nominalWind, double maxVoltage, double maxWind, int offY,
                                  int rayX, int rayY, int rayZ, int blockMalusMinCount, double blockMalus,
                                  String soundName, float nominalVolume) {

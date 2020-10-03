@@ -44,7 +44,6 @@ public class ElectricalCableDescriptor extends GenericCableDescriptor {
         this.signalWire = signalWire;
         this.thermalWarmLimit = 100;
         this.thermalCoolLimit = -100;
-
     }
 
     public void setPhysicalConstantLikeNormalCable(
@@ -140,10 +139,6 @@ public class ElectricalCableDescriptor extends GenericCableDescriptor {
         if (signalWire)
             return NodeBase.maskElectricalGate;
         else
-            return NodeBase.maskElectricalPower;
-    }
-
-    public void bindCableTexture() {
-        this.render.bindCableTexture();
+            return NodeBase.MASK_ELECTRIC;
     }
 }

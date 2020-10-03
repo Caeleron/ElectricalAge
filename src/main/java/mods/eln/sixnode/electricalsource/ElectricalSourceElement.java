@@ -81,7 +81,7 @@ public class ElectricalSourceElement extends SixNodeElement implements IConfigur
             return NodeBase.maskElectricalGate + (color << NodeBase.maskColorShift) +
                 (colorCare << NodeBase.maskColorCareShift);
         } else {
-            return NodeBase.maskElectricalPower + (color << NodeBase.maskColorShift) +
+            return NodeBase.MASK_ELECTRIC + (color << NodeBase.maskColorShift) +
                 (colorCare << NodeBase.maskColorCareShift);
         }
     }

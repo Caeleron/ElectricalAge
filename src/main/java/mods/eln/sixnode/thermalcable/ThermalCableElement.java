@@ -81,7 +81,7 @@ public class ThermalCableElement extends SixNodeElement {
 
     @Override
     public int getConnectionMask(LRDU lrdu) {
-        return NodeBase.maskThermal + (color << NodeBase.maskColorShift) + (colorCare << NodeBase.maskColorCareShift);
+        return NodeBase.MASK_THERMAL + (color << NodeBase.maskColorShift) + (colorCare << NodeBase.maskColorCareShift);
     }
 
     @Override

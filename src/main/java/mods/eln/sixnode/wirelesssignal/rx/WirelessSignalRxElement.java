@@ -79,7 +79,7 @@ public class WirelessSignalRxElement extends SixNodeElement implements IConfigur
 
     @Override
     public int getConnectionMask(LRDU lrdu) {
-        if (front == lrdu) return NodeBase.maskElectricalOutputGate;
+        if (front == lrdu) return NodeBase.MASK_ELECTRIC;
         return 0;
     }
 

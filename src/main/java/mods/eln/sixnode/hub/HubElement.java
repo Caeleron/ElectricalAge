@@ -17,6 +17,7 @@ import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.sim.process.destruct.VoltageStateWatchDog;
 import mods.eln.sim.process.destruct.WorldExplosion;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
@@ -148,7 +149,7 @@ public class HubElement extends SixNodeElement {
         electricalComponentList.clear();
 
         for (LRDU lrdu : LRDU.values()) {
-            ElectricalCableDescriptor d = getCableDescriptorFromLrdu(lrdu);
+            GenericCableDescriptor d = getCableDescriptorFromLrdu(lrdu);
             if (d == null) continue;
 
             VoltageStateWatchDog watchdog = new VoltageStateWatchDog();
@@ -179,11 +180,11 @@ public class HubElement extends SixNodeElement {
         }
     }
 
-    ElectricalCableDescriptor getCableDescriptorFromLrdu(LRDU lrdu) {
-        ElectricalCableDescriptor cableDescriptor;
+    GenericCableDescriptor getCableDescriptorFromLrdu(LRDU lrdu) {
+        GenericCableDescriptor cableDescriptor;
         ItemStack cable;
         cable = inventory.getStackInSlot(HubContainer.cableSlotId + lrdu.toInt());
-        cableDescriptor = (ElectricalCableDescriptor) Eln.sixNodeItem.getDescriptor(cable);
+        cableDescriptor = (GenericCableDescriptor) Eln.sixNodeItem.getDescriptor(cable);
         return cableDescriptor;
     }
 

@@ -8,6 +8,7 @@ import mods.eln.misc.RecipesList;
 import mods.eln.misc.UtilsClient;
 import mods.eln.sim.ThermalLoadInitializer;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.item.EntityItem;
 import org.lwjgl.opengl.GL11;
 
@@ -16,7 +17,7 @@ public class MagnetizerDescriptor extends ElectricalMachineDescriptor {
     private Obj3DPart rot;
 
     public MagnetizerDescriptor(String name, Obj3D obj, double nominalU, double nominalP, double maximalU,
-                                ThermalLoadInitializer thermal, ElectricalCableDescriptor cable, RecipesList recipe) {
+                                ThermalLoadInitializer thermal, GenericCableDescriptor cable, RecipesList recipe) {
         super(name, nominalU, nominalP, maximalU, thermal, cable, recipe);
         if (obj != null) {
             rot = obj.getPart("rot");

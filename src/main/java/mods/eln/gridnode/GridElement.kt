@@ -8,6 +8,7 @@ import mods.eln.node.transparent.TransparentNodeElement
 import mods.eln.sim.ElectricalLoad
 import mods.eln.sim.ThermalLoad
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
 import net.minecraft.item.ItemStack
@@ -37,14 +38,14 @@ abstract class GridElement(transparentNode: TransparentNode, descriptor: Transpa
         // Check if user is holding an appropriate tool.
         val stack = entityPlayer.currentEquippedItem
         val itemDesc = GenericItemBlockUsingDamageDescriptor.getDescriptor(stack)
-        if (itemDesc is ElectricalCableDescriptor) {
+        if (itemDesc is GenericCableDescriptor) {
             return onTryGridConnect(entityPlayer, stack, itemDesc, side)
         }
         // TODO: Scissors. Break the connection without breaking the pole.
         return false
     }
 
-    private fun onTryGridConnect(entityPlayer: EntityPlayer, stack: ItemStack, cable: ElectricalCableDescriptor, side: Direction): Boolean {
+    private fun onTryGridConnect(entityPlayer: EntityPlayer, stack: ItemStack, cable: GenericCableDescriptor, side: Direction): Boolean {
         // First node, or second node?
         val uuid = entityPlayer.persistentID
         val p = pending[uuid]

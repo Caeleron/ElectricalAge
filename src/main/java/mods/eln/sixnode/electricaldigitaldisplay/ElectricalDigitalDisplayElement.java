@@ -79,9 +79,9 @@ public class ElectricalDigitalDisplayElement extends SixNodeElement implements I
 
     @Override
     public int getConnectionMask(LRDU lrdu) {
-        if(lrdu == front.inverse()) return NodeBase.maskElectricalInputGate;
-        if(lrdu == front) return NodeBase.maskElectricalInputGate | (11 << NodeBase.maskColorShift);
-        return NodeBase.maskElectricalInputGate | (1 << NodeBase.maskColorShift);
+        if(lrdu == front.inverse()) return NodeBase.MASK_ELECTRIC;
+        if(lrdu == front) return NodeBase.MASK_ELECTRIC | (11 << NodeBase.maskColorShift);
+        return NodeBase.MASK_ELECTRIC | (1 << NodeBase.maskColorShift);
     }
 
     @Override

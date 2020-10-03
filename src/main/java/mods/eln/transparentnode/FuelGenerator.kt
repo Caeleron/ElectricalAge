@@ -16,6 +16,7 @@ import mods.eln.sim.ThermalLoad
 import mods.eln.sim.mna.component.PowerSource
 import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sound.LoopedSound
 import net.minecraft.client.audio.ISound
 import net.minecraft.entity.player.EntityPlayer
@@ -27,9 +28,8 @@ import net.minecraftforge.fluids.FluidRegistry
 import org.lwjgl.opengl.GL11
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import javax.xml.crypto.Data
 
-class FuelGeneratorDescriptor(name: String, internal val obj: Obj3D?, internal val cable: ElectricalCableDescriptor,
+class FuelGeneratorDescriptor(name: String, internal val obj: Obj3D?, internal val cable: GenericCableDescriptor,
                               internal val nominalPower: Double, internal val maxVoltage: Double,
                               tankCapacityInSecondsAtNominalPower: Double)
     : TransparentNodeDescriptor(name, FuelGeneratorElement::class.java, FuelGeneratorRender::class.java) {
@@ -135,7 +135,7 @@ class FuelGeneratorElement(transparentNode: TransparentNode, descriptor_: Transp
 
     override fun getConnectionMask(side: Direction, lrdu: LRDU): Int = when (lrdu) {
         LRDU.Down -> when (side) {
-            front, front.inverse -> NodeBase.maskElectricalPower
+            front, front.inverse -> NodeBase.MASK_ELECTRIC
             else -> 0
         }
         else -> 0

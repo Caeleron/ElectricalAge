@@ -9,6 +9,7 @@ import mods.eln.node.six.SixNodeElementInventory;
 import mods.eln.node.six.SixNodeElementRender;
 import mods.eln.node.six.SixNodeEntity;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -54,14 +55,14 @@ public class GroundCableRender extends SixNodeElementRender {
 
             ItemStack cableStack = Utils.unserialiseItemStack(stream);
             if (cableStack != null) {
-                ElectricalCableDescriptor desc = (ElectricalCableDescriptor) ElectricalCableDescriptor.getDescriptor(cableStack, ElectricalCableDescriptor.class);
+                GenericCableDescriptor desc = (GenericCableDescriptor) GenericCableDescriptor.getDescriptor(cableStack, GenericCableDescriptor.class);
 
                 if (desc == null)
-                    cableRender = Eln.instance.lowVoltageCableDescriptor.render;
+                    cableRender = Eln.lowVoltageCableDescriptor.render;
                 else
                     cableRender = desc.render;
             } else {
-                cableRender = Eln.instance.lowVoltageCableDescriptor.render;
+                cableRender = Eln.lowVoltageCableDescriptor.render;
             }
 
         } catch (IOException e) {

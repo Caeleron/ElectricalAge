@@ -55,8 +55,8 @@ public class WindTurbineElement extends TransparentNodeElement {
     @Override
     public int getConnectionMask(Direction side, LRDU lrdu) {
         if (lrdu != LRDU.Down) return 0;
-        if (side == cableFront.left()) return NodeBase.maskElectricalPower;
-        if (side == cableFront.right() && !grounded) return NodeBase.maskElectricalPower;
+        if (side == cableFront.left()) return NodeBase.MASK_ELECTRIC;
+        if (side == cableFront.right() && !grounded) return NodeBase.MASK_ELECTRIC;
         return 0;
     }
 

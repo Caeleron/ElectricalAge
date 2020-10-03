@@ -140,8 +140,8 @@ public class BatteryElement extends TransparentNodeElement {
     @Override
     public int getConnectionMask(Direction side, LRDU lrdu) {
         if (lrdu != LRDU.Down) return 0;
-        if (side == front.left()) return node.maskElectricalPower;
-        if (side == front.right() && !grounded) return node.maskElectricalPower;
+        if (side == front.left()) return node.MASK_ELECTRIC;
+        if (side == front.right() && !grounded) return node.MASK_ELECTRIC;
         return 0;
     }
 

@@ -1,5 +1,6 @@
 package mods.eln.cable;
 
+import mods.eln.Eln;
 import mods.eln.cable.CableRenderType.CableRenderTypeMethodType;
 import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
@@ -570,6 +571,12 @@ public class CableRender {
     }
 
     public static void drawNode(CableRenderDescriptor cable, LRDUMask connection, CableRenderType connectionType) {
+        if (!Eln.cableConnectionNodes) {
+            // This will disable drawing the boxes around the intersections and ends of cables.
+            // It does occasionally introduce visual bugs on intersections and bends if disabled.
+            // Buuuuuuut, the VHV cables already did this, and the removal of the nodes looks cool.
+            return;
+        }
         if ((connection.mask == 0 || ((connection.get(LRDU.Left) || connection.get(LRDU.Right)) && (connection.get(LRDU.Down) || connection.get(LRDU.Up))) || connection.mask == 1 || connection.mask == 2 || connection.mask == 4 || connection.mask == 8)) {
             float widthDiv2 = cable.widthDiv2 + 1.0f / 16.0f;
             float height = cable.height + 1.0f / 16.0f;

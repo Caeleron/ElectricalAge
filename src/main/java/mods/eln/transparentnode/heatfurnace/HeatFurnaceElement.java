@@ -94,8 +94,8 @@ public class HeatFurnaceElement extends TransparentNodeElement {
     @Override
     public int getConnectionMask(Direction side, LRDU lrdu) {
         if ((side == front.left() || side == front.right()) && lrdu == LRDU.Down)
-            return NodeBase.maskElectricalInputGate;
-        if (side == front.getInverse() && lrdu == LRDU.Down) return NodeBase.maskThermal;
+            return NodeBase.MASK_ELECTRIC;
+        if (side == front.getInverse() && lrdu == LRDU.Down) return NodeBase.MASK_THERMAL;
         return 0;
     }
 

@@ -10,7 +10,6 @@ import mods.eln.node.transparent.TransparentNodeDescriptor
 import mods.eln.node.transparent.TransparentNodeEntity
 import mods.eln.sim.ElectricalLoad
 import mods.eln.sim.IProcess
-import mods.eln.sim.ThermalLoad
 import mods.eln.sim.ThermalLoadInitializer
 import mods.eln.sim.mna.component.Resistor
 import mods.eln.sim.mna.component.VoltageSource
@@ -22,6 +21,7 @@ import mods.eln.sim.process.destruct.ThermalLoadWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sim.process.heater.ElectricalLoadHeatThermalLoad
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sound.LoopedSound
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
@@ -29,12 +29,11 @@ import org.lwjgl.opengl.GL11
 import java.awt.Color
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import javax.rmi.CORBA.Util
 
 class MotorDescriptor(
     val name: String,
     obj: Obj3D,
-    cable: ElectricalCableDescriptor,
+    cable: GenericCableDescriptor,
     nominalRads: Float,
     nominalU: Float,
     nominalP: Float,
@@ -95,7 +94,7 @@ class MotorDescriptor(
 class MotorRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescriptor) : ShaftRender(entity, desc_) {
     val entity = entity
 
-    override val cableRender = Eln.stdCableRender3200V
+    override val cableRender = Eln.mediumInsulationMediumCurrentRender
     val desc = desc_ as MotorDescriptor
 
     val ledColors: Array<Color> = arrayOf(
@@ -156,7 +155,7 @@ class MotorRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescripto
     }
 
     override fun getCableRender(side: Direction, lrdu: LRDU): CableRenderDescriptor? {
-        if(lrdu == LRDU.Down && side == front) return Eln.stdCableRender3200V
+        if(lrdu == LRDU.Down && side == front) return Eln.mediumInsulationMediumCurrentRender
         return null
     }
 
@@ -287,7 +286,7 @@ class MotorElement(node: TransparentNode, desc_: TransparentNodeDescriptor) :
     override fun getThermalLoad(side: Direction, lrdu: LRDU) = thermal
 
     override fun getConnectionMask(side: Direction?, lrdu: LRDU?): Int {
-        if(lrdu == LRDU.Down && (side == front || side == front.back())) return NodeBase.maskElectricalPower
+        if(lrdu == LRDU.Down && (side == front || side == front.back())) return NodeBase.MASK_ELECTRIC
         return 0
     }
 

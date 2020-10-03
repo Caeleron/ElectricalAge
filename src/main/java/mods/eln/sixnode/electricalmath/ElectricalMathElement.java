@@ -160,10 +160,10 @@ public class ElectricalMathElement extends SixNodeElement implements IConfigurab
 
     @Override
     public int getConnectionMask(LRDU lrdu) {
-        if (lrdu == front) return Node.maskElectricalOutputGate;
-        if (lrdu == front.left() && sideConnectionEnable[2]) return Node.maskElectricalInputGate;
-        if (lrdu == front.inverse() && sideConnectionEnable[1]) return Node.maskElectricalInputGate;
-        if (lrdu == front.right() && sideConnectionEnable[0]) return Node.maskElectricalInputGate;
+        if (lrdu == front) return Node.MASK_ELECTRIC;
+        if (lrdu == front.left() && sideConnectionEnable[2]) return Node.MASK_ELECTRIC;
+        if (lrdu == front.inverse() && sideConnectionEnable[1]) return Node.MASK_ELECTRIC;
+        if (lrdu == front.right() && sideConnectionEnable[0]) return Node.MASK_ELECTRIC;
         return 0;
     }
 

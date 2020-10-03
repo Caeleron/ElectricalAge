@@ -5,6 +5,7 @@ import mods.eln.misc.VoltageLevelColor;
 import mods.eln.sim.ElectricalLoad;
 import mods.eln.sim.RegulatorThermalLoadToElectricalResistor;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -17,7 +18,7 @@ public class HeatingCorpElement extends GenericItemUsingDamageDescriptorUpgrade 
     public double electricalNominalU;
     double electricalNominalP;
     double electricalMaximalP;
-    public ElectricalCableDescriptor cableDescriptor;
+    public GenericCableDescriptor cableDescriptor;
 
     double electricalR;
 
@@ -26,7 +27,7 @@ public class HeatingCorpElement extends GenericItemUsingDamageDescriptorUpgrade 
     public HeatingCorpElement(String name,
                               double electricalNominalU, double electricalNominalP,
                               double electricalMaximalP,
-                              ElectricalCableDescriptor cableDescriptor) {
+                              GenericCableDescriptor cableDescriptor) {
         super(name);
 
         this.electricalNominalU = electricalNominalU;

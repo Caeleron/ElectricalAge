@@ -10,11 +10,13 @@ import mods.eln.sim.ElectricalLoad;
 import mods.eln.sim.ThermalLoad;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import static mods.eln.i18n.I18N.tr;
 
@@ -88,11 +90,11 @@ public class TutorialSignElement extends SixNodeElement {
                     counter = (counter + 1) & 1;
                 }
             } catch (IOException e) {
-                //	e.printStackTrace();
+
             }
         }
         String text = baliseMap.get(balise);
-        if (text == null) return tr("No text associated to this beacon");
+        if (text == null) return balise; //tr("No text associated to this beacon");
         return text;
     }
 
@@ -196,5 +198,13 @@ public class TutorialSignElement extends SixNodeElement {
     @Override
     public boolean onBlockActivated(EntityPlayer entityPlayer, Direction side, float vx, float vy, float vz) {
         return false;
+    }
+
+    @Nullable
+    @Override
+    public Map<String, String> getWaila() {
+        Map<String, String> info = new HashMap<String, String>();
+        info.put("Info", getText(baliseName));
+        return info;
     }
 }

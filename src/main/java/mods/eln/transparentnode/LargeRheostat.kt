@@ -21,6 +21,7 @@ import mods.eln.sim.process.destruct.ThermalLoadWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sim.process.heater.ResistorHeatThermalLoad
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sixnode.resistor.ResistorContainer
 import mods.eln.transparentnode.thermaldissipatorpassive.ThermalDissipatorPassiveDescriptor
 import net.minecraft.client.gui.GuiScreen
@@ -34,7 +35,7 @@ import java.io.DataOutputStream
 
 // TODO: Make the whole thing brighter when it heats up, not just redder.
 
-class LargeRheostatDescriptor(name: String, val dissipator: ThermalDissipatorPassiveDescriptor, val cable: ElectricalCableDescriptor, val series: SerieEE) :
+class LargeRheostatDescriptor(name: String, val dissipator: ThermalDissipatorPassiveDescriptor, val cable: GenericCableDescriptor, val series: SerieEE) :
     TransparentNodeDescriptor(name, LargeRheostatElement::class.java, LargeRheostatRender::class.java) {
 
     init {
@@ -146,9 +147,9 @@ class LargeRheostatElement(node: TransparentNode, desc_: TransparentNodeDescript
     override fun getConnectionMask(side: Direction, lrdu: LRDU): Int {
         if (lrdu != LRDU.Down) return 0
         return when (side) {
-            front -> NodeBase.maskElectricalInputGate
-            front.back() -> NodeBase.maskThermal
-            else -> NodeBase.maskElectricalPower
+            front -> NodeBase.MASK_ELECTRIC
+            front.back() -> NodeBase.MASK_THERMAL
+            else -> NodeBase.MASK_ELECTRIC
         }
     }
 

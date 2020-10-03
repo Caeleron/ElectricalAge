@@ -42,13 +42,13 @@ import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.sim.process.destruct.VoltageStateWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sound.LoopedSound
 import net.minecraft.client.audio.ISound
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.Container
 import net.minecraft.inventory.IInventory
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.client.IItemRenderer
@@ -208,8 +208,8 @@ class LegacyDcDcElement(transparentNode: TransparentNode, descriptor: Transparen
     override fun getConnectionMask(side: Direction, lrdu: LRDU): Int {
         if (lrdu != LRDU.Down) return 0
         return when (side) {
-            front.left() -> NodeBase.maskElectricalPower
-            front.right() -> NodeBase.maskElectricalPower
+            front.left() -> NodeBase.MASK_ELECTRIC
+            front.right() -> NodeBase.MASK_ELECTRIC
             else -> 0
         }
     }
@@ -469,16 +469,16 @@ class LegacyDcDcRender(tileEntity: TransparentNodeEntity, val descriptor: Transp
             }
             val priStack = Utils.unserialiseItemStack(stream)
             if (priStack != null) {
-                val priDesc: GenericItemBlockUsingDamageDescriptor? = ElectricalCableDescriptor.getDescriptor(priStack, ElectricalCableDescriptor::class.java)
+                val priDesc: GenericItemBlockUsingDamageDescriptor? = GenericCableDescriptor.getDescriptor(priStack, GenericCableDescriptor::class.java)
                 if (priDesc != null)
-                    priRender = (priDesc as ElectricalCableDescriptor).render
+                    priRender = (priDesc as GenericCableDescriptor).render
             }
 
             val secStack = Utils.unserialiseItemStack(stream)
             if (secStack != null) {
-                val secDesc: GenericItemBlockUsingDamageDescriptor? = ElectricalCableDescriptor.getDescriptor(secStack, ElectricalCableDescriptor::class.java)
+                val secDesc: GenericItemBlockUsingDamageDescriptor? = GenericCableDescriptor.getDescriptor(secStack, GenericCableDescriptor::class.java)
                 if (secDesc != null)
-                    secRender = (secDesc as ElectricalCableDescriptor).render
+                    secRender = (secDesc as GenericCableDescriptor).render
             }
 
             eConn.deserialize(stream)

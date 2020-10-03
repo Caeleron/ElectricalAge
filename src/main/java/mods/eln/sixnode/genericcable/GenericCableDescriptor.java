@@ -31,7 +31,7 @@ public abstract class GenericCableDescriptor extends SixNodeDescriptor {
     }
 
     public int getNodeMask() {
-        return NodeBase.maskElectricalPower;
+        return NodeBase.MASK_ELECTRIC;
     }
 
     public abstract void applyTo(ElectricalLoad electricalLoad, double rsFactor);
@@ -51,5 +51,9 @@ public abstract class GenericCableDescriptor extends SixNodeDescriptor {
             return ((GenericCableDescriptor) desc).render;
         else
             return null;
+    }
+
+    public void bindCableTexture() {
+        this.render.bindCableTexture();
     }
 }

@@ -24,7 +24,6 @@ import mods.eln.sound.LoopedSound
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.inventory.IInventory
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.client.IItemRenderer
@@ -164,8 +163,8 @@ class FuelHeatFurnaceElement(transparentNode: TransparentNode, descriptor: Trans
 
     override fun getConnectionMask(side: Direction?, lrdu: LRDU?) = when (lrdu) {
         LRDU.Down -> when (side) {
-            front.inverse -> NodeBase.maskThermal
-            else -> NodeBase.maskElectricalInputGate
+            front.inverse -> NodeBase.MASK_THERMAL
+            else -> NodeBase.MASK_ELECTRIC
         }
         else -> 0
     }

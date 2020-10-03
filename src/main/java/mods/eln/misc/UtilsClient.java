@@ -275,6 +275,7 @@ public class UtilsClient {
     }
 
     public static void drawIcon(ItemRenderType type, ResourceLocation icon) {
+        System.out.println("Drawing icon: " + icon.toString());
         bindTexture(icon);
         drawIcon(type);
     }

@@ -4,6 +4,7 @@ import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -18,7 +19,7 @@ import static mods.eln.i18n.I18N.tr;
 public class WaterTurbineDescriptor extends TransparentNodeDescriptor {
     public WaterTurbineDescriptor(
         String name, Obj3D obj,
-        ElectricalCableDescriptor cable,
+        GenericCableDescriptor cable,
         double nominalPower,
         double maxVoltage,
         Coordonate waterCoord,
@@ -50,7 +51,7 @@ public class WaterTurbineDescriptor extends TransparentNodeDescriptor {
     Obj3DPart wheel, support, generator;
 
     Obj3D obj;
-    public ElectricalCableDescriptor cable;
+    public GenericCableDescriptor cable;
     public double nominalPower;
 
 

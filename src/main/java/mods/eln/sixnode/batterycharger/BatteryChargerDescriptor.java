@@ -6,6 +6,7 @@ import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.sim.mna.component.Resistor;
 import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -24,7 +25,7 @@ public class BatteryChargerDescriptor extends SixNodeDescriptor {
 
     public double nominalVoltage;
     public double nominalPower;
-    public ElectricalCableDescriptor cable;
+    public GenericCableDescriptor cable;
     double Rp;
     public float[] pinDistance;
 
@@ -32,7 +33,7 @@ public class BatteryChargerDescriptor extends SixNodeDescriptor {
 
     public BatteryChargerDescriptor(String name,
                                     Obj3D obj,
-                                    ElectricalCableDescriptor cable,
+                                    GenericCableDescriptor cable,
                                     double nominalVoltage, double nominalPower) {
         super(name, BatteryChargerElement.class, BatteryChargerRender.class);
 

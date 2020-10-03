@@ -9,6 +9,7 @@ import mods.eln.sim.mna.component.Resistor;
 import mods.eln.sim.mna.misc.MnaConst;
 import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -24,7 +25,7 @@ public class EggIncubatorDescriptor extends TransparentNodeDescriptor {
 
     Obj3D obj;
     Obj3D defaultFeroObj;
-    public ElectricalCableDescriptor cable;
+    public GenericCableDescriptor cable;
     private Obj3DPart lamp;
     private EntityItem eggEntity;
     private Obj3DPart lampf;
@@ -36,7 +37,7 @@ public class EggIncubatorDescriptor extends TransparentNodeDescriptor {
 
     public EggIncubatorDescriptor(String name,
                                   Obj3D obj,
-                                  ElectricalCableDescriptor cable,
+                                  GenericCableDescriptor cable,
                                   double nominalVoltage, double nominalPower) {
         super(name, EggIncubatorElement.class, EggIncubatorRender.class);
         this.obj = obj;

@@ -20,6 +20,7 @@ import mods.eln.sim.process.destruct.ThermalLoadWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sim.process.heater.ElectricalLoadHeatThermalLoad
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import org.lwjgl.opengl.GL11
@@ -31,7 +32,7 @@ import java.io.DataOutputStream
 class GeneratorDescriptor(
     name: String,
     obj: Obj3D,
-    cable: ElectricalCableDescriptor,
+    cable: GenericCableDescriptor,
     nominalRads: Float,
     nominalU: Float,
     powerOutPerDeltaU: Float,
@@ -85,7 +86,7 @@ class GeneratorDescriptor(
 class GeneratorRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescriptor) : ShaftRender(entity, desc_) {
     val entity = entity
 
-    override val cableRender = Eln.stdCableRender3200V
+    override val cableRender = Eln.mediumInsulationMediumCurrentRender
     val desc = desc_ as GeneratorDescriptor
 
     val ledColors: Array<Color> = arrayOf(
@@ -137,7 +138,7 @@ class GeneratorRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescr
     }
 
     override fun getCableRender(side: Direction, lrdu: LRDU): CableRenderDescriptor? {
-        if (lrdu == LRDU.Down && side == front) return Eln.stdCableRender3200V
+        if (lrdu == LRDU.Down && side == front) return Eln.mediumInsulationMediumCurrentRender
         return null
     }
 
@@ -265,7 +266,7 @@ class GeneratorElement(node: TransparentNode, desc_: TransparentNodeDescriptor) 
     override fun getThermalLoad(side: Direction?, lrdu: LRDU?) = thermal
 
     override fun getConnectionMask(side: Direction?, lrdu: LRDU?): Int {
-        if (lrdu == LRDU.Down && (side == front || side == front.back())) return NodeBase.maskElectricalPower
+        if (lrdu == LRDU.Down && (side == front || side == front.back())) return NodeBase.MASK_ELECTRIC
         return 0
     }
 

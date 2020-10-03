@@ -16,6 +16,7 @@ import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.sim.process.destruct.VoltageStateWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sixnode.lampsupply.LampSupplyElement
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.entity.player.EntityPlayer
@@ -25,7 +26,7 @@ import org.lwjgl.opengl.GL11
 import java.io.DataInputStream
 import java.io.DataOutputStream
 
-class EmergencyLampDescriptor(name: String, val cable: ElectricalCableDescriptor, val batteryCapacity: Double,
+class EmergencyLampDescriptor(name: String, val cable: GenericCableDescriptor, val batteryCapacity: Double,
                               val chargePower: Double, val consumption: Double, val lightLevel: Int, model: Obj3D)
     : SixNodeDescriptor(name, EmergencyLampElement::class.java, EmergencyLampRender::class.java) {
 
@@ -168,8 +169,8 @@ class EmergencyLampElement(sixNode: SixNode, side: Direction, descriptor: SixNod
     }
 
     override fun getConnectionMask(lrdu: LRDU) = when {
-        poweredByCable && side == Direction.YP -> Node.maskElectricalPower
-        poweredByCable && (lrdu == front.left() || lrdu == front.right()) -> Node.maskElectricalPower
+        poweredByCable && side == Direction.YP -> Node.MASK_ELECTRIC
+        poweredByCable && (lrdu == front.left() || lrdu == front.right()) -> Node.MASK_ELECTRIC
         else -> 0
     }
 

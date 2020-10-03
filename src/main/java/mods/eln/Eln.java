@@ -327,6 +327,7 @@ public class Eln {
     public static HashSet<String> oreNames = new HashSet<>();
     public static ElectricalFurnaceDescriptor electricalFurnace;
     public static ComputerProbeBlock computerProbeBlock;
+    public static boolean cableConnectionNodes;
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {

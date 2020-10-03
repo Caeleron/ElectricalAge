@@ -174,7 +174,7 @@ class ClutchElement(node: TransparentNode, desc_: TransparentNodeDescriptor) : S
     val inputGate = NbtElectricalGateInput("clutchIn")
     var slipping = true
     override fun getElectricalLoad(side: Direction?, lrdu: LRDU?): ElectricalLoad? = inputGate
-    override fun getConnectionMask(side: Direction?, lrdu: LRDU?): Int = NodeBase.maskElectricalInputGate
+    override fun getConnectionMask(side: Direction?, lrdu: LRDU?): Int = NodeBase.MASK_ELECTRIC
 
     val clutchPlateStack: ItemStack?
         get() {
@@ -447,7 +447,7 @@ class ClutchElement(node: TransparentNode, desc_: TransparentNodeDescriptor) : S
 class ClutchRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescriptor) : ShaftRender(entity, desc_) {
     val desc = desc_ as ClutchDescriptor
     val connectedSides = DirectionSet()
-    override val cableRender = Eln.stdCableRenderSignal
+    override val cableRender = Eln.smallInsulationLowCurrentRender
     val inv = TransparentNodeElementInventory(2, 1, this)
     override fun getInventory() = inv
 

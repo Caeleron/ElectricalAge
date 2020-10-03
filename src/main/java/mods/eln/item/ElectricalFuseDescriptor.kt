@@ -4,13 +4,14 @@ import mods.eln.misc.Obj3D
 import mods.eln.misc.VoltageLevelColor
 import mods.eln.misc.preserveMatrix
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.IItemRenderer
 import org.lwjgl.opengl.GL11
 import javax.xml.crypto.Data
 
-class ElectricalFuseDescriptor(name: String, val cableDescriptor: ElectricalCableDescriptor?, obj: Obj3D?) :
+class ElectricalFuseDescriptor(name: String, val cableDescriptor: GenericCableDescriptor?, obj: Obj3D?) :
     GenericItemUsingDamageDescriptorUpgrade(name) {
 
     companion object {

@@ -10,12 +10,10 @@ import mods.eln.sim.ElectricalLoad;
 import mods.eln.sim.ThermalLoadInitializer;
 import mods.eln.sim.mna.component.Resistor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -190,7 +188,7 @@ public class ElectricalSwitchDescriptor extends SixNodeDescriptor {
         if (signalSwitch)
             return NodeBase.maskElectricalGate;
         else
-            return NodeBase.maskElectricalPower;
+            return NodeBase.MASK_ELECTRIC;
     }
 
     @Override

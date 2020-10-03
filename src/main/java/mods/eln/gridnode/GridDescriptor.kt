@@ -6,6 +6,7 @@ import mods.eln.misc.Obj3D
 import mods.eln.misc.preserveMatrix
 import mods.eln.node.transparent.TransparentNodeDescriptor
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.IItemRenderer
 import org.lwjgl.opengl.GL11
@@ -14,7 +15,7 @@ import java.util.ArrayList
 
 import org.lwjgl.opengl.GL11.*
 
-open class GridDescriptor(name: String, private val obj: Obj3D, ElementClass: Class<*>, RenderClass: Class<*>, val cableTexture: String, val cableDescriptor: ElectricalCableDescriptor, val connectRange: Int) : TransparentNodeDescriptor(name, ElementClass, RenderClass) {
+open class GridDescriptor(name: String, private val obj: Obj3D, ElementClass: Class<*>, RenderClass: Class<*>, val cableTexture: String, val cableDescriptor: GenericCableDescriptor, val connectRange: Int) : TransparentNodeDescriptor(name, ElementClass, RenderClass) {
     val plus = ArrayList<Obj3D.Obj3DPart>()
     val gnd = ArrayList<Obj3D.Obj3DPart>()
 

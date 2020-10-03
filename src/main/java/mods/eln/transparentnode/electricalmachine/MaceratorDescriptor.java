@@ -5,6 +5,7 @@ import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.sim.ThermalLoadInitializer;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.item.EntityItem;
 import org.lwjgl.opengl.GL11;
 
@@ -15,7 +16,7 @@ public class MaceratorDescriptor extends ElectricalMachineDescriptor {
     private Obj3DPart rot2;
 
     public MaceratorDescriptor(String name, String modelName, double nominalU, double nominalP, double maximalU,
-                               ThermalLoadInitializer thermal, ElectricalCableDescriptor cable, RecipesList recipe) {
+                               ThermalLoadInitializer thermal, GenericCableDescriptor cable, RecipesList recipe) {
         super(name, nominalU, nominalP, maximalU, thermal, cable, recipe);
         obj = Eln.obj.getObj(modelName);
         if (obj != null) {

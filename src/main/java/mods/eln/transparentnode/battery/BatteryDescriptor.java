@@ -10,6 +10,7 @@ import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.*;
 import mods.eln.sim.mna.component.Resistor;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -42,7 +43,7 @@ public class BatteryDescriptor extends TransparentNodeDescriptor {
     Obj3DPart modelPart;
     public double IMax;
     public boolean lifeEnable;
-    private ElectricalCableDescriptor cable;
+    private GenericCableDescriptor cable;
 
     Obj3D obj;
 
@@ -72,7 +73,7 @@ public class BatteryDescriptor extends TransparentNodeDescriptor {
     }
 
     public BatteryDescriptor(String name, String modelName,
-                             ElectricalCableDescriptor cable,
+                             GenericCableDescriptor cable,
                              double startCharge, boolean isRechargable, boolean lifeEnable,
                              FunctionTable UfCharge,
                              double electricalU, double electricalPMax, double electricalDischargeRate,

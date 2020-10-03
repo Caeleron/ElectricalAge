@@ -7,6 +7,7 @@ import mods.eln.misc.VoltageLevelColor;
 import mods.eln.node.transparent.TransparentNode.FrontType;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -25,12 +26,12 @@ public class ElectricalAntennaRxDescriptor extends TransparentNodeDescriptor {
     double electricalNominalVoltage, electricalNominalPower;
     double electricalMaximalVoltage, electricalMaximalPower;
     double electricalNominalInputR;
-    ElectricalCableDescriptor cable;
+    GenericCableDescriptor cable;
 
     public ElectricalAntennaRxDescriptor(String name, Obj3D obj,
                                          double electricalNominalVoltage, double electricalNominalPower,
                                          double electricalMaximalVoltage, double electricalMaximalPower,
-                                         ElectricalCableDescriptor cable) {
+                                         GenericCableDescriptor cable) {
         super(name, ElectricalAntennaRxElement.class, ElectricalAntennaRxRender.class);
         this.electricalNominalVoltage = electricalNominalVoltage;
         this.electricalNominalPower = electricalNominalPower;
