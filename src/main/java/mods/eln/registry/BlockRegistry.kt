@@ -5,6 +5,7 @@ import mods.eln.Eln
 import mods.eln.Other
 import mods.eln.crafting.CraftingRegistry
 import mods.eln.i18n.I18N
+import mods.eln.misc.VoltageTier
 import mods.eln.node.NodeManager
 import mods.eln.node.simple.SimpleNodeItem
 import mods.eln.ore.OreDescriptor
@@ -35,7 +36,7 @@ class BlockRegistry {
                 NodeManager.registerUuid(EnergyConverterElnToOtherNode.getNodeUuidStatic(), EnergyConverterElnToOtherNode::class.java)
                 run {
                     val blockName = I18N.TR_NAME(I18N.Type.TILE, "eln.EnergyConverterElnToOtherLVUBlock")
-                    val elnDesc = ElnDescriptor(Eln.LVU, Eln.LVP())
+                    val elnDesc = ElnDescriptor(VoltageTier.LOW.voltage, 2_000.0)
                     val ic2Desc = Ic2Descriptor(32.0, 1)
                     val ocDesc = OcDescriptor(ic2Desc.outMax * Other.elnToOcConversionRatio / Other.elnToIc2ConversionRatio)
                     val desc = EnergyConverterElnToOtherDescriptor("EnergyConverterElnToOtherLVU", elnDesc, ic2Desc, ocDesc)
@@ -45,7 +46,7 @@ class BlockRegistry {
                 }
                 run {
                     val blockName = I18N.TR_NAME(I18N.Type.TILE, "eln.EnergyConverterElnToOtherMVUBlock")
-                    val elnDesc = ElnDescriptor(Eln.MVU, Eln.MVP())
+                    val elnDesc = ElnDescriptor(VoltageTier.HIGH_HOUSEHOLD.voltage, 5_000.0)
                     val ic2Desc = Ic2Descriptor(128.0, 2)
                     val ocDesc = OcDescriptor(ic2Desc.outMax * Other.elnToOcConversionRatio / Other.elnToIc2ConversionRatio)
                     val desc = EnergyConverterElnToOtherDescriptor("EnergyConverterElnToOtherMVU", elnDesc, ic2Desc, ocDesc)
@@ -55,7 +56,7 @@ class BlockRegistry {
                 }
                 run {
                     val blockName = I18N.TR_NAME(I18N.Type.TILE, "eln.EnergyConverterElnToOtherHVUBlock")
-                    val elnDesc = ElnDescriptor(Eln.HVU, Eln.HVP())
+                    val elnDesc = ElnDescriptor(VoltageTier.INDUSTRIAL.voltage, 15_000.0)
                     val ic2Desc = Ic2Descriptor(512.0, 3)
                     val ocDesc = OcDescriptor(ic2Desc.outMax * Other.elnToOcConversionRatio / Other.elnToIc2ConversionRatio)
                     val desc = EnergyConverterElnToOtherDescriptor("EnergyConverterElnToOtherHVU", elnDesc, ic2Desc, ocDesc)

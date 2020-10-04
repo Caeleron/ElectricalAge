@@ -5,6 +5,7 @@ import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.misc.series.ISerie;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
@@ -12,8 +13,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
-
-import javax.xml.crypto.Data;
 
 /**
  * Created by svein on 05/08/15.
@@ -50,7 +49,7 @@ public class ResistorDescriptor extends SixNodeDescriptor {
             Base = obj.getPart("Base");
             Cables = obj.getPart("CapacitorCables");
         }
-        voltageLevelColor = VoltageLevelColor.Neutral;
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     public double getRsValue(IInventory inventory) {

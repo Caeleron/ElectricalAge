@@ -1,20 +1,18 @@
 package mods.eln.sixnode.powercapacitorsix;
 
-import mods.eln.Eln;
 import mods.eln.item.DielectricItem;
 import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.misc.series.ISerie;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
-
-import javax.xml.crypto.Data;
 
 public class PowerCapacitorSixDescriptor extends SixNodeDescriptor {
 
@@ -41,12 +39,12 @@ public class PowerCapacitorSixDescriptor extends SixNodeDescriptor {
             Base = obj.getPart("Base");
         }
 
-        voltageLevelColor = VoltageLevelColor.Neutral;
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     public double getCValue(int cableCount, double nominalDielVoltage) {
         if (cableCount == 0) return 1e-6;
-        double uTemp = nominalDielVoltage / Eln.LVU;
+        double uTemp = nominalDielVoltage / VoltageTier.LOW.getVoltage();
         return serie.getValue(cableCount - 1) / uTemp / uTemp;
     }
 

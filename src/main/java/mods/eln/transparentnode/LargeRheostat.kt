@@ -20,7 +20,6 @@ import mods.eln.sim.nbt.NbtThermalLoad
 import mods.eln.sim.process.destruct.ThermalLoadWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sim.process.heater.ResistorHeatThermalLoad
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sixnode.resistor.ResistorContainer
 import mods.eln.transparentnode.thermaldissipatorpassive.ThermalDissipatorPassiveDescriptor
@@ -39,7 +38,7 @@ class LargeRheostatDescriptor(name: String, val dissipator: ThermalDissipatorPas
     TransparentNodeDescriptor(name, LargeRheostatElement::class.java, LargeRheostatRender::class.java) {
 
     init {
-        voltageLevelColor = VoltageLevelColor.Neutral
+        voltageTier = VoltageTier.NEUTRAL
     }
 
     override fun addInformation(itemStack: ItemStack?, entityPlayer: EntityPlayer?, list: MutableList<String>?, par4: Boolean) {

@@ -16,6 +16,7 @@ import mods.eln.misc.LRDU
 import mods.eln.misc.Obj3D
 import mods.eln.misc.Utils
 import mods.eln.misc.VoltageLevelColor
+import mods.eln.misc.VoltageTier
 import mods.eln.node.Node
 import mods.eln.node.Synchronizable
 import mods.eln.node.six.SixNode
@@ -57,7 +58,7 @@ open class AnalogChipDescriptor(name: String, obj: Obj3D?, functionName: String,
         pins[0] = obj?.getPart("Output")
         for (i in 1..function.inputCount) pins[i] = obj?.getPart("Input$i")
 
-        voltageLevelColor = VoltageLevelColor.SignalVoltage
+        voltageTier = VoltageTier.TTL
     }
 
     constructor(name: String, obj: Obj3D?, functionName: String, functionClass: Class<out AnalogFunction>) :
@@ -190,10 +191,10 @@ open class AnalogChipRender(entity: SixNodeEntity, side: Direction, descriptor: 
     }
 
     override fun getCableRender(lrdu: LRDU?): CableRenderDescriptor? = when (lrdu) {
-        front -> Eln.signalCableDescriptor.render
-        front.inverse() -> if (descriptor.function.inputCount >= 1) Eln.signalCableDescriptor.render else null
-        front.left() -> if (descriptor.function.inputCount >= 2) Eln.signalCableDescriptor.render else null
-        front.right() -> if (descriptor.function.inputCount >= 3) Eln.signalCableDescriptor.render else null
+        front -> Eln.smallInsulationLowCurrentRender
+        front.inverse() -> if (descriptor.function.inputCount >= 1) Eln.smallInsulationLowCurrentRender else null
+        front.left() -> if (descriptor.function.inputCount >= 2) Eln.smallInsulationLowCurrentRender else null
+        front.right() -> if (descriptor.function.inputCount >= 3) Eln.smallInsulationLowCurrentRender else null
         else -> null
     }
 }
@@ -424,7 +425,7 @@ open class VoltageControlledSawtoothOscillator : AnalogFunction() {
 
     override fun process(inputs: Array<Double?>, deltaTime: Double): Double {
         out += Math.pow(50.0, (inputs[0] ?: 0.0) / 50) * 2 * deltaTime
-        if (out > Eln.SVU) {
+        if (out > VoltageTier.TTL.voltage) {
             out = 0.0
         }
         return out

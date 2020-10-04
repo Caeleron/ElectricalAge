@@ -64,8 +64,7 @@ public class ThermalDissipatorPassiveElement extends TransparentNodeElement {
     public int getConnectionMask(Direction side, LRDU lrdu) {
 
         if (side == Direction.YN || side == Direction.YP || lrdu != LRDU.Down) return 0;
-        return NodeBase.MASK_ELECTRIC;
-        //return node.maskThermal;
+        return NodeBase.MASK_THERMAL;
     }
 
     @Override

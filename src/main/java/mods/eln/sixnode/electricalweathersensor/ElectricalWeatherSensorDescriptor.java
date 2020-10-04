@@ -1,15 +1,12 @@
 package mods.eln.sixnode.electricalweathersensor;
 
-import mods.eln.Eln;
 import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +29,7 @@ public class ElectricalWeatherSensorDescriptor extends SixNodeDescriptor {
             pinDistance = Utils.getSixNodePinDistance(main);
         }
 
-        voltageLevelColor = VoltageLevelColor.SignalVoltage;
+        voltageTier = VoltageTier.TTL;
     }
 
     void draw() {
@@ -46,8 +43,8 @@ public class ElectricalWeatherSensorDescriptor extends SixNodeDescriptor {
         super.addInformation(itemStack, entityPlayer, list, par4);
         Collections.addAll(list, tr("Provides an electrical signal\ndepending the actual weather.").split("\n"));
         list.add(tr("Clear: %1$V", 0));
-        list.add(tr("Rain: %1$V", Utils.plotValue(Eln.SVU / 2)));
-        list.add(tr("Storm: %1$V", Utils.plotValue(Eln.SVU)));
+        list.add(tr("Rain: %1$V", Utils.plotValue(VoltageTier.TTL.getVoltage() / 2)));
+        list.add(tr("Storm: %1$V", Utils.plotValue(VoltageTier.TTL.getVoltage())));
     }
 
     @Override

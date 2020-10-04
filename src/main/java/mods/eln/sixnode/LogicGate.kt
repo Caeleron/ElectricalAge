@@ -20,7 +20,6 @@ import mods.eln.sixnode.AnalogFunction
 import net.minecraft.client.gui.GuiButton
 import net.minecraft.client.gui.GuiScreen
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.client.IItemRenderer
@@ -43,7 +42,7 @@ open class LogicGateDescriptor(name: String, obj: Obj3D?, functionName: String, 
         pins[0] = obj?.getPart("Output")
         for (i in 1..function.inputCount) pins[i] = obj?.getPart("Input$i")
 
-        voltageLevelColor = VoltageLevelColor.SignalVoltage
+        voltageTier = VoltageTier.TTL
     }
 
     constructor(name: String, obj: Obj3D?, functionName: String, functionClass: Class<out LogicFunction>) :
@@ -151,7 +150,7 @@ open class LogicGateElement(node: SixNode, side: Direction, sixNodeDescriptor: S
 
     override fun getWaila(): MutableMap<String, String> = function.getWaila(
         inputPins.map { if (it != null && it.connectedComponents.count() > 0) it.normalized else null }.toTypedArray(),
-        outputPin.u / Eln.SVU)
+        outputPin.u / VoltageTier.TTL.voltage)
 
     override fun readFromNBT(nbt: NBTTagCompound?) {
         super.readFromNBT(nbt)
@@ -179,10 +178,10 @@ open class LogicGateRender(entity: SixNodeEntity, side: Direction, descriptor: S
     }
 
     override fun getCableRender(lrdu: LRDU?): CableRenderDescriptor? = when (lrdu) {
-        front -> Eln.signalCableDescriptor.render
-        front.inverse() -> if (descriptor.function.inputCount >= 1) Eln.signalCableDescriptor.render else null
-        front.left() -> if (descriptor.function.inputCount >= 2) Eln.signalCableDescriptor.render else null
-        front.right() -> if (descriptor.function.inputCount >= 3) Eln.signalCableDescriptor.render else null
+        front -> Eln.smallInsulationLowCurrentRender
+        front.inverse() -> if (descriptor.function.inputCount >= 1) Eln.smallInsulationLowCurrentRender else null
+        front.left() -> if (descriptor.function.inputCount >= 2) Eln.smallInsulationLowCurrentRender else null
+        front.right() -> if (descriptor.function.inputCount >= 3) Eln.smallInsulationLowCurrentRender else null
         else -> null
     }
 }

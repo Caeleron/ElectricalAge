@@ -5,6 +5,7 @@ import mods.eln.i18n.I18N;
 import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Utils;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.NodeBase;
 import mods.eln.node.six.SixNode;
 import mods.eln.node.six.SixNodeDescriptor;
@@ -14,7 +15,6 @@ import mods.eln.sim.ElectricalLoad;
 import mods.eln.sim.ThermalLoad;
 import mods.eln.sim.mna.component.Resistor;
 import mods.eln.sim.nbt.NbtElectricalLoad;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import mods.eln.sound.SoundCommand;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +38,7 @@ public class ElectricalBreakerElement extends SixNodeElement {
 
     SixNodeElementInventory inventory = new SixNodeElementInventory(1, 64, this);
 
-    public float voltageMax = (float) Eln.SVU, voltageMin = 0;
+    public float voltageMax = (float) VoltageTier.TTL.getVoltage(), voltageMin = 0;
 
     boolean switchState = false;
     double currantMax = 0;

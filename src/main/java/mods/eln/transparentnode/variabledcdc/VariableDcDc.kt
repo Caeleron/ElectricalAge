@@ -24,7 +24,6 @@ import mods.eln.sim.nbt.NbtElectricalGateInput
 import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.sim.process.destruct.VoltageStateWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sound.LoopedSound
 import net.minecraft.client.audio.ISound
@@ -63,7 +62,7 @@ class VariableDcDcDescriptor(name: String, objM: Obj3D, coreM: Obj3D, casingM: O
         casingLeftDoor = casingM.getPart("DoorL")
         casingRightDoor = casingM.getPart("DoorR")
 
-        voltageLevelColor = VoltageLevelColor.Neutral
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     override fun addInformation(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>, par4: Boolean) {

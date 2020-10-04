@@ -4,19 +4,17 @@ import mods.eln.misc.IFunction;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.sim.ElectricalLoad;
 import mods.eln.sim.ThermalLoad;
 import mods.eln.sim.ThermalLoadInitializer;
 import mods.eln.sim.mna.component.ResistorSwitch;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,7 +55,7 @@ public class DiodeDescriptor extends SixNodeDescriptor {
         base = obj.getPart("Base");
         diodeCables = obj.getPart("DiodeCables");
         diodeCore = obj.getPart("DiodeCore");
-        voltageLevelColor = VoltageLevelColor.Neutral;
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     @Override

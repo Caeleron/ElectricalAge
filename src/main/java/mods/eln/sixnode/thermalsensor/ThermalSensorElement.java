@@ -18,8 +18,8 @@ import mods.eln.sim.ThermalLoad;
 import mods.eln.sim.nbt.NbtElectricalGateOutputProcess;
 import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.sim.nbt.NbtThermalLoad;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.electricaldatalogger.DataLogs;
+import mods.eln.sixnode.electriccable.ElectricCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import mods.eln.sixnode.thermalcable.ThermalCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
@@ -182,7 +182,7 @@ public class ThermalSensorElement extends SixNodeElement implements IConfigurabl
 
     @Override
     public void initialize() {
-        Eln.instance.signalCableDescriptor.applyTo(outputGate);
+        Eln.smallInsulationLowCurrentCopperCable.applyTo(outputGate);
         computeElectricalLoad();
     }
 
@@ -202,7 +202,7 @@ public class ThermalSensorElement extends SixNodeElement implements IConfigurabl
             ThermalCableDescriptor cableDescriptor = (ThermalCableDescriptor) Eln.sixNodeItem.getDescriptor(cable);
             cableDescriptor.setThermalLoad(thermalLoad);
             thermalLoad.setAsFast();
-        } else if (descriptor.getClass() == ElectricalCableDescriptor.class) {
+        } else if (descriptor.getClass() == ElectricCableDescriptor.class) {
             GenericCableDescriptor cableDescriptor = (GenericCableDescriptor) Eln.sixNodeItem.getDescriptor(cable);
             cableDescriptor.applyTo(thermalLoad);
             thermalLoad.Rp = 1000000000.0;
@@ -219,7 +219,7 @@ public class ThermalSensorElement extends SixNodeElement implements IConfigurabl
 
     boolean isItemElectricalCable() {
         SixNodeDescriptor descriptor = Eln.sixNodeItem.getDescriptor(getInventory().getStackInSlot(ThermalSensorContainer.cableSlotId));
-        return descriptor != null && descriptor.getClass() == ElectricalCableDescriptor.class;
+        return descriptor != null && descriptor.getClass() == ElectricCableDescriptor.class;
     }
 
     @Override

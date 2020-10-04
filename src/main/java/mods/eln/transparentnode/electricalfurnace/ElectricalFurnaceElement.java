@@ -141,7 +141,7 @@ public class ElectricalFurnaceElement extends TransparentNodeElement {
         smeltResistor.highImpedance();
         slowRefreshProcess.process(0.05);
 
-        Eln.instance.lowVoltageCableDescriptor.applyTo(electricalLoad);
+        Eln.uninsulatedHighCurrentCopperCable.applyTo(electricalLoad);
         //electricalLoad.setRs(MnaConst.highImpedance);
 
 

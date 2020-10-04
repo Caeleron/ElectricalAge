@@ -16,36 +16,41 @@ enum class VoltageTier(val voltageLevel: String, val voltage: Double) {
     DISTRIBUTION_GRID("distribution_grid", 55_000.0),
     HIGH_TENSION_GRID("high_tension_grid", 125_000.0);
 
-    fun drawIconBackground(type: IItemRenderer.ItemRenderType) {
-        if (!Eln.noVoltageBackground && type == IItemRenderer.ItemRenderType.INVENTORY || type == IItemRenderer.ItemRenderType.FIRST_PERSON_MAP) {
-            UtilsClient.drawIcon(type, ResourceLocation("eln", "textures/voltages/$voltageLevel.png"))
+}
+class VoltageTierHelpers {
+    companion object {
+        fun drawIconBackground(type: IItemRenderer.ItemRenderType?, tier: VoltageTier) {
+            if (type == null) return
+            if (!Eln.noVoltageBackground && type == IItemRenderer.ItemRenderType.INVENTORY || type == IItemRenderer.ItemRenderType.FIRST_PERSON_MAP) {
+                UtilsClient.drawIcon(type, ResourceLocation("eln", "textures/voltages/${tier.voltageLevel}.png"))
+            }
         }
-    }
 
-    fun fromVoltage(voltage: Double): VoltageTier {
-        return when {
-            voltage <= NEUTRAL.voltage -> NEUTRAL
-            voltage <= TTL.voltage -> TTL
-            voltage <= LOW.voltage -> LOW
-            voltage <= LOW_HOUSEHOLD.voltage -> LOW_HOUSEHOLD
-            voltage <= HIGH_HOUSEHOLD.voltage -> HIGH_HOUSEHOLD
-            voltage <= INDUSTRIAL.voltage -> INDUSTRIAL
-            voltage <= SUBURBAN_GRID.voltage -> SUBURBAN_GRID
-            voltage <= DISTRIBUTION_GRID.voltage -> DISTRIBUTION_GRID
-            voltage <= HIGH_TENSION_GRID.voltage -> HIGH_TENSION_GRID
-            else -> NEUTRAL
+        fun fromVoltage(voltage: Double): VoltageTier {
+            return when {
+                voltage <= VoltageTier.NEUTRAL.voltage -> VoltageTier.NEUTRAL
+                voltage <= VoltageTier.TTL.voltage -> VoltageTier.TTL
+                voltage <= VoltageTier.LOW.voltage -> VoltageTier.LOW
+                voltage <= VoltageTier.LOW_HOUSEHOLD.voltage -> VoltageTier.LOW_HOUSEHOLD
+                voltage <= VoltageTier.HIGH_HOUSEHOLD.voltage -> VoltageTier.HIGH_HOUSEHOLD
+                voltage <= VoltageTier.INDUSTRIAL.voltage -> VoltageTier.INDUSTRIAL
+                voltage <= VoltageTier.SUBURBAN_GRID.voltage -> VoltageTier.SUBURBAN_GRID
+                voltage <= VoltageTier.DISTRIBUTION_GRID.voltage -> VoltageTier.DISTRIBUTION_GRID
+                voltage <= VoltageTier.HIGH_TENSION_GRID.voltage -> VoltageTier.HIGH_TENSION_GRID
+                else -> VoltageTier.NEUTRAL
+            }
         }
-    }
 
-    open fun setGLColor() {
-        when (this) {
-            NEUTRAL -> return
-            TTL -> GL11.glColor3f(.80f, .87f, .82f)
-            LOW -> GL11.glColor3f(.80f, .87f, .82f)
-            LOW_HOUSEHOLD -> GL11.glColor3f(.96f, .80f, .56f)
-            HIGH_HOUSEHOLD -> GL11.glColor3f(.96f, .80f, .56f)
-            INDUSTRIAL -> GL11.glColor3f(.86f, .58f, .55f)
-            else -> GL11.glColor3f(.55f, .74f, .85f)
+        open fun setGLColor(tier: VoltageTier) {
+            when (tier) {
+                VoltageTier.NEUTRAL -> return
+                VoltageTier.TTL -> GL11.glColor3f(.80f, .87f, .82f)
+                VoltageTier.LOW -> GL11.glColor3f(.80f, .87f, .82f)
+                VoltageTier.LOW_HOUSEHOLD -> GL11.glColor3f(.96f, .80f, .56f)
+                VoltageTier.HIGH_HOUSEHOLD -> GL11.glColor3f(.96f, .80f, .56f)
+                VoltageTier.INDUSTRIAL -> GL11.glColor3f(.86f, .58f, .55f)
+                else -> GL11.glColor3f(.55f, .74f, .85f)
+            }
         }
     }
 }

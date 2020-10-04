@@ -6,13 +6,12 @@ import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.Utils;
 import mods.eln.misc.UtilsClient;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -76,7 +75,7 @@ public class TurretDescriptor extends TransparentNodeDescriptor {
         fire = obj.getPart("Fire");
 
         properties = new Properties();
-        voltageLevelColor = VoltageLevelColor.HighVoltage;
+        voltageTier = VoltageTier.INDUSTRIAL;
     }
 
     public Properties getProperties() {

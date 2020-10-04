@@ -11,7 +11,6 @@ import mods.eln.node.six.SixNodeElementInventory;
 import mods.eln.node.six.SixNodeElementRender;
 import mods.eln.node.six.SixNodeEntity;
 import mods.eln.sim.PhysicalConstant;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import mods.eln.sixnode.thermalcable.ThermalCableDescriptor;
 import net.minecraft.client.gui.GuiScreen;
@@ -86,11 +85,11 @@ public class ThermalSensorRender extends SixNodeElementRender {
         if (!descriptor.temperatureOnly) {
             if (front.left() == lrdu && cable != null) return cable.render;
             if (front.right() == lrdu && cable != null) return cable.render;
-            if (front == lrdu) return Eln.instance.signalCableDescriptor.render;
+            if (front == lrdu) return Eln.smallInsulationLowCurrentRender;
         } else {
             if (front.inverse() == lrdu && cable != null) return cable.render;
             if (front.inverse() == lrdu && ecable != null) return ecable.render;
-            if (front == lrdu) return Eln.instance.signalCableDescriptor.render;
+            if (front == lrdu) return Eln.smallInsulationLowCurrentRender;
         }
         return null;
     }

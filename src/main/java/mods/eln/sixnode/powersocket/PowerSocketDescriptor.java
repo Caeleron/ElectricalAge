@@ -4,11 +4,9 @@ import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,11 +32,11 @@ public class PowerSocketDescriptor extends SixNodeDescriptor {
                 // TODO: Refactor this crap
                 case 0:
                     socket = obj.getPart("Socket50V");
-                    voltageLevelColor = VoltageLevelColor.LowVoltage;
+                    voltageTier = VoltageTier.LOW_HOUSEHOLD;
                     break;
                 case 1:
                     socket = obj.getPart("Socket200V");
-                    voltageLevelColor = VoltageLevelColor.MediumVoltage;
+                    voltageTier = VoltageTier.HIGH_HOUSEHOLD;
                     break;
                 default:
                     socket = null;

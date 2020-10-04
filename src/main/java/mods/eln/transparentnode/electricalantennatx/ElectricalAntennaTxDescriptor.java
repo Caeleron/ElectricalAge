@@ -4,16 +4,14 @@ import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.Utils;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTierHelpers;
 import mods.eln.node.transparent.TransparentNode.FrontType;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -56,7 +54,7 @@ public class ElectricalAntennaTxDescriptor extends TransparentNodeDescriptor {
         if (obj != null) main = obj.getPart("main");
 
         setDefaultIcon("electricalantennatx");
-        voltageLevelColor = VoltageLevelColor.fromVoltage(electricalNominalVoltage);
+        voltageTier = VoltageTierHelpers.Companion.fromVoltage(electricalNominalVoltage);
     }
 
     @Override

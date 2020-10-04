@@ -6,18 +6,16 @@ import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.Utils;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTierHelpers;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.*;
 import mods.eln.sim.mna.component.Resistor;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -136,7 +134,7 @@ public class BatteryDescriptor extends TransparentNodeDescriptor {
             }
         }
 
-        voltageLevelColor = VoltageLevelColor.fromVoltage(electricalU);
+        voltageTier = VoltageTierHelpers.Companion.fromVoltage(electricalU);
     }
 
     public void applyTo(Resistor resistor) {

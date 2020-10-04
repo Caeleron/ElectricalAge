@@ -2,7 +2,6 @@ package mods.eln.gridnode.electricalpole
 
 import mods.eln.gridnode.GridDescriptor
 import mods.eln.misc.Obj3D
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sixnode.genericcable.GenericCableDescriptor
 
 /**

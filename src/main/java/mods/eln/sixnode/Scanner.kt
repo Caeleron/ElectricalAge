@@ -31,7 +31,7 @@ class ScannerDescriptor(name: String, obj: Obj3D) : SixNodeDescriptor(name, Scan
     val leds = arrayOf("LED_0", "LED_1").map { obj.getPart(it) }.requireNoNulls()
 
     init {
-        voltageLevelColor = VoltageLevelColor.SignalVoltage
+        voltageTier = VoltageTier.TTL
     }
 
     fun draw(mode: ScanMode) {
@@ -200,5 +200,5 @@ class ScannerRender(entity: SixNodeEntity, side: Direction, descriptor: SixNodeD
         mode = ScanMode.fromByte(stream.readByte())!!
     }
 
-    override fun getCableRender(lrdu: LRDU?): CableRenderDescriptor? = Eln.signalCableDescriptor.render
+    override fun getCableRender(lrdu: LRDU?): CableRenderDescriptor? = Eln.smallInsulationLowCurrentRender
 }

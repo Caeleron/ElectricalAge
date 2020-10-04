@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class TreeResinCollectorDescriptor extends SixNodeDescriptor {
             }
         }
 
-        voltageLevelColor = VoltageLevelColor.Neutral;
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     void draw(float factor) {

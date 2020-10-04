@@ -4,6 +4,7 @@ import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.UtilsClient;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
@@ -22,7 +23,7 @@ public class TutorialSignDescriptor extends SixNodeDescriptor {
             halo = obj.getPart("halo");
         }
 
-        voltageLevelColor = VoltageLevelColor.Neutral;
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     void setupColor(float factor, float alpha) {

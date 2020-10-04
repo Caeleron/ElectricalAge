@@ -1,11 +1,9 @@
 package mods.eln.gridnode
 
-import jdk.nashorn.internal.objects.NativeDebug.getClass
 import mods.eln.misc.Direction
 import mods.eln.misc.Obj3D
 import mods.eln.misc.preserveMatrix
 import mods.eln.node.transparent.TransparentNodeDescriptor
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.IItemRenderer

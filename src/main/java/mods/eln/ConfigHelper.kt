@@ -1,7 +1,6 @@
 package mods.eln
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent
-import mods.eln.entity.ReplicatorPopProcess
 import mods.eln.misc.Utils
 import net.minecraftforge.common.config.Configuration
 import net.minecraftforge.common.config.Property
@@ -40,7 +39,6 @@ class ConfigHelper {
             Eln.heatTurbinePowerFactor = config.get("balancing", "heatTurbinePowerFactor", 1).getDouble(1.0)
             Eln.solarPanelPowerFactor = config.get("balancing", "solarPanelPowerFactor", 1).getDouble(1.0)
             Eln.windTurbinePowerFactor = config.get("balancing", "windTurbinePowerFactor", 1).getDouble(1.0)
-            Eln.waterTurbinePowerFactor = config.get("balancing", "waterTurbinePowerFactor", 1).getDouble(1.0)
             Eln.fuelGeneratorPowerFactor = config.get("balancing", "fuelGeneratorPowerFactor", 1).getDouble(1.0)
             Eln.fuelHeatFurnacePowerFactor = config.get("balancing", "fuelHeatFurnacePowerFactor", 1.0).getDouble()
             Eln.autominerRange = config.get("balancing", "autominerRange", 10, "Maximum horizontal distance from autominer that will be mined").getInt(10)
@@ -48,8 +46,6 @@ class ConfigHelper {
             Other.elnToIc2ConversionRatio = config.get("balancing", "ElnToIndustrialCraftConversionRatio", 1.0 / 3.0).getDouble(1.0 / 3.0)
             Other.elnToOcConversionRatio = config.get("balancing", "ElnToOpenComputerConversionRatio", 1.0 / 3.0 / 2.5).getDouble(1.0 / 3.0 / 2.5)
             Other.elnToTeConversionRatio = config.get("balancing", "ElnToThermalExpansionConversionRatio", 1.0 / 3.0 * 4).getDouble(1.0 / 3.0 * 4)
-            //	Other.ElnToBuildcraftConversionRatio = config.get("balancing", "ElnToBuildcraftConversionRatio", 1.0 / 3.0 / 5 * 2).getDouble(1.0 / 3.0 / 5 * 2);
-            //	Other.ElnToBuildcraftConversionRatio = config.get("balancing", "ElnToBuildcraftConversionRatio", 1.0 / 3.0 / 5 * 2).getDouble(1.0 / 3.0 / 5 * 2);
             Eln.plateConversionRatio = config.get("balancing", "platesPerIngot", 1).getInt(1)
             Eln.shaftEnergyFactor = config.get("balancing", "shaftEnergyFactor", 0.05).getDouble(0.05)
 
@@ -59,20 +55,13 @@ class ConfigHelper {
             Eln.ComputerProbeEnable = config.get("compatibility", "ComputerProbeEnable", true).getBoolean(true)
             Eln.ElnToOtherEnergyConverterEnable = config.get("compatibility", "ElnToOtherEnergyConverterEnable", true).getBoolean(true)
 
-            Eln.replicatorPop = config.get("entity", "replicatorPop", true).getBoolean(true)
-            ReplicatorPopProcess.popPerSecondPerPlayer = config.get("entity", "replicatorPopWhenThunderPerSecond", 1.0 / 120).getDouble(1.0 / 120)
-            Eln.replicatorRegistrationId = config.get("entity", "replicatorId", -1).getInt(-1)
             Eln.killMonstersAroundLamps = config.get("entity", "killMonstersAroundLamps", true).getBoolean(true)
             Eln.killMonstersAroundLampsRange = config.get("entity", "killMonstersAroundLampsRange", 9).getInt(9)
-            Eln.maxReplicators = config.get("entity", "maxReplicators", 100).getInt(100)
 
             Eln.forceOreRegen = config.get("mapGenerate", "forceOreRegen", false).getBoolean(false)
             Eln.genCopper = config.get("mapGenerate", "copper", true).getBoolean(true)
             Eln.genLead = config.get("mapGenerate", "lead", true).getBoolean(true)
             Eln.genTungsten = config.get("mapGenerate", "tungsten", true).getBoolean(true)
-            Eln.genCinnabar = config.get("mapGenerate", "cinnabar", true).getBoolean(true)
-            Eln.genCinnabar = false
-
             Eln.oredictTungsten = config.get("dictionary", "tungsten", false).getBoolean(false)
             if (Eln.oredictTungsten) {
                 Eln.dictTungstenOre = "oreTungsten"

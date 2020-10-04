@@ -101,10 +101,10 @@ class RotaryMotorElement(node: TransparentNode, desc_: TransparentNodeDescriptor
         override fun process(time: Double) {
             // Do anything at all?
             val target: Float
-            val computedEfficiency = if (shaft.rads > 700) {
-                 Math.max(Math.pow(Math.cos(((shaft.rads - desc.optimalRads) / (desc.optimalRads * desc.efficiencyCurve)) * (Math.PI / 2)), 3.0), 0.0) * RotaryMotorDescriptor.GAS_GUZZLER_CONSTANT
+            val computedEfficiency = if (shaft.rads > 150 && shaft.rads < 250) {
+                 RotaryMotorDescriptor.GAS_GUZZLER_CONSTANT
             } else {
-                0.25
+                RotaryMotorDescriptor.GAS_GUZZLER_CONSTANT / 2
             }
             efficiency = computedEfficiency.toFloat()
             val th = if (throttle.connectedComponents.count() > 0) throttle.normalized else 1.0

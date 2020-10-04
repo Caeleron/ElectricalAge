@@ -94,9 +94,9 @@ public class ElectricalSwitchDescriptor extends SixNodeDescriptor {
         pinDistance = Utils.getSixNodePinDistance(main);
 
         if (signalSwitch) {
-            voltageLevelColor = VoltageLevelColor.SignalVoltage;
+            voltageTier = VoltageTier.TTL;
         } else {
-            voltageLevelColor = VoltageLevelColor.fromVoltage(nominalVoltage);
+            voltageTier = VoltageTierHelpers.Companion.fromVoltage(nominalVoltage);
         }
     }
 
@@ -166,7 +166,7 @@ public class ElectricalSwitchDescriptor extends SixNodeDescriptor {
                 break;
             case Lever:
                 GL11.glPushMatrix();
-                if (nominalVoltage <= Eln.MVU) {
+                if (nominalVoltage <= VoltageTier.LOW_HOUSEHOLD.getVoltage()) {
                     GL11.glScaled(0.5f, 0.5f, 0.5f);
                 }
 

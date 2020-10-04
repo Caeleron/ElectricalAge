@@ -20,7 +20,6 @@ import mods.eln.sim.nbt.NbtThermalLoad
 import mods.eln.sim.process.destruct.ThermalLoadWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sim.process.heater.ElectricalLoadHeatThermalLoad
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sound.LoopedSound
 import net.minecraft.entity.player.EntityPlayer
@@ -78,7 +77,7 @@ class MotorDescriptor(
 
     init {
         thermalLoadInitializer.setMaximalPower(nominalP.toDouble())
-        voltageLevelColor = VoltageLevelColor.VeryHighVoltage
+        voltageTier = VoltageTier.INDUSTRIAL;
     }
 
     override fun addInformation(stack: ItemStack, player: EntityPlayer, list: MutableList<String>, par4: Boolean) {

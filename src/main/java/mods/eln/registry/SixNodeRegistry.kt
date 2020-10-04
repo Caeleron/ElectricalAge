@@ -7,9 +7,9 @@ import mods.eln.i18n.I18N
 import mods.eln.misc.Direction
 import mods.eln.misc.FunctionTableYProtect
 import mods.eln.misc.IFunction
+import mods.eln.misc.VoltageTier
 import mods.eln.misc.series.SerieEE
 import mods.eln.node.six.SixNodeDescriptor
-import mods.eln.signalinductor.SignalInductorDescriptor
 import mods.eln.sixnode.Amplifier
 import mods.eln.sixnode.AmplifierElement
 import mods.eln.sixnode.AmplifierRender
@@ -37,9 +37,7 @@ import mods.eln.sixnode.batterycharger.BatteryChargerDescriptor
 import mods.eln.sixnode.diode.DiodeDescriptor
 import mods.eln.sixnode.electricalalarm.ElectricalAlarmDescriptor
 import mods.eln.sixnode.electricalbreaker.ElectricalBreakerDescriptor
-import mods.eln.sixnode.electricalcable.ElectricCableDescriptor
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
-import mods.eln.sixnode.electricalcable.ElectricalSignalBusCableElement
+import mods.eln.sixnode.electriccable.ElectricCableDescriptor
 import mods.eln.sixnode.electricaldatalogger.ElectricalDataLoggerDescriptor
 import mods.eln.sixnode.electricaldigitaldisplay.ElectricalDigitalDisplayDescriptor
 import mods.eln.sixnode.electricalentitysensor.ElectricalEntitySensorDescriptor
@@ -83,7 +81,6 @@ import mods.eln.sixnode.logicgate.Xor
 import mods.eln.sixnode.modbusrtu.ModbusRtuDescriptor
 import mods.eln.sixnode.powercapacitorsix.PowerCapacitorSixDescriptor
 import mods.eln.sixnode.powerinductorsix.PowerInductorSixDescriptor
-import mods.eln.sixnode.powersocket.PowerSocketDescriptor
 import mods.eln.sixnode.resistor.ResistorDescriptor
 import mods.eln.sixnode.thermalcable.ThermalCableDescriptor
 import mods.eln.sixnode.thermalsensor.ThermalSensorDescriptor
@@ -104,26 +101,25 @@ class SixNodeRegistry {
             LAMP_SOCKET(4),
             LAMP_SUPPLY(5),
             BATTERY_CHARGER(6),
-            POWER_SOCKET(7),
-            WIRELESS_SIGNAL(8),
-            ELECTRICAL_DATALOGGER(9),
-            ELECTRICAL_RELAY(10),
-            ELECTRICAL_GATE_SOURCE(11),
-            PASSIVE_COMPONENT(12),
-            SWITCH(13),
-            CIRCUIT_BREAKER(14),
-            ELECTRICAL_SENSOR(15),
-            THERMAL_SENSOR(16),
-            ELECTRICAL_VU_METER(17),
-            ELECTRICAL_ALARM(18),
-            ENVIRONMENTAL_SENSOR(19),
-            ELECTRICAL_REDSTONE(20),
-            ELECTRICAL_GATE(21),
-            TREE_RESIN_COLLECTOR(22),
-            MISC(23),
-            LOGIC_GATES(24),
-            ANALOG_CHIPS(25),
-            DEV_TRASH(26)
+            WIRELESS_SIGNAL(7),
+            ELECTRICAL_DATALOGGER(8),
+            ELECTRICAL_RELAY(9),
+            ELECTRICAL_GATE_SOURCE(10),
+            PASSIVE_COMPONENT(11),
+            SWITCH(12),
+            CIRCUIT_BREAKER(13),
+            ELECTRICAL_SENSOR(14),
+            THERMAL_SENSOR(15),
+            ELECTRICAL_VU_METER(16),
+            ELECTRICAL_ALARM(17),
+            ENVIRONMENTAL_SENSOR(18),
+            ELECTRICAL_REDSTONE(19),
+            ELECTRICAL_GATE(20),
+            TREE_RESIN_COLLECTOR(21),
+            MISC(22),
+            LOGIC_GATES(23),
+            ANALOG_CHIPS(24),
+            DEV_TRASH(25)
         }
 
         fun register() {
@@ -134,7 +130,6 @@ class SixNodeRegistry {
             registerLampSocket(SNID.LAMP_SOCKET.id)
             registerLampSupply(SNID.LAMP_SUPPLY.id)
             registerBatteryCharger(SNID.BATTERY_CHARGER.id)
-            registerPowerSocket(SNID.POWER_SOCKET.id)
             registerWirelessSignal(SNID.WIRELESS_SIGNAL.id)
             registerElectricalDataLogger(SNID.ELECTRICAL_DATALOGGER.id)
             registerElectricalRelay(SNID.ELECTRICAL_RELAY.id)
@@ -190,18 +185,12 @@ class SixNodeRegistry {
                     name, Eln.obj.getObj("voltagesource"), false)
                 registerSixNode(id, 0, desc)
             }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Signal Source")
-                val desc = ElectricalSourceDescriptor(
-                    name, Eln.obj.getObj("signalsource"), true)
-                registerSixNode(id, 1, desc)
-            }
         }
 
         private fun registerElectricalCable(id: Int) {
 
             fun createCableRenderDescriptor(size: Double): CableRenderDescriptor {
-                return CableRenderDescriptor("eln", "sprites/cable.png", (1.5 * size).toFloat(), size.toFloat())
+                return CableRenderDescriptor("eln", "sprites/cable.png", (0.5 * 1.5 * size).toFloat(), (0.5 * size).toFloat())
             }
 
             Eln.uninsulatedLowCurrentRender = createCableRenderDescriptor(1.0)
@@ -216,231 +205,117 @@ class SixNodeRegistry {
 
             var name: String
             run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Signal Cable")
-                Eln.stdCableRenderSignal = CableRenderDescriptor("eln",
-                    "sprites/cable.png", 0.95f, 0.95f)
-                val desc = ElectricalCableDescriptor(name, Eln.stdCableRenderSignal,
-                    "For signal transmission.", true)
-                Eln.signalCableDescriptor = desc
-                desc.setPhysicalConstantLikeNormalCable(Eln.SVU, Eln.SVP, 0.02 / 50
-                    * Eln.gateOutputCurrent / Eln.SVII,
-                    Eln.SVU * 1.3, Eln.SVP * 1.2,
-                    0.5,
-                    Eln.cableWarmLimit, -100.0,
-                    Eln.cableHeatingTime, 1.0)
-                registerSixNode(id, 0, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Low Voltage Cable")
-                Eln.stdCableRender50V = CableRenderDescriptor("eln",
-                    "sprites/cable.png", 1.95f, 0.95f)
-                val desc = ElectricalCableDescriptor(name, Eln.stdCableRender50V,
-                    "For low voltage with high current.", false)
-                Eln.lowVoltageCableDescriptor = desc
-                desc.setPhysicalConstantLikeNormalCable(Eln.LVU, Eln.LVP(), 0.2 / 20,
-                    Eln.LVU * 1.3, Eln.LVP() * 1.2, 20.0,
-                    Eln.cableWarmLimit, -100.0,
-                    Eln.cableHeatingTime, Eln.cableThermalConductionTao
-                )
-                registerSixNode(id, 1, desc)
-                Eln.batteryCableDescriptor = desc
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Medium Voltage Cable")
-                Eln.stdCableRender200V = CableRenderDescriptor("eln",
-                    "sprites/cable.png", 2.95f, 0.95f)
-                val desc = ElectricalCableDescriptor(name, Eln.stdCableRender200V,
-                    "miaou", false)
-                Eln.meduimVoltageCableDescriptor = desc
-                desc.setPhysicalConstantLikeNormalCable(Eln.MVU, Eln.MVP(), 0.10 / 20,
-                    Eln.MVU * 1.3, Eln.MVP() * 1.2, 30.0,
-                    Eln.cableWarmLimit, -100.0,
-                    Eln.cableHeatingTime, Eln.cableThermalConductionTao
-                )
-                registerSixNode(id, 2, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "High Voltage Cable")
-                Eln.stdCableRender800V = CableRenderDescriptor("eln",
-                    "sprites/cable.png", 3.95f, 1.95f)
-                val desc = ElectricalCableDescriptor(name, Eln.stdCableRender800V,
-                    "miaou2", false)
-                Eln.highVoltageCableDescriptor = desc
-                desc.setPhysicalConstantLikeNormalCable(Eln.HVU, Eln.HVP(), 0.025 * 5 / 4 / 20,
-                    Eln.HVU * 1.3, Eln.HVP() * 1.2, 40.0,
-                    Eln.cableWarmLimit, -100.0,
-                    Eln.cableHeatingTime, Eln.cableThermalConductionTao
-                )
-                registerSixNode(id, 3, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Very High Voltage Cable")
-                Eln.stdCableRender3200V = CableRenderDescriptor("eln",
-                    "sprites/cableVHV.png", 3.95f, 1.95f)
-                val desc = ElectricalCableDescriptor(name, Eln.stdCableRender3200V,
-                    "miaou2", false)
-                Eln.veryHighVoltageCableDescriptor = desc
-                desc.setPhysicalConstantLikeNormalCable(Eln.VVU, Eln.VVP(), 0.025 * 5 / 4 / 20 / 8,
-                    Eln.VVU * 1.3, Eln.VVP() * 1.2, 40.0,
-                    Eln.cableWarmLimit, -100.0,
-                    Eln.cableHeatingTime, Eln.cableThermalConductionTao
-                )
-                registerSixNode(id, 4, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Creative Cable")
-                Eln.stdCableRenderCreative = CableRenderDescriptor("eln",
-                    "sprites/cablecreative.png", 8.0f, 4.0f)
-                val desc = ElectricalCableDescriptor(name, Eln.stdCableRenderCreative,
-                    "Experience the power of Microresistance", false)
-                Eln.creativeCableDescriptor = desc
-                desc.setPhysicalConstantLikeNormalCable(Eln.VVU, Eln.VVU * Eln.VVP(), 1e-9,
-                    Eln.VVU * 1.3, Eln.VVU * Eln.VVP() * 1.2, 40.0,
-                    Eln.cableWarmLimit, -100.0,
-                    Eln.cableHeatingTime, Eln.cableThermalConductionTao
-                )
-                registerSixNode(id, 5, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Signal Bus Cable")
-                Eln.stdCableRenderSignalBus = CableRenderDescriptor("eln",
-                    "sprites/cable.png", 3.95f, 3.95f)
-                val desc = ElectricalCableDescriptor(name, Eln.stdCableRenderSignalBus,
-                    "For transmitting many signals.", true)
-                Eln.signalBusCableDescriptor = desc
-                desc.setPhysicalConstantLikeNormalCable(Eln.SVU, Eln.SVP, 0.02 / 50
-                    * Eln.gateOutputCurrent / Eln.SVII,
-                    Eln.SVU * 1.3, Eln.SVP * 1.2,
-                    0.5,
-                    Eln.cableWarmLimit, -100.0,
-                    Eln.cableHeatingTime, 1.0)
-                desc.ElementClass = ElectricalSignalBusCableElement::class.java
-                registerSixNode(id, 6, desc)
-            }
-            run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Copper Uninsulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.uninsulatedLowCurrentRender)
-                desc.insulationVoltage = 0.0
-                registerSixNode(id, 7, desc)
+                Eln.uninsulatedLowCurrentCopperCable = ElectricCableDescriptor(name, Eln.uninsulatedLowCurrentRender)
+                Eln.uninsulatedLowCurrentCopperCable.insulationVoltage = 0.0
+                registerSixNode(id, 0, Eln.uninsulatedLowCurrentCopperCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Copper Uninsulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.uninsulatedMediumCurrentRender)
-                desc.insulationVoltage = 0.0
-                registerSixNode(id, 8, desc)
+                Eln.uninsulatedMediumCurrentCopperCable = ElectricCableDescriptor(name, Eln.uninsulatedMediumCurrentRender)
+                Eln.uninsulatedMediumCurrentCopperCable.insulationVoltage = 0.0
+                registerSixNode(id, 1, Eln.uninsulatedMediumCurrentCopperCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "High Current Copper Uninsulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.uninsulatedHighCurrentRender)
-                desc.insulationVoltage = 0.0
-                registerSixNode(id, 9, desc)
+                Eln.uninsulatedHighCurrentCopperCable = ElectricCableDescriptor(name, Eln.uninsulatedHighCurrentRender)
+                Eln.uninsulatedHighCurrentCopperCable.insulationVoltage = 0.0
+                registerSixNode(id, 2, Eln.uninsulatedHighCurrentCopperCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Copper 300v Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.smallInsulationLowCurrentRender)
-                desc.insulationVoltage = 300.0
-                registerSixNode(id, 10, desc)
+                Eln.smallInsulationLowCurrentCopperCable = ElectricCableDescriptor(name, Eln.smallInsulationLowCurrentRender)
+                Eln.smallInsulationLowCurrentCopperCable.insulationVoltage = 300.0
+                registerSixNode(id, 3, Eln.smallInsulationLowCurrentCopperCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Copper 300v Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.smallInsulationMediumCurrentRender)
-                desc.insulationVoltage = 300.0
-                registerSixNode(id, 11, desc)
+                Eln.smallInsulationMediumCurrentCopperCable = ElectricCableDescriptor(name, Eln.smallInsulationMediumCurrentRender)
+                Eln.smallInsulationMediumCurrentCopperCable.insulationVoltage = 300.0
+                registerSixNode(id, 4, Eln.smallInsulationMediumCurrentCopperCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "High Current Copper 300v Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.smallInsulationHighCurrentRender)
-                desc.insulationVoltage = 300.0
-                registerSixNode(id, 12, desc)
+                Eln.smallInsulationHighCurrentCopperCable = ElectricCableDescriptor(name, Eln.smallInsulationHighCurrentRender)
+                Eln.smallInsulationHighCurrentCopperCable.insulationVoltage = 300.0
+                registerSixNode(id, 5, Eln.smallInsulationHighCurrentCopperCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Copper 1kV Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.mediumInsulationLowCurrentRender)
-                desc.insulationVoltage = 1_000.0
-                registerSixNode(id, 13, desc)
+                Eln.mediumInsulationLowCurrentCopperCable = ElectricCableDescriptor(name, Eln.mediumInsulationLowCurrentRender)
+                Eln.mediumInsulationLowCurrentCopperCable.insulationVoltage = 1_000.0
+                registerSixNode(id, 6, Eln.mediumInsulationLowCurrentCopperCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Copper 1kV Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.mediumInsulationMediumCurrentRender)
-                desc.insulationVoltage = 1_000.0
-                registerSixNode(id, 14, desc)
+                Eln.mediumInsulationMediumCurrentCopperCable = ElectricCableDescriptor(name, Eln.mediumInsulationMediumCurrentRender)
+                Eln.mediumInsulationMediumCurrentCopperCable.insulationVoltage = 1_000.0
+                registerSixNode(id, 7, Eln.mediumInsulationMediumCurrentCopperCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Copper 20kV Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.bigInsulationLowCurrentRender)
-                desc.insulationVoltage = 20_000.0
-                registerSixNode(id, 15, desc)
+                Eln.bigInsulationLowCurrentCopperCable = ElectricCableDescriptor(name, Eln.bigInsulationLowCurrentRender)
+                Eln.bigInsulationLowCurrentCopperCable.insulationVoltage = 20_000.0
+                registerSixNode(id, 8, Eln.bigInsulationLowCurrentCopperCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Aluminum Uninsulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.uninsulatedLowCurrentRender, material = "aluminum")
-                desc.insulationVoltage = 0.0
-                registerSixNode(id, 16, desc)
+                Eln.uninsulatedLowCurrentAluminumCable = ElectricCableDescriptor(name, Eln.uninsulatedLowCurrentRender, material = "aluminum")
+                Eln.uninsulatedLowCurrentAluminumCable.insulationVoltage = 0.0
+                registerSixNode(id, 9, Eln.uninsulatedLowCurrentAluminumCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Aluminum Uninsulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.uninsulatedMediumCurrentRender, material = "aluminum")
-                desc.insulationVoltage = 0.0
-                registerSixNode(id, 17, desc)
+                Eln.uninsulatedMediumCurrentAluminumCable = ElectricCableDescriptor(name, Eln.uninsulatedMediumCurrentRender, material = "aluminum")
+                Eln.uninsulatedMediumCurrentAluminumCable.insulationVoltage = 0.0
+                registerSixNode(id, 10, Eln.uninsulatedMediumCurrentAluminumCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "High Current Aluminum Uninsulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.uninsulatedHighCurrentRender, material = "aluminum")
-                desc.insulationVoltage = 0.0
-                registerSixNode(id, 18, desc)
+                Eln.uninsulatedHighCurrentAluminumCable = ElectricCableDescriptor(name, Eln.uninsulatedHighCurrentRender, material = "aluminum")
+                Eln.uninsulatedHighCurrentAluminumCable.insulationVoltage = 0.0
+                registerSixNode(id, 11, Eln.uninsulatedHighCurrentAluminumCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Aluminum 300v Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.smallInsulationLowCurrentRender, material = "aluminum")
-                desc.insulationVoltage = 300.0
-                registerSixNode(id, 19, desc)
+                Eln.smallInsulationLowCurrentAluminumCable = ElectricCableDescriptor(name, Eln.smallInsulationLowCurrentRender, material = "aluminum")
+                Eln.smallInsulationLowCurrentAluminumCable.insulationVoltage = 300.0
+                registerSixNode(id, 12, Eln.smallInsulationLowCurrentAluminumCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Aluminum 300v Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.smallInsulationMediumCurrentRender, material = "aluminum")
-                desc.insulationVoltage = 300.0
-                registerSixNode(id, 20, desc)
+                Eln.smallInsulationMediumCurrentAluminumCable = ElectricCableDescriptor(name, Eln.smallInsulationMediumCurrentRender, material = "aluminum")
+                Eln.smallInsulationMediumCurrentAluminumCable.insulationVoltage = 300.0
+                registerSixNode(id, 13, Eln.smallInsulationMediumCurrentAluminumCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "High Current Aluminum 300v Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.smallInsulationHighCurrentRender, material = "aluminum")
-                desc.insulationVoltage = 300.0
-                registerSixNode(id, 21, desc)
+                Eln.smallInsulationHighCurrentAluminumCable = ElectricCableDescriptor(name, Eln.smallInsulationHighCurrentRender, material = "aluminum")
+                Eln.smallInsulationHighCurrentAluminumCable.insulationVoltage = 300.0
+                registerSixNode(id, 14, Eln.smallInsulationHighCurrentAluminumCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Aluminum 1kV Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.mediumInsulationLowCurrentRender, material = "aluminum")
-                desc.insulationVoltage = 1_000.0
-                registerSixNode(id, 22, desc)
+                Eln.mediumInsulationLowCurrentAluminumCable = ElectricCableDescriptor(name, Eln.mediumInsulationLowCurrentRender, material = "aluminum")
+                Eln.mediumInsulationLowCurrentAluminumCable.insulationVoltage = 1_000.0
+                registerSixNode(id, 15, Eln.mediumInsulationLowCurrentAluminumCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Aluminum 1kV Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.mediumInsulationMediumCurrentRender, material = "aluminum")
-                desc.insulationVoltage = 1_000.0
-                registerSixNode(id, 23, desc)
+                Eln.mediumInsulationMediumCurrentAluminumCable= ElectricCableDescriptor(name, Eln.mediumInsulationMediumCurrentRender, material = "aluminum")
+                Eln.mediumInsulationMediumCurrentAluminumCable.insulationVoltage = 1_000.0
+                registerSixNode(id, 16, Eln.mediumInsulationMediumCurrentAluminumCable)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Aluminum 20kV Insulated Cable")
-                val desc = ElectricCableDescriptor(name, Eln.bigInsulationLowCurrentRender, material = "aluminum")
-                desc.insulationVoltage = 20_000.0
-                registerSixNode(id, 24, desc)
+                Eln.bigInsulationLowCurrentAluminumCable = ElectricCableDescriptor(name, Eln.bigInsulationLowCurrentRender, material = "aluminum")
+                Eln.bigInsulationLowCurrentAluminumCable.insulationVoltage = 20_000.0
+                registerSixNode(id, 17, Eln.bigInsulationLowCurrentAluminumCable)
             }
         }
 
         private fun registerThermalCable(id: Int) {
             var name: String
-            run {
-                name = "Removed from mod Copper Thermal Cable"
-                val desc = ThermalCableDescriptor(name,
-                    (1000 - 20).toDouble(), (-200).toDouble(),
-                    500.0, 2000.0,
-                    2.0, 400.0, 0.1,
-                    CableRenderDescriptor("eln",
-                        "sprites/tex_thermalcablebase.png", 4f, 4f),
-                    "Miaou !")
-                desc.setDefaultIcon("empty-texture")
-                registerSixNode(id, 0, desc)
-            }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Copper Thermal Cable")
                 val desc = ThermalCableDescriptor(name,
@@ -557,12 +432,12 @@ class SixNodeRegistry {
             }
             run {
                 val desc = EmergencyLampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Emergency Lamp"),
-                    Eln.lowVoltageCableDescriptor, (10 * 60 * 10).toDouble(), 10.0, 5.0, 6, Eln.obj.getObj("EmergencyExitLighting"))
+                    Eln.smallInsulationLowCurrentCopperCable, (10 * 60 * 10).toDouble(), 10.0, 5.0, 6, Eln.obj.getObj("EmergencyExitLighting"))
                 registerSixNode(id, 10, desc)
             }
             run {
                 val desc = EmergencyLampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Emergency Lamp"),
-                    Eln.meduimVoltageCableDescriptor, (10 * 60 * 20).toDouble(), 25.0, 10.0, 8, Eln.obj.getObj("EmergencyExitLighting"))
+                    Eln.smallInsulationLowCurrentCopperCable, (10 * 60 * 20).toDouble(), 25.0, 10.0, 8, Eln.obj.getObj("EmergencyExitLighting"))
                 registerSixNode(id, 11, desc)
             }
             run {
@@ -607,8 +482,8 @@ class SixNodeRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Weak 50V Battery Charger")
                 val desc = BatteryChargerDescriptor(
                     name, Eln.obj.getObj("batterychargera"),
-                    Eln.lowVoltageCableDescriptor,
-                    Eln.LVU, 200.0
+                    Eln.smallInsulationLowCurrentCopperCable,
+                    VoltageTier.LOW.voltage, 200.0
                 )
                 registerSixNode(id, 0, desc)
             }
@@ -616,8 +491,8 @@ class SixNodeRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "50V Battery Charger")
                 val desc = BatteryChargerDescriptor(
                     name, Eln.obj.getObj("batterychargera"),
-                    Eln.lowVoltageCableDescriptor,
-                    Eln.LVU, 400.0
+                    Eln.smallInsulationLowCurrentCopperCable,
+                    VoltageTier.LOW.voltage, 400.0
                 )
                 registerSixNode(id, 1, desc)
             }
@@ -625,32 +500,10 @@ class SixNodeRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "200V Battery Charger")
                 val desc = BatteryChargerDescriptor(
                     name, Eln.obj.getObj("batterychargera"),
-                    Eln.meduimVoltageCableDescriptor,
-                    Eln.MVU, 1000.0
+                    Eln.smallInsulationMediumCurrentCopperCable,
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 1000.0
                 )
                 registerSixNode(id, 2, desc)
-            }
-        }
-
-        private fun registerPowerSocket(id: Int) {
-            var name: String
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "50V Power Socket")
-                val desc = PowerSocketDescriptor(
-                    0, name, Eln.obj.getObj("PowerSocket"),
-                    10
-                )
-                desc.setPlaceDirection(arrayOf(Direction.XP, Direction.XN, Direction.ZP, Direction.ZN))
-                registerSixNode(id, 0, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "200V Power Socket")
-                val desc = PowerSocketDescriptor(
-                    1, name, Eln.obj.getObj("PowerSocket"),
-                    10
-                )
-                desc.setPlaceDirection(arrayOf(Direction.XP, Direction.XN, Direction.ZP, Direction.ZN))
-                registerSixNode(id, 1, desc)
             }
         }
 
@@ -709,39 +562,25 @@ class SixNodeRegistry {
         private fun registerElectricalRelay(id: Int) {
             var name: String
             run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Low Voltage Relay")
+                name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Relay")
+                val desc = ElectricalRelayDescriptor(
+                    name, Eln.obj.getObj("RelaySmall"),
+                    Eln.smallInsulationLowCurrentCopperCable)
+                registerSixNode(id, 4, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Relay")
                 val desc = ElectricalRelayDescriptor(
                     name, Eln.obj.getObj("RelayBig"),
-                    Eln.lowVoltageCableDescriptor)
+                    Eln.smallInsulationMediumCurrentCopperCable)
                 registerSixNode(id, 0, desc)
             }
             run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Medium Voltage Relay")
-                val desc = ElectricalRelayDescriptor(
-                    name, Eln.obj.getObj("RelayBig"),
-                    Eln.meduimVoltageCableDescriptor)
-                registerSixNode(id, 1, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "High Voltage Relay")
+                name = I18N.TR_NAME(I18N.Type.NONE, "High Current Relay")
                 val desc = ElectricalRelayDescriptor(
                     name, Eln.obj.getObj("relay800"),
-                    Eln.highVoltageCableDescriptor)
+                    Eln.smallInsulationHighCurrentCopperCable)
                 registerSixNode(id, 2, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Very High Voltage Relay")
-                val desc = ElectricalRelayDescriptor(
-                    name, Eln.obj.getObj("relay800"),
-                    Eln.veryHighVoltageCableDescriptor)
-                registerSixNode(id, 3, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Signal Relay")
-                val desc = ElectricalRelayDescriptor(
-                    name, Eln.obj.getObj("RelaySmall"),
-                    Eln.signalCableDescriptor)
-                registerSixNode(id, 4, desc)
             }
         }
 
@@ -762,20 +601,28 @@ class SixNodeRegistry {
                 registerSixNode(id, 1, desc)
             }
             run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Signal Switch with LED")
+                val desc = ElectricalSwitchDescriptor(name, Eln.smallInsulationLowCurrentRender,
+                    Eln.obj.getObj("ledswitch"), VoltageTier.TTL.voltage, 0.5, 0.02,
+                    VoltageTier.TTL.voltage * 1.5, 0.5 * 1.2,
+                    Eln.cableThermalLoadInitializer.copy(), true)
+                registerSixNode(id, 2, desc)
+            }
+            run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Signal Button")
                 val desc = ElectricalGateSourceDescriptor(name, ledswitch, true, "button")
                 desc.setWithAutoReset()
-                registerSixNode(id, 2, desc)
+                registerSixNode(id, 3, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Wireless Button")
                 val desc = WirelessSignalSourceDescriptor(name, ledswitch, Eln.wirelessTxRange, true)
-                registerSixNode(id, 3, desc)
+                registerSixNode(id, 4, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Wireless Switch")
                 val desc = WirelessSignalSourceDescriptor(name, ledswitch, Eln.wirelessTxRange, false)
-                registerSixNode(id, 4, desc)
+                registerSixNode(id, 5, desc)
             }
         }
 
@@ -794,7 +641,7 @@ class SixNodeRegistry {
                     10.0,
                     1.0, 10.0,
                     Eln.sixNodeThermalLoadInitializer.copy(),
-                    Eln.lowVoltageCableDescriptor,
+                    Eln.smallInsulationLowCurrentCopperCable,
                     Eln.obj.getObj("PowerElectricPrimitives"))
                 registerSixNode(id, 0, desc)
             }
@@ -808,7 +655,7 @@ class SixNodeRegistry {
                     25.0,
                     1.0, 25.0,
                     Eln.sixNodeThermalLoadInitializer.copy(),
-                    Eln.lowVoltageCableDescriptor,
+                    Eln.smallInsulationLowCurrentCopperCable,
                     Eln.obj.getObj("PowerElectricPrimitives"))
                 registerSixNode(id, 1, desc)
             }
@@ -818,17 +665,9 @@ class SixNodeRegistry {
                 val desc = DiodeDescriptor(name,
                     function, 0.1,
                     1.0, 0.1,
-                    Eln.sixNodeThermalLoadInitializer.copy(), Eln.signalCableDescriptor,
+                    Eln.sixNodeThermalLoadInitializer.copy(), Eln.smallInsulationLowCurrentCopperCable,
                     Eln.obj.getObj("PowerElectricPrimitives"))
                 registerSixNode(id, 2, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Signal 20H inductor")
-                val desc = SignalInductorDescriptor(
-                    name, 20.0, Eln.lowVoltageCableDescriptor
-                )
-                desc.setDefaultIcon("empty-texture")
-                registerSixNode(id, 3, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Power Capacitor")
@@ -869,53 +708,18 @@ class SixNodeRegistry {
 
         private fun registerSwitch(id: Int) {
             var name: String
+
             run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Very High Voltage Switch")
-                val desc = ElectricalSwitchDescriptor(name, Eln.stdCableRender3200V,
-                    Eln.obj.getObj("HighVoltageSwitch"), Eln.VVU, Eln.VVP(), Eln.veryHighVoltageCableDescriptor.electricalRs * 2,
-                    Eln.VVU * 1.5, Eln.VVP() * 1.2,
-                    Eln.cableThermalLoadInitializer.copy(), false)
+                name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Switch")
+                val desc = ElectricalSwitchDescriptor(name, Eln.smallInsulationLowCurrentRender,
+                Eln.obj.getObj("LowVoltageSwitch"), 240.0, 240.0 * 20, 0.1, 1000.0, 240.0 * 25, Eln.cableThermalLoadInitializer.copy(), false)
                 registerSixNode(id, 0, desc)
             }
             run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "High Voltage Switch")
-                val desc = ElectricalSwitchDescriptor(name, Eln.stdCableRender800V,
-                    Eln.obj.getObj("HighVoltageSwitch"), Eln.HVU, Eln.HVP(), Eln.highVoltageCableDescriptor.electricalRs * 2,
-                    Eln.HVU * 1.5, Eln.HVP() * 1.2,
-                    Eln.cableThermalLoadInitializer.copy(), false)
-                registerSixNode(id, 1, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Low Voltage Switch")
-                val desc = ElectricalSwitchDescriptor(name, Eln.stdCableRender50V,
-                    Eln.obj.getObj("LowVoltageSwitch"), Eln.LVU, Eln.LVP(), Eln.lowVoltageCableDescriptor.electricalRs * 2,
-                    Eln.LVU * 1.5, Eln.LVP() * 1.2,
-                    Eln.cableThermalLoadInitializer.copy(), false)
+                name = I18N.TR_NAME(I18N.Type.NONE, "High Current Switch")
+                val desc = ElectricalSwitchDescriptor(name, Eln.smallInsulationHighCurrentRender,
+                    Eln.obj.getObj("HighVoltageSwitch"), 13_200.0, 13_200.0 * 10, 0.1, 13_200.0, 10000.0 * 12, Eln.cableThermalLoadInitializer.copy(), false)
                 registerSixNode(id, 2, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Medium Voltage Switch")
-                val desc = ElectricalSwitchDescriptor(name, Eln.stdCableRender200V,
-                    Eln.obj.getObj("LowVoltageSwitch"), Eln.MVU, Eln.MVP(), Eln.meduimVoltageCableDescriptor.electricalRs * 2,
-                    Eln.MVU * 1.5, Eln.MVP() * 1.2,
-                    Eln.cableThermalLoadInitializer.copy(), false)
-                registerSixNode(id, 3, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Signal Switch")
-                val desc = ElectricalSwitchDescriptor(name, Eln.smallInsulationLowCurrentRender,
-                    Eln.obj.getObj("LowVoltageSwitch"), Eln.SVU, Eln.SVP, 0.02,
-                    Eln.SVU * 1.5, Eln.SVP * 1.2,
-                    Eln.cableThermalLoadInitializer.copy(), true)
-                registerSixNode(id, 4, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Signal Switch with LED")
-                val desc = ElectricalSwitchDescriptor(name, Eln.smallInsulationLowCurrentRender,
-                    Eln.obj.getObj("ledswitch"), Eln.SVU, Eln.SVP, 0.02,
-                    Eln.SVU * 1.5, Eln.SVP * 1.2,
-                    Eln.cableThermalLoadInitializer.copy(), true)
-                registerSixNode(id, 5, desc)
             }
         }
 

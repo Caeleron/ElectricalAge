@@ -1,7 +1,6 @@
 package mods.eln.transparentnode.electricalmachine;
 
 import mods.eln.cable.CableRenderDescriptor;
-import mods.eln.gui.GuiLabel;
 import mods.eln.misc.*;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.ElectricalLoad;
@@ -9,7 +8,6 @@ import mods.eln.sim.ElectricalStackMachineProcess;
 import mods.eln.sim.ThermalLoad;
 import mods.eln.sim.ThermalLoadInitializer;
 import mods.eln.sim.mna.component.Resistor;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import mods.eln.sound.SoundCommand;
 import net.minecraft.entity.item.EntityItem;
@@ -17,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -53,7 +50,7 @@ public class ElectricalMachineDescriptor extends TransparentNodeDescriptor {
         resistorR = nominalU * nominalU / nominalP;
         this.recipe = recipe;
 
-        voltageLevelColor = VoltageLevelColor.fromCable(cable);
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     public ElectricalMachineDescriptor setRunningSound(String runningSound) {

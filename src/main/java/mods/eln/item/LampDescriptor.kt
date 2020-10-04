@@ -5,10 +5,10 @@ import mods.eln.i18n.I18N
 import mods.eln.misc.IConfigSharing
 import mods.eln.misc.Utils
 import mods.eln.misc.VoltageLevelColor
+import mods.eln.misc.VoltageTierHelpers
 import mods.eln.sim.mna.component.Resistor
 import mods.eln.sixnode.lampsocket.LampSocketType
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import java.io.DataInputStream
@@ -122,6 +122,6 @@ class LampDescriptor(
             Type.LED -> minimalU = nominalU * 0.75
         }
         Eln.configShared.add(this)
-        voltageLevelColor = VoltageLevelColor.fromVoltage(nominalU)
+        voltageTier = VoltageTierHelpers.fromVoltage(nominalU)
     }
 }

@@ -2,14 +2,13 @@ package mods.eln.item
 
 import mods.eln.misc.Obj3D
 import mods.eln.misc.VoltageLevelColor
+import mods.eln.misc.VoltageTier
+import mods.eln.misc.VoltageTierHelpers
 import mods.eln.misc.preserveMatrix
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sixnode.genericcable.GenericCableDescriptor
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraftforge.client.IItemRenderer
 import org.lwjgl.opengl.GL11
-import javax.xml.crypto.Data
 
 class ElectricalFuseDescriptor(name: String, val cableDescriptor: GenericCableDescriptor?, obj: Obj3D?) :
     GenericItemUsingDamageDescriptorUpgrade(name) {
@@ -23,13 +22,7 @@ class ElectricalFuseDescriptor(name: String, val cableDescriptor: GenericCableDe
     private val fuse = obj?.getPart("Fuse")
 
     init {
-        if (cableDescriptor != null) {
-            setDefaultIcon("electricalfuse")
-            voltageLevelColor = VoltageLevelColor.fromCable(cableDescriptor)
-        } else {
-            setDefaultIcon("blownelectricalfuse")
-            voltageLevelColor = VoltageLevelColor.Neutral
-        }
+        voltageTier = VoltageTier.NEUTRAL
     }
 
     override fun shouldUseRenderHelper(type: IItemRenderer.ItemRenderType?, item: ItemStack?,
@@ -44,7 +37,7 @@ class ElectricalFuseDescriptor(name: String, val cableDescriptor: GenericCableDe
                     GL11.glRotatef(150f, 0.6f, 1f, 0f)
                     GL11.glScalef(1.5f, 1.5f, 1.5f)
                     if (fuseType != null) {
-                        voltageLevelColor.setGLColor()
+                        VoltageTierHelpers.setGLColor(voltageTier)
                         fuseType.draw()
                         GL11.glColor3f(1f, 1f, 1f)
                     }

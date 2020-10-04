@@ -3,7 +3,6 @@ package mods.eln.transparentnode.waterturbine;
 import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,7 +10,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -43,7 +41,7 @@ public class WaterTurbineDescriptor extends TransparentNodeDescriptor {
             speed = 60;
         }
 
-        voltageLevelColor = VoltageLevelColor.LowVoltage;
+        voltageTier = VoltageTier.LOW;
     }
 
     Coordonate waterCoord;

@@ -4,15 +4,12 @@ import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.ElectricalLoad;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -97,7 +94,7 @@ public class AutoMinerDescriptor extends TransparentNodeDescriptor {
             ledsPStateDefault[idx] = Math.random() > 0.5;
         }
 
-        voltageLevelColor = VoltageLevelColor.HighVoltage;
+        voltageTier = VoltageTier.INDUSTRIAL;
     }
 
     public void applyTo(ElectricalLoad load) {

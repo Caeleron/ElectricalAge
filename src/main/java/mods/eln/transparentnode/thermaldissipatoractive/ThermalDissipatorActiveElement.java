@@ -5,6 +5,7 @@ import mods.eln.i18n.I18N;
 import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Utils;
+import mods.eln.node.NodeBase;
 import mods.eln.node.NodePeriodicPublishProcess;
 import mods.eln.node.transparent.TransparentNode;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
@@ -68,7 +69,7 @@ public class ThermalDissipatorActiveElement extends TransparentNodeElement {
     @Override
     public ThermalLoad getThermalLoad(Direction side, LRDU lrdu) {
 
-        if (side == Direction.YN || side == Direction.YP || lrdu != lrdu.Down) return null;
+        if (side == Direction.YN || side == Direction.YP || lrdu != LRDU.Down) return null;
         if (side == front || side == front.getInverse()) return null;
         return thermalLoad;
     }
@@ -76,9 +77,9 @@ public class ThermalDissipatorActiveElement extends TransparentNodeElement {
     @Override
     public int getConnectionMask(Direction side, LRDU lrdu) {
 
-        if (side == Direction.YN || side == Direction.YP || lrdu != lrdu.Down) return 0;
-        if (side == front || side == front.getInverse()) return node.MASK_ELECTRIC;
-        return node.MASK_THERMAL;
+        if (side == Direction.YN || side == Direction.YP || lrdu != LRDU.Down) return 0;
+        if (side == front || side == front.getInverse()) return NodeBase.MASK_ELECTRIC;
+        return NodeBase.MASK_THERMAL;
     }
 
     @Override

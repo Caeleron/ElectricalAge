@@ -19,8 +19,6 @@ import mods.eln.sim.nbt.NbtThermalLoad
 import mods.eln.sim.process.destruct.ThermalLoadWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sim.process.heater.ElectricalLoadHeatThermalLoad
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
-import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import org.lwjgl.opengl.GL11
@@ -32,7 +30,6 @@ import java.io.DataOutputStream
 class GeneratorDescriptor(
     name: String,
     obj: Obj3D,
-    cable: GenericCableDescriptor,
     nominalRads: Float,
     nominalU: Float,
     powerOutPerDeltaU: Float,
@@ -41,7 +38,6 @@ class GeneratorDescriptor(
     SimpleShaftDescriptor(name, GeneratorElement::class, GeneratorRender::class, EntityMetaTag.Basic) {
 
     val RtoU = LinearFunction(0f, 0f, nominalRads, nominalU)
-    val cable = cable
     val thermalLoadInitializer = thermalLoadInitializer
     val powerOutPerDeltaU = powerOutPerDeltaU
     val nominalRads = nominalRads
@@ -53,7 +49,7 @@ class GeneratorDescriptor(
     init {
         thermalLoadInitializer.setMaximalPower(nominalP.toDouble() * (1 - generationEfficiency))
 
-        voltageLevelColor = VoltageLevelColor.VeryHighVoltage
+        voltageTier = VoltageTier.INDUSTRIAL;
     }
 
     override val obj = obj
@@ -172,9 +168,9 @@ class GeneratorElement(node: TransparentNode, desc_: TransparentNodeDescriptor) 
         electricalComponentList.add(inputToPositiveResistor)
 
         electricalProcessList.add(shaftProcess)
-        desc.cable.applyTo(inputLoad)
-        desc.cable.applyTo(inputToPositiveResistor)
-        desc.cable.applyTo(positiveLoad)
+        Eln.uninsulatedHighCurrentCopperCable.applyTo(inputLoad)
+        Eln.uninsulatedHighCurrentCopperCable.applyTo(inputToPositiveResistor)
+        Eln.uninsulatedHighCurrentCopperCable.applyTo(positiveLoad)
 
         desc.thermalLoadInitializer.applyTo(thermal)
         desc.thermalLoadInitializer.applyTo(thermalLoadWatchDog)

@@ -44,7 +44,7 @@ public class ElectricalWindSensorRender extends SixNodeElementRender {
 
     @Override
     public CableRenderDescriptor getCableRender(LRDU lrdu) {
-        return Eln.instance.signalCableDescriptor.render;
+        return Eln.smallInsulationLowCurrentRender;
     }
 
     @Override

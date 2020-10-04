@@ -4,14 +4,12 @@ import mods.eln.ghost.GhostGroup;
 import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -71,7 +69,7 @@ public class WindTurbineDescriptor extends TransparentNodeDescriptor {
             halo = null;
         }
 
-        voltageLevelColor = VoltageLevelColor.LowVoltage;
+        voltageTier = VoltageTier.HIGH_HOUSEHOLD;
     }
 
     public void setGhostGroup(GhostGroup ghostGroup) {

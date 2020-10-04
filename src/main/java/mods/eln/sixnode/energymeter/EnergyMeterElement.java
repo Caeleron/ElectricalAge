@@ -5,6 +5,7 @@ import mods.eln.i18n.I18N;
 import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Utils;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.NodeBase;
 import mods.eln.node.six.SixNode;
 import mods.eln.node.six.SixNodeDescriptor;
@@ -18,7 +19,6 @@ import mods.eln.sim.mna.component.ResistorSwitch;
 import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.sim.process.destruct.VoltageStateWatchDog;
 import mods.eln.sim.process.destruct.WorldExplosion;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import mods.eln.sound.SoundCommand;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,8 +46,6 @@ public class EnergyMeterElement extends SixNodeElement {
     public ResistorSwitch shunt = new ResistorSwitch("shunt", aLoad, bLoad);
 
     SixNodeElementInventory inventory = new SixNodeElementInventory(1, 64, this);
-
-    public float voltageMax = (float) Eln.SVU, voltageMin = 0;
 
     int energyUnit = 1, timeUnit = 0;
 
@@ -126,7 +124,7 @@ public class EnergyMeterElement extends SixNodeElement {
 
     @Override
     public Map<String, String> getWaila() {
-        Map<String, String> info = new HashMap<String, String>();
+        Map<String, String> info = new HashMap<>();
         info.put(I18N.tr("Power"), Utils.plotPower("", aLoad.getU() * aLoad.getI()));
         switch (mod) {
             case ModCounter:

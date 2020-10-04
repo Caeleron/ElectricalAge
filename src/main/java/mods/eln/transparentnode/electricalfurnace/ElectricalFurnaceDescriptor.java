@@ -3,13 +3,12 @@ package mods.eln.transparentnode.electricalfurnace;
 import mods.eln.Eln;
 import mods.eln.misc.IFunction;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.ThermalLoad;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class ElectricalFurnaceDescriptor extends TransparentNodeDescriptor {
         this.thermalPlostfT = thermalPlostfT;
         this.thermalC = thermalC;
 
-        voltageLevelColor = VoltageLevelColor.Neutral;
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     public void applyTo(ThermalLoad load) {

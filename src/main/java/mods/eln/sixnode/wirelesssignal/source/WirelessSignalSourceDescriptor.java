@@ -1,15 +1,14 @@
 package mods.eln.sixnode.wirelesssignal.source;
 
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.sixnode.electricalgatesource.ElectricalGateSourceRenderObj;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class WirelessSignalSourceDescriptor extends SixNodeDescriptor {
         this.autoReset = autoReset;
         this.render = render;
 
-        voltageLevelColor = VoltageLevelColor.SignalVoltage;
+        voltageTier = VoltageTier.TTL;
     }
 
     @Override

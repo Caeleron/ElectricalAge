@@ -14,7 +14,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -61,7 +60,7 @@ public class SolarPanelDescriptor extends TransparentNodeDescriptor {
 
         canRotate = alphaMax != alphaMin;
 
-        voltageLevelColor = VoltageLevelColor.fromVoltage(electricalUmax);
+        voltageTier = VoltageTierHelpers.Companion.fromVoltage(electricalUmax);
     }
 
     CableRenderDescriptor cableRender;

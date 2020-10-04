@@ -41,6 +41,7 @@ import mods.eln.item.regulator.RegulatorAnalogDescriptor
 import mods.eln.item.regulator.RegulatorOnOffDescriptor
 import mods.eln.mechanical.ClutchPinItem
 import mods.eln.mechanical.ClutchPlateItem
+import mods.eln.misc.VoltageTier
 import mods.eln.sixnode.electricaldatalogger.DataLogsPrintDescriptor
 import mods.eln.sixnode.lampsocket.LampSocketType
 import mods.eln.sixnode.wirelesssignal.WirelessSignalAnalyserItemDescriptor
@@ -239,118 +240,99 @@ class ItemRegistry {
         private fun registerHeatingCorp(id: Int) {
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Copper Heating Corp"),
-                    Eln.LVU, 150.0,
-                    190.0,
-                    Eln.lowVoltageCableDescriptor
-                )
+                    VoltageTier.LOW.voltage, 150.0,
+                    190.0)
                 registerItem(id, 0, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "50V Copper Heating Corp"),
-                    Eln.LVU, 250.0,
-                    320.0,
-                    Eln.lowVoltageCableDescriptor)
+                    VoltageTier.LOW.voltage, 250.0,
+                    320.0)
                 registerItem(id, 1, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 200V Copper Heating Corp"),
-                    Eln.MVU, 400.0,
-                    500.0,
-                    Eln.meduimVoltageCableDescriptor)
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 400.0,
+                    500.0)
                 registerItem(id, 2, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "200V Copper Heating Corp"),
-                    Eln.MVU, 600.0,
-                    750.0,
-                    Eln.highVoltageCableDescriptor)
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 600.0,
+                    750.0)
                 registerItem(id, 3, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Iron Heating Corp"),
-                    Eln.LVU, 180.0,
-                    225.0,
-                    Eln.lowVoltageCableDescriptor
-                )
+                    VoltageTier.LOW.voltage, 180.0,
+                    225.0)
                 registerItem(id, 4, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "50V Iron Heating Corp"),
-                    Eln.LVU, 375.0,
-                    480.0,
-                    Eln.lowVoltageCableDescriptor)
+                    VoltageTier.LOW.voltage, 375.0,
+                    480.0)
                 registerItem(id, 5, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 200V Iron Heating Corp"),
-                    Eln.MVU, 600.0,
-                    750.0,
-                    Eln.meduimVoltageCableDescriptor)
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 600.0,
+                    750.0)
                 registerItem(id, 6, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "200V Iron Heating Corp"),
-                    Eln.MVU, 900.0,
-                    1050.0,
-                    Eln.highVoltageCableDescriptor)
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 900.0,
+                    1050.0)
                 registerItem(id, 7, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Tungsten Heating Corp"),
-                    Eln.LVU, 240.0,
-                    300.0,
-                    Eln.lowVoltageCableDescriptor
-                )
+                    VoltageTier.LOW.voltage, 240.0,
+                    300.0)
                 registerItem(id, 8, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "50V Tungsten Heating Corp"),
-                    Eln.LVU, 500.0,
-                    640.0,
-                    Eln.lowVoltageCableDescriptor)
+                    VoltageTier.LOW.voltage, 500.0,
+                    640.0)
                 registerItem(id, 9, element)
             }
             run {
                 val element = HeatingCorpElement(
                     I18N.TR_NAME(I18N.Type.NONE, "Small 200V Tungsten Heating Corp"),
-                    Eln.MVU, 800.0,
-                    1000.0,
-                    Eln.meduimVoltageCableDescriptor)
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 800.0,
+                    1000.0)
                 registerItem(id, 10, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "200V Tungsten Heating Corp"),
-                    Eln.MVU, 1200.0,
-                    1500.0,
-                    Eln.highVoltageCableDescriptor)
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 1200.0,
+                    1500.0)
                 registerItem(id, 11, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 800V Tungsten Heating Corp"),
-                    Eln.HVU, 3600.0,
-                    4800.0,
-                    Eln.veryHighVoltageCableDescriptor)
+                    VoltageTier.HIGH_HOUSEHOLD.voltage, 3600.0,
+                    4800.0)
                 registerItem(id, 12, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "800V Tungsten Heating Corp"),
-                    Eln.HVU, 4812.0,
-                    6015.0,
-                    Eln.veryHighVoltageCableDescriptor)
+                    VoltageTier.HIGH_HOUSEHOLD.voltage, 4812.0,
+                    6015.0)
                 registerItem(id, 13, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "Small 3.2kV Tungsten Heating Corp"),
-                    Eln.VVU, 4000.0,
-                    6000.0,
-                    Eln.veryHighVoltageCableDescriptor)
+                    VoltageTier.INDUSTRIAL.voltage, 4000.0,
+                    6000.0)
                 registerItem(id, 14, element)
             }
             run {
                 val element = HeatingCorpElement(I18N.TR_NAME(I18N.Type.NONE, "3.2kV Tungsten Heating Corp"),
-                    Eln.VVU, 12000.0,
-                    15000.0,
-                    Eln.veryHighVoltageCableDescriptor)
+                    VoltageTier.INDUSTRIAL.voltage, 12000.0,
+                    15000.0)
                 registerItem(id, 15, element)
             }
         }
@@ -384,7 +366,7 @@ class ItemRegistry {
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Incandescent Light Bulb"),
                     "incandescentironlamp", LampDescriptor.Type.INCANDESCENT,
-                    LampSocketType.Douille, Eln.LVU, lightPower[12],
+                    LampSocketType.Douille, VoltageTier.LOW.voltage, lightPower[12],
                     lightLevel[12], Eln.incandescentLampLife, standardGrowRate
                 )
                 registerItem(id, 0, element)
@@ -392,7 +374,7 @@ class ItemRegistry {
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Incandescent Light Bulb"),
                     "incandescentironlamp", LampDescriptor.Type.INCANDESCENT,
-                    LampSocketType.Douille, Eln.LVU, lightPower[14],
+                    LampSocketType.Douille, VoltageTier.LOW.voltage, lightPower[14],
                     lightLevel[14], Eln.incandescentLampLife, standardGrowRate
                 )
                 registerItem(id, 1, element)
@@ -400,7 +382,7 @@ class ItemRegistry {
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Incandescent Light Bulb"),
                     "incandescentironlamp", LampDescriptor.Type.INCANDESCENT,
-                    LampSocketType.Douille, Eln.MVU, lightPower[14],
+                    LampSocketType.Douille, VoltageTier.LOW_HOUSEHOLD.voltage, lightPower[14],
                     lightLevel[14], Eln.incandescentLampLife, standardGrowRate
                 )
                 registerItem(id, 2, element)
@@ -409,7 +391,7 @@ class ItemRegistry {
                 val element = LampDescriptor(
                     I18N.TR_NAME(I18N.Type.NONE, "Small 50V Carbon Incandescent Light Bulb"),
                     "incandescentcarbonlamp", LampDescriptor.Type.INCANDESCENT,
-                    LampSocketType.Douille, Eln.LVU, lightPower[11],
+                    LampSocketType.Douille, VoltageTier.LOW.voltage, lightPower[11],
                     lightLevel[11], Eln.carbonLampLife, standardGrowRate
                 )
                 registerItem(id, 3, element)
@@ -417,7 +399,7 @@ class ItemRegistry {
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Carbon Incandescent Light Bulb"),
                     "incandescentcarbonlamp", LampDescriptor.Type.INCANDESCENT,
-                    LampSocketType.Douille, Eln.LVU, lightPower[13],
+                    LampSocketType.Douille, VoltageTier.LOW.voltage, lightPower[13],
                     lightLevel[13], Eln.carbonLampLife, standardGrowRate
                 )
                 registerItem(id, 4, element)
@@ -425,7 +407,7 @@ class ItemRegistry {
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Small 50V Economic Light Bulb"),
                     "fluorescentlamp", LampDescriptor.Type.ECO,
-                    LampSocketType.Douille, Eln.LVU, lightPower[12]
+                    LampSocketType.Douille, VoltageTier.LOW.voltage, lightPower[12]
                     * economicPowerFactor,
                     lightLevel[12], Eln.economicLampLife, standardGrowRate
                 )
@@ -434,7 +416,7 @@ class ItemRegistry {
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Economic Light Bulb"),
                     "fluorescentlamp", LampDescriptor.Type.ECO,
-                    LampSocketType.Douille, Eln.LVU, lightPower[14]
+                    LampSocketType.Douille, VoltageTier.LOW.voltage, lightPower[14]
                     * economicPowerFactor,
                     lightLevel[14], Eln.economicLampLife, standardGrowRate
                 )
@@ -443,7 +425,7 @@ class ItemRegistry {
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Economic Light Bulb"),
                     "fluorescentlamp", LampDescriptor.Type.ECO,
-                    LampSocketType.Douille, Eln.MVU, lightPower[14]
+                    LampSocketType.Douille, VoltageTier.LOW_HOUSEHOLD.voltage, lightPower[14]
                     * economicPowerFactor,
                     lightLevel[14], Eln.economicLampLife, standardGrowRate
                 )
@@ -452,7 +434,7 @@ class ItemRegistry {
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Farming Lamp"),
                     "farminglamp", LampDescriptor.Type.INCANDESCENT,
-                    LampSocketType.Douille, Eln.LVU, 120.0,
+                    LampSocketType.Douille, VoltageTier.LOW.voltage, 120.0,
                     lightLevel[15], Eln.incandescentLampLife, 0.50
                 )
                 registerItem(id, 8, element)
@@ -460,7 +442,7 @@ class ItemRegistry {
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Farming Lamp"),
                     "farminglamp", LampDescriptor.Type.INCANDESCENT,
-                    LampSocketType.Douille, Eln.MVU, 120.0,
+                    LampSocketType.Douille, VoltageTier.LOW_HOUSEHOLD.voltage, 120.0,
                     lightLevel[15], Eln.incandescentLampLife, 0.50
                 )
                 registerItem(id, 9, element)
@@ -468,15 +450,15 @@ class ItemRegistry {
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V LED Bulb"),
                     "ledlamp", LampDescriptor.Type.LED,
-                    LampSocketType.Douille, Eln.LVU, lightPower[14] / 2,
+                    LampSocketType.Douille, VoltageTier.LOW.voltage, lightPower[14] / 2,
                     lightLevel[14], Eln.ledLampLife, standardGrowRate
                 )
                 registerItem(id, 10, element)
             }
             run {
                 val element = LampDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V LED Bulb"),
-                    "ledlamp", LampDescriptor.Type.LED,
-                    LampSocketType.Douille, Eln.MVU, lightPower[14] / 2,
+                    "ledlamp", LampDescriptor.Type.LED, 
+                    LampSocketType.Douille, VoltageTier.LOW_HOUSEHOLD.voltage, lightPower[14] / 2,
                     lightLevel[14], Eln.ledLampLife, standardGrowRate
                 )
                 registerItem(id, 11, element)
@@ -1055,7 +1037,7 @@ class ItemRegistry {
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Dielectric")
-                val desc = DielectricItem(name, Eln.LVU)
+                val desc = DielectricItem(name, VoltageTier.LOW.voltage)
                 registerItem(id, 24, desc)
             }
 
@@ -1179,24 +1161,9 @@ class ItemRegistry {
         private fun registerFuses(id: Int) {
             var name: String
             run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for low voltage cables")
-                val desc = ElectricalFuseDescriptor(name, Eln.lowVoltageCableDescriptor, Eln.obj.getObj("ElectricalFuse"))
+                name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse")
+                val desc = ElectricalFuseDescriptor(name, Eln.smallInsulationMediumCurrentCopperCable, Eln.obj.getObj("ElectricalFuse"))
                 registerItem(id, 0, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for medium voltage cables")
-                val desc = ElectricalFuseDescriptor(name, Eln.meduimVoltageCableDescriptor, Eln.obj.getObj("ElectricalFuse"))
-                registerItem(id, 1, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for high voltage cables")
-                val desc = ElectricalFuseDescriptor(name, Eln.highVoltageCableDescriptor, Eln.obj.getObj("ElectricalFuse"))
-                registerItem(id, 2, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Lead Fuse for very high voltage cables")
-                val desc = ElectricalFuseDescriptor(name, Eln.veryHighVoltageCableDescriptor, Eln.obj.getObj("ElectricalFuse"))
-                registerItem(id, 3, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Blown Lead Fuse")

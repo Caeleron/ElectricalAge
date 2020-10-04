@@ -4,21 +4,19 @@ import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.UtilsClient;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.mna.component.Resistor;
 import mods.eln.sim.mna.misc.MnaConst;
 import mods.eln.sim.nbt.NbtElectricalLoad;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public class EggIncubatorDescriptor extends TransparentNodeDescriptor {
@@ -52,7 +50,7 @@ public class EggIncubatorDescriptor extends TransparentNodeDescriptor {
             lampf = obj.getPart("lampf");
         }
 
-        voltageLevelColor = VoltageLevelColor.fromCable(cable);
+        voltageTier = VoltageTier.LOW;
     }
 
     @Override

@@ -20,7 +20,6 @@ import mods.eln.sim.nbt.NbtElectricalGateOutputProcess;
 import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.sim.process.destruct.VoltageStateWatchDog;
 import mods.eln.sim.process.destruct.WorldExplosion;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.electricaldatalogger.DataLogs;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
@@ -201,7 +200,7 @@ public class ElectricalSensorElement extends SixNodeElement implements IConfigur
 
     @Override
     public void initialize() {
-        Eln.instance.signalCableDescriptor.applyTo(outputGate);
+        Eln.smallInsulationLowCurrentCopperCable.applyTo(outputGate);
         computeElectricalLoad();
         Eln.applySmallRs(aLoad);
         if (bLoad != null) Eln.applySmallRs(bLoad);

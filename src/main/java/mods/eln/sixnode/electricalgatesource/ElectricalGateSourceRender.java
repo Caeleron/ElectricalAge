@@ -6,6 +6,7 @@ import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.RcInterpolator;
 import mods.eln.misc.UtilsClient;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.node.six.SixNodeElementRender;
 import mods.eln.node.six.SixNodeEntity;
@@ -48,7 +49,7 @@ public class ElectricalGateSourceRender extends SixNodeElementRender {
 
     @Override
     public void refresh(float deltaT) {
-        interpolator.setTarget((float) (voltageSyncValue / Eln.SVU));
+        interpolator.setTarget((float) (voltageSyncValue / VoltageTier.TTL.getVoltage()));
         interpolator.step(deltaT);
     }
 
@@ -68,7 +69,7 @@ public class ElectricalGateSourceRender extends SixNodeElementRender {
 
             if (boot) {
                 boot = false;
-                interpolator.setValue((float) (voltageSyncValue / Eln.SVU));
+                interpolator.setValue((float) (voltageSyncValue / VoltageTier.TTL.getVoltage()));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -77,7 +78,7 @@ public class ElectricalGateSourceRender extends SixNodeElementRender {
 
     @Override
     public CableRenderDescriptor getCableRender(LRDU lrdu) {
-        return Eln.instance.signalCableDescriptor.render;
+        return Eln.smallInsulationLowCurrentRender;
     }
 
     @Override

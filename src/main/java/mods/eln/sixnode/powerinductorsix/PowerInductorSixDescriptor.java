@@ -7,6 +7,7 @@ import mods.eln.misc.LRDU;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.misc.series.ISerie;
 import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.sim.mna.misc.MnaConst;
@@ -14,8 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
-
-import javax.xml.crypto.Data;
 
 public class PowerInductorSixDescriptor extends SixNodeDescriptor {
 
@@ -37,7 +36,7 @@ public class PowerInductorSixDescriptor extends SixNodeDescriptor {
             Base = obj.getPart("Base");
         }
 
-        voltageLevelColor = VoltageLevelColor.Neutral;
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     public double getlValue(int cableCount) {
@@ -61,7 +60,7 @@ public class PowerInductorSixDescriptor extends SixNodeDescriptor {
 
         double coreFactor = coreDescriptor.cableMultiplicator;
 
-        return Eln.instance.lowVoltageCableDescriptor.electricalRs * coreFactor;
+        return Eln.uninsulatedHighCurrentCopperCable.electricalRs * coreFactor;
     }
 
     void draw() {

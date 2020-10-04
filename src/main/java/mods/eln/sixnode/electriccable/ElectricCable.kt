@@ -1,4 +1,4 @@
-package mods.eln.sixnode.electricalcable
+package mods.eln.sixnode.electriccable
 
 import mods.eln.Eln
 import mods.eln.cable.CableRender
@@ -10,6 +10,7 @@ import mods.eln.misc.LRDU
 import mods.eln.misc.Utils
 import mods.eln.misc.UtilsClient
 import mods.eln.misc.VoltageLevelColor
+import mods.eln.misc.VoltageTier
 import mods.eln.node.NodeBase
 import mods.eln.node.six.SixNode
 import mods.eln.node.six.SixNodeDescriptor
@@ -20,6 +21,7 @@ import mods.eln.sim.ElectricalLoad
 import mods.eln.sim.IProcess
 import mods.eln.sim.ThermalLoad
 import mods.eln.sim.mna.component.Resistor
+import mods.eln.sim.mna.misc.MnaConst
 import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.sim.nbt.NbtThermalLoad
 import mods.eln.sim.process.destruct.ThermalLoadWatchDog
@@ -39,27 +41,27 @@ class ElectricCableDescriptor(name: String, render: CableRenderDescriptor, val m
     var insulationVoltage = 0.0
         set(x) {
             field = x
-            voltageLevelColor = when {
+            voltageTier = when {
                 insulationVoltage <= 0.0 -> {
                     // No insulation means no voltage limits!
-                    VoltageLevelColor.Neutral
+                    VoltageTier.LOW
                 }
                 insulationVoltage <= 300.0 -> {
-                    VoltageLevelColor.LowVoltage
+                    VoltageTier.INDUSTRIAL
                 }
                 insulationVoltage <= 1_000.0 -> {
-                    VoltageLevelColor.MediumVoltage
+                    VoltageTier.INDUSTRIAL
                 }
                 else -> {
-                    VoltageLevelColor.HighVoltage
+                    VoltageTier.SUBURBAN_GRID
                 }
             }
         }
 
     init {
         this.render = render
-        this.electricalRs = 0.1
-        this.voltageLevelColor = VoltageLevelColor.Neutral
+        this.electricalRs = 0.01
+        this.voltageTier = VoltageTier.NEUTRAL
     }
 
     override fun applyTo(electricalLoad: ElectricalLoad, rsFactor: Double) {

@@ -5,12 +5,11 @@ import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -27,7 +26,7 @@ public class ElectricalSensorDescriptor extends SixNodeDescriptor {
         this.voltageOnly = voltageOnly;
         main = Eln.obj.getPart(modelName, "main");
 
-        voltageLevelColor = VoltageLevelColor.SignalVoltage;
+        voltageTier = VoltageTier.TTL;
     }
 
     void draw() {

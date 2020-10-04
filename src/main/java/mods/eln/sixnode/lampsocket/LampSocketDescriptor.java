@@ -1,12 +1,12 @@
 package mods.eln.sixnode.lampsocket;
 
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -47,7 +47,7 @@ public class LampSocketDescriptor extends SixNodeDescriptor {
         this.alphaZBoot = alphaZBoot;
         this.render = render;
 
-        voltageLevelColor = VoltageLevelColor.Neutral;
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     public void setInitialOrientation(float rotateDeg) {

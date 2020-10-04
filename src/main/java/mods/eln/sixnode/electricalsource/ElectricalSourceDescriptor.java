@@ -30,9 +30,9 @@ public class ElectricalSourceDescriptor extends SixNodeDescriptor {
         this.signalSource = signalSource;
 
         if (signalSource) {
-          voltageLevelColor = VoltageLevelColor.SignalVoltage;
+          voltageTier = VoltageTier.TTL;
         } else {
-            voltageLevelColor = VoltageLevelColor.Neutral;
+            voltageTier = VoltageTier.NEUTRAL;
         }
     }
 
@@ -59,7 +59,7 @@ public class ElectricalSourceDescriptor extends SixNodeDescriptor {
         super.addInformation(itemStack, entityPlayer, list, par4);
         Collections.addAll(list, tr("Provides an ideal voltage source\nwithout energy or power limitation.").split("\\\n"));
         list.add("");
-        list.add(tr("Internal resistance: %1$\u2126", Utils.plotValue(Eln.instance.lowVoltageCableDescriptor.electricalRs)));
+        list.add(tr("Internal resistance: %1$\u2126", Utils.plotValue(Eln.smallInsulationLowCurrentCopperCable.electricalRs)));
         list.add("");
         list.add(tr("Creative block."));
     }
@@ -88,7 +88,7 @@ public class ElectricalSourceDescriptor extends SixNodeDescriptor {
             case INVENTORY:
             case FIRST_PERSON_MAP:
                 if (signalSource) {
-                    VoltageLevelColor.SignalVoltage.drawIconBackground(type);
+                    VoltageTierHelpers.Companion.drawIconBackground(type, VoltageTier.TTL);
                 }
                 super.renderItem(type, item, data);
                 break;

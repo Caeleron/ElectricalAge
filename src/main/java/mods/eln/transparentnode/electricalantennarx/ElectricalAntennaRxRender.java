@@ -70,7 +70,7 @@ public class ElectricalAntennaRxRender extends TransparentNodeElementRender {
         if (front.getInverse() != side.applyLRDU(lrdu)) return null;
 
         if (side == front.applyLRDU(rot.left())) return descriptor.cable.render;
-        if (side == front.applyLRDU(rot.right())) return Eln.instance.signalCableDescriptor.render;
+        if (side == front.applyLRDU(rot.right())) return Eln.smallInsulationLowCurrentRender;
         return null;
     }
 

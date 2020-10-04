@@ -3,7 +3,8 @@ package mods.eln.generic
 import cpw.mods.fml.relauncher.Side
 import cpw.mods.fml.relauncher.SideOnly
 import mods.eln.misc.UtilsClient
-import mods.eln.misc.VoltageLevelColor
+import mods.eln.misc.VoltageTier
+import mods.eln.misc.VoltageTierHelpers
 import net.minecraft.block.Block
 import net.minecraft.client.renderer.texture.IIconRegister
 import net.minecraft.entity.Entity
@@ -33,7 +34,7 @@ open class GenericItemUsingDamageDescriptor {
     @JvmField
     var name: String
     @JvmField
-    var voltageLevelColor = VoltageLevelColor.None
+    var voltageTier = VoltageTier.NEUTRAL
     @JvmField
     var parentItem: Item? = null
     @JvmField
@@ -91,7 +92,7 @@ open class GenericItemUsingDamageDescriptor {
     }
 
     open fun handleRenderType(item: ItemStack?, type: ItemRenderType?): Boolean {
-        return voltageLevelColor != VoltageLevelColor.None
+        return voltageTier != VoltageTier.NEUTRAL
     }
 
     open fun shouldUseRenderHelper(type: ItemRenderType?, item: ItemStack?, helper: ItemRendererHelper?): Boolean {
@@ -100,7 +101,7 @@ open class GenericItemUsingDamageDescriptor {
 
     open fun renderItem(type: ItemRenderType?, item: ItemStack?, vararg data: Any?) {
         if (icon == null) return
-        voltageLevelColor.drawIconBackground(type)
+        VoltageTierHelpers.drawIconBackground(type, voltageTier)
         // remove "eln:" to add the full path replace("eln:", "textures/blocks/") + ".png";
         val icon = icon!!.iconName.substring(4)
         UtilsClient.drawIcon(type, ResourceLocation("eln", "textures/items/$icon.png"))

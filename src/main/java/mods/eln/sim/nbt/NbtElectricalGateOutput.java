@@ -7,7 +7,7 @@ public class NbtElectricalGateOutput extends NbtElectricalLoad {
 
     public NbtElectricalGateOutput(String name) {
         super(name);
-        Eln.instance.signalCableDescriptor.applyTo(this);
+        Eln.smallInsulationLowCurrentCopperCable.applyTo(this);
     }
 
     public String plot(String str) {

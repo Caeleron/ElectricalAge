@@ -5,8 +5,6 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import mods.eln.CommonProxy;
 import mods.eln.Eln;
-import mods.eln.entity.ReplicatorEntity;
-import mods.eln.entity.ReplicatorRender;
 import mods.eln.node.six.SixNodeEntity;
 import mods.eln.node.six.SixNodeRender;
 import mods.eln.node.transparent.TransparentNodeEntity;
@@ -32,8 +30,6 @@ public class ClientProxy extends CommonProxy {
         MinecraftForgeClient.registerItemRenderer(Eln.sixNodeItem, Eln.sixNodeItem);
         MinecraftForgeClient.registerItemRenderer(Eln.sharedItem, Eln.sharedItem);
         MinecraftForgeClient.registerItemRenderer(Eln.sharedItemStackOne, Eln.sharedItemStackOne);
-
-        RenderingRegistry.registerEntityRenderingHandler(ReplicatorEntity.class, new ReplicatorRender(new ModelSilverfish(), (float) 0.3));
 
         Eln.clientKeyHandler = new ClientKeyHandler();
         FMLCommonHandler.instance().bus().register(Eln.clientKeyHandler);

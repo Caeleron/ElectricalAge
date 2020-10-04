@@ -22,6 +22,7 @@ import mods.eln.misc.Coordonate
 import mods.eln.misc.FunctionTable
 import mods.eln.misc.FunctionTableYProtect
 import mods.eln.misc.Utils
+import mods.eln.misc.VoltageTier
 import mods.eln.misc.series.SerieEE
 import mods.eln.node.transparent.TransparentNodeDescriptor
 import mods.eln.sim.ThermalLoadInitializer
@@ -57,7 +58,6 @@ import mods.eln.transparentnode.thermaldissipatorpassive.ThermalDissipatorPassiv
 import mods.eln.transparentnode.turbine.TurbineDescriptor
 import mods.eln.transparentnode.turret.TurretDescriptor
 import mods.eln.transparentnode.variabledcdc.VariableDcDcDescriptor
-import mods.eln.transparentnode.waterturbine.WaterTurbineDescriptor
 import mods.eln.transparentnode.windturbine.WindTurbineDescriptor
 import net.minecraft.init.Blocks
 import net.minecraft.item.ItemStack
@@ -212,24 +212,24 @@ class TransparentNodeRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "50V Turbine")
                 val resistanceFactor = 0.1
-                val nominalU = Eln.LVU
+                val nominalU = VoltageTier.LOW.voltage
                 val nominalP: Double = 1000 * Eln.heatTurbinePowerFactor // it was 300 before
                 val nominalDeltaT = 250.0
-                val desc = TurbineDescriptor(name, "turbineb", Eln.lowVoltageCableDescriptor.render,
+                val desc = TurbineDescriptor(name, "turbineb", Eln.smallInsulationLowCurrentRender,
                     temperatureToVoltage.duplicate(nominalDeltaT, nominalU), powerOutputMap.duplicate(nominalP, nominalP), nominalDeltaT,
-                    nominalU, nominalP, nominalP / 40, Eln.lowVoltageCableDescriptor.electricalRs * resistanceFactor, 25.0,
+                    nominalU, nominalP, nominalP / 40, Eln.smallInsulationLowCurrentCopperCable.electricalRs * resistanceFactor, 25.0,
                     nominalDeltaT / 40, nominalP / (nominalU / 25), "eln:heat_turbine_50v")
                 registerTransparentNode(id, 0, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "200V Turbine")
                 val resistanceFactor = 0.10
-                val nominalU = Eln.MVU
+                val nominalU = VoltageTier.LOW_HOUSEHOLD.voltage
                 val nominalP: Double = 2000 * Eln.heatTurbinePowerFactor
                 val nominalDeltaT = 350.0
-                val desc = TurbineDescriptor(name, "turbinebblue", Eln.meduimVoltageCableDescriptor.render,
+                val desc = TurbineDescriptor(name, "turbinebblue", Eln.smallInsulationMediumCurrentRender,
                     temperatureToVoltage.duplicate(nominalDeltaT, nominalU), powerOutputMap.duplicate(nominalP, nominalP), nominalDeltaT,
-                    nominalU, nominalP, nominalP / 40, Eln.meduimVoltageCableDescriptor.electricalRs * resistanceFactor, 50.0,
+                    nominalU, nominalP, nominalP / 40, Eln.smallInsulationMediumCurrentCopperCable.electricalRs * resistanceFactor, 50.0,
                     nominalDeltaT / 40, nominalP / (nominalU / 25), "eln:heat_turbine_200v")
                 registerTransparentNode(id, 1, desc)
             }
@@ -241,13 +241,12 @@ class TransparentNodeRegistry {
                 registerTransparentNode(id, 2, desc)
             }
             run {
-                val nominalRads = 800f
-                val nominalU = 3200f
+                val nominalRads = 200f
+                val nominalU = 480f
                 val nominalP = 4000f
                 val desc = GeneratorDescriptor(
                     I18N.TR_NAME(I18N.Type.NONE, "Generator"),
                     obj.getObj("Generator"),
-                    Eln.highVoltageCableDescriptor,
                     nominalRads, nominalU,
                     nominalP / (nominalU / 25),
                     nominalP,
@@ -287,13 +286,13 @@ class TransparentNodeRegistry {
                 registerTransparentNode(id, 8, desc)
             }
             run {
-                val nominalRads = 800f
-                val nominalU = 3200f
+                val nominalRads = 200f
+                val nominalU = 480f
                 val nominalP = 1200f
                 val desc = MotorDescriptor(
                     I18N.TR_NAME(I18N.Type.NONE, "Shaft Motor"),
                     obj.getObj("Motor"),
-                    Eln.veryHighVoltageCableDescriptor,
+                    Eln.mediumInsulationMediumCurrentCopperCable,
                     nominalRads,
                     nominalU,
                     nominalP,
@@ -345,9 +344,9 @@ class TransparentNodeRegistry {
                 desc = ElectricalAntennaTxDescriptor(name,
                     obj.getObj("lowpowertransmitterantenna"), 200,
                     0.9, 0.7,
-                    Eln.LVU, power,
-                    Eln.LVU * 1.3, power * 1.3,
-                    Eln.lowVoltageCableDescriptor)
+                    VoltageTier.LOW.voltage, power,
+                    VoltageTier.LOW.voltage * 1.3, power * 1.3,
+                    Eln.smallInsulationLowCurrentCopperCable)
                 registerTransparentNode(id, 0, desc)
             }
             run {
@@ -355,9 +354,9 @@ class TransparentNodeRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Low Power Receiver Antenna")
                 val power = 250.0
                 desc = ElectricalAntennaRxDescriptor(name,
-                    obj.getObj("lowpowerreceiverantenna"), Eln.LVU, power,
-                    Eln.LVU * 1.3, power * 1.3,
-                    Eln.lowVoltageCableDescriptor)
+                    obj.getObj("lowpowerreceiverantenna"), VoltageTier.LOW.voltage, power,
+                    VoltageTier.LOW.voltage * 1.3, power * 1.3,
+                    Eln.smallInsulationLowCurrentCopperCable)
                 registerTransparentNode(id, 1, desc)
             }
             run {
@@ -367,9 +366,9 @@ class TransparentNodeRegistry {
                 desc = ElectricalAntennaTxDescriptor(name,
                     obj.getObj("lowpowertransmitterantenna"), 250,
                     0.9, 0.75,
-                    Eln.MVU, power,
-                    Eln.MVU * 1.3, power * 1.3,
-                    Eln.meduimVoltageCableDescriptor)
+                    VoltageTier.LOW_HOUSEHOLD.voltage, power,
+                    VoltageTier.LOW_HOUSEHOLD.voltage * 1.3, power * 1.3,
+                    Eln.smallInsulationMediumCurrentCopperCable)
                 registerTransparentNode(id, 2, desc)
             }
             run {
@@ -377,9 +376,9 @@ class TransparentNodeRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Medium Power Receiver Antenna")
                 val power = 1000.0
                 desc = ElectricalAntennaRxDescriptor(name,
-                    obj.getObj("lowpowerreceiverantenna"), Eln.MVU, power,
-                    Eln.MVU * 1.3, power * 1.3,
-                    Eln.meduimVoltageCableDescriptor)
+                    obj.getObj("lowpowerreceiverantenna"), VoltageTier.LOW_HOUSEHOLD.voltage, power,
+                    VoltageTier.LOW_HOUSEHOLD.voltage * 1.3, power * 1.3,
+                    Eln.smallInsulationMediumCurrentCopperCable)
                 registerTransparentNode(id, 3, desc)
             }
             run {
@@ -389,9 +388,9 @@ class TransparentNodeRegistry {
                 desc = ElectricalAntennaTxDescriptor(name,
                     obj.getObj("lowpowertransmitterantenna"), 300,
                     0.95, 0.8,
-                    Eln.HVU, power,
-                    Eln.HVU * 1.3, power * 1.3,
-                    Eln.highVoltageCableDescriptor)
+                    VoltageTier.HIGH_HOUSEHOLD.voltage, power,
+                    VoltageTier.HIGH_HOUSEHOLD.voltage * 1.3, power * 1.3,
+                    Eln.smallInsulationHighCurrentCopperCable)
                 registerTransparentNode(id, 4, desc)
             }
             run {
@@ -399,9 +398,9 @@ class TransparentNodeRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "High Power Receiver Antenna")
                 val power = 2000.0
                 desc = ElectricalAntennaRxDescriptor(name,
-                    obj.getObj("lowpowerreceiverantenna"), Eln.HVU, power,
-                    Eln.HVU * 1.3, power * 1.3,
-                    Eln.highVoltageCableDescriptor)
+                    obj.getObj("lowpowerreceiverantenna"), VoltageTier.HIGH_HOUSEHOLD.voltage, power,
+                    VoltageTier.HIGH_HOUSEHOLD.voltage * 1.3, power * 1.3,
+                    Eln.smallInsulationHighCurrentCopperCable)
                 registerTransparentNode(id, 5, desc)
             }
         }
@@ -415,13 +414,13 @@ class TransparentNodeRegistry {
                 6.0 / 5)
             Utils.printFunction(voltageFunction, -0.2, 1.2, 0.1)
             val stdDischargeTime = 60 * 8.toDouble()
-            val stdU = Eln.LVU
-            val stdP: Double = Eln.LVP() / 4
+            val stdU = VoltageTier.LOW.voltage
+            val stdP = 2_000.0
             val stdEfficiency = 1.0 - 2.0 / 50.0
             Eln.batteryVoltageFunctionTable = voltageFunction
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Cost Oriented Battery")
-                val desc = BatteryDescriptor(name, "BatteryBig", Eln.batteryCableDescriptor,
+                val desc = BatteryDescriptor(name, "BatteryBig", Eln.smallInsulationMediumCurrentCopperCable,
                     0.5,
                     true, true,
                     voltageFunction,
@@ -440,7 +439,7 @@ class TransparentNodeRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Capacity Oriented Battery")
                 val desc = BatteryDescriptor(name,
-                    "BatteryBig", Eln.batteryCableDescriptor, 0.5, true, true, voltageFunction,
+                    "BatteryBig", Eln.smallInsulationMediumCurrentCopperCable, 0.5, true, true, voltageFunction,
                     stdU / 4, stdP / 2 * 1.2, 0.000,
                     stdP / 2, stdDischargeTime * 8 * Eln.batteryCapacityFactor, stdEfficiency, Eln.stdBatteryHalfLife,
                     heatTIme, 60.0, (-100).toDouble(),
@@ -453,7 +452,7 @@ class TransparentNodeRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Voltage Oriented Battery")
                 val desc = BatteryDescriptor(name,
-                    "BatteryBig", Eln.meduimVoltageCableDescriptor, 0.5, true, true, voltageFunction, stdU * 4,
+                    "BatteryBig", Eln.smallInsulationMediumCurrentCopperCable, 0.5, true, true, voltageFunction, stdU * 4,
                     stdP * 1.2, 0.000,
                     stdP, stdDischargeTime * Eln.batteryCapacityFactor, stdEfficiency, Eln.stdBatteryHalfLife,
                     heatTIme, 60.0, (-100).toDouble(),
@@ -466,7 +465,7 @@ class TransparentNodeRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Current Oriented Battery")
                 val desc = BatteryDescriptor(name,
-                    "BatteryBig", Eln.batteryCableDescriptor, 0.5, true, true, voltageFunction, stdU,
+                    "BatteryBig", Eln.smallInsulationMediumCurrentCopperCable, 0.5, true, true, voltageFunction, stdU,
                     stdP * 1.2 * 4, 0.000,
                     stdP * 4, stdDischargeTime / 6 * Eln.batteryCapacityFactor, stdEfficiency, Eln.stdBatteryHalfLife,
                     heatTIme, 60.0, (-100).toDouble(),
@@ -479,7 +478,7 @@ class TransparentNodeRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Life Oriented Battery")
                 val desc = BatteryDescriptor(name,
-                    "BatteryBig", Eln.batteryCableDescriptor, 0.5, true, false, voltageFunction, stdU,
+                    "BatteryBig", Eln.smallInsulationMediumCurrentCopperCable, 0.5, true, false, voltageFunction, stdU,
                     stdP * 1.2, 0.000,
                     stdP, stdDischargeTime * Eln.batteryCapacityFactor, stdEfficiency, Eln.stdBatteryHalfLife * 8,
                     heatTIme, 60.0, (-100).toDouble(),
@@ -492,7 +491,7 @@ class TransparentNodeRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Single-use Battery")
                 val desc = BatteryDescriptor(name,
-                    "BatteryBig", Eln.batteryCableDescriptor, 1.0, false, false, voltageFunction, stdU,
+                    "BatteryBig", Eln.smallInsulationMediumCurrentCopperCable, 1.0, false, false, voltageFunction, stdU,
                     stdP * 1.2 * 2, 0.000,
                     stdP * 2, stdDischargeTime / 4 * Eln.batteryCapacityFactor, stdEfficiency, Eln.stdBatteryHalfLife * 8,
                     heatTIme, 60.0, (-100).toDouble(),
@@ -504,7 +503,7 @@ class TransparentNodeRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Experimental Battery")
                 val desc = BatteryDescriptor(name,
-                    "BatteryBig", Eln.batteryCableDescriptor, 0.5, true, false, voltageFunction, stdU * 2,
+                    "BatteryBig", Eln.smallInsulationMediumCurrentCopperCable, 0.5, true, false, voltageFunction, stdU * 2,
                     stdP * 1.2 * 8, 0.025,
                     stdP * 8, stdDischargeTime / 4 * Eln.batteryCapacityFactor, stdEfficiency, Eln.stdBatteryHalfLife * 8,
                     heatTIme, 60.0, (-100).toDouble(),
@@ -547,10 +546,10 @@ class TransparentNodeRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "50V Macerator")
                 val desc = MaceratorDescriptor(name,
-                    "maceratora", Eln.LVU, 200.0,  // double nominalU,double nominalP,
-                    Eln.LVU * 1.25,  // double maximalU,
+                    "maceratora", VoltageTier.LOW.voltage, 200.0,  // double nominalU,double nominalP,
+                    VoltageTier.LOW.voltage * 1.25,  // double maximalU,
                     ThermalLoadInitializer(80.0, (-100).toDouble(), 10.0, 100000.0),  // thermal,
-                    Eln.lowVoltageCableDescriptor,  // ElectricalCableDescriptor cable
+                    Eln.smallInsulationLowCurrentCopperCable,
                     Eln.maceratorRecipes)
                 desc.setRunningSound("eln:macerator")
                 registerTransparentNode(id, 0, desc)
@@ -558,10 +557,10 @@ class TransparentNodeRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "200V Macerator")
                 val desc = MaceratorDescriptor(name,
-                    "maceratorb", Eln.MVU, 2000.0,  // double nominalU,double nominalP,
-                    Eln.MVU * 1.25,  // double maximalU,
+                    "maceratorb", VoltageTier.LOW_HOUSEHOLD.voltage, 2000.0,  // double nominalU,double nominalP,
+                    VoltageTier.LOW_HOUSEHOLD.voltage * 1.25,  // double maximalU,
                     ThermalLoadInitializer(80.0, (-100).toDouble(), 10.0, 100000.0),  // thermal,
-                    Eln.meduimVoltageCableDescriptor,  // ElectricalCableDescriptor
+                    Eln.smallInsulationMediumCurrentCopperCable,
                     // cable
                     Eln.maceratorRecipes)
                 desc.setRunningSound("eln:macerator")
@@ -576,10 +575,10 @@ class TransparentNodeRegistry {
                 val desc = OldArcFurnaceDescriptor(
                     name,
                     obj.getObj("arcfurnaceold"),
-                    Eln.HVU, 10000.0,
-                    Eln.HVU * 1.25,
+                    VoltageTier.HIGH_HOUSEHOLD.voltage, 10000.0,
+                    VoltageTier.HIGH_HOUSEHOLD.voltage * 1.25,
                     ThermalLoadInitializer(80.0, (-100).toDouble(), 10.0, 100000.0),
-                    Eln.highVoltageCableDescriptor,
+                    Eln.smallInsulationMediumCurrentCopperCable,
                     Eln.arcFurnaceRecipes)
                 desc.setRunningSound("eln:arc_furnace")
                 registerTransparentNode(id, 0, desc)
@@ -609,10 +608,10 @@ class TransparentNodeRegistry {
                 val desc = CompressorDescriptor(
                     name,
                     obj.getObj("compressora"),
-                    Eln.LVU, 200.0,
-                    Eln.LVU * 1.25,
+                    VoltageTier.LOW.voltage, 200.0,
+                    VoltageTier.LOW.voltage * 1.25,
                     ThermalLoadInitializer(80.0, (-100).toDouble(), 10.0, 100000.0),
-                    Eln.lowVoltageCableDescriptor,
+                    Eln.smallInsulationLowCurrentCopperCable,
                     Eln.compressorRecipes)
                 desc.setRunningSound("eln:compressor_run")
                 desc.setEndSound(SoundCommand("eln:compressor_end"))
@@ -623,10 +622,10 @@ class TransparentNodeRegistry {
                 val desc = CompressorDescriptor(
                     name,
                     obj.getObj("compressorb"),
-                    Eln.MVU, 2000.0,
-                    Eln.MVU * 1.25,
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 2000.0,
+                    VoltageTier.LOW_HOUSEHOLD.voltage * 1.25,
                     ThermalLoadInitializer(80.0, (-100).toDouble(), 10.0, 100000.0),
-                    Eln.meduimVoltageCableDescriptor,
+                    Eln.smallInsulationMediumCurrentCopperCable,
                     Eln.compressorRecipes)
                 desc.setRunningSound("eln:compressor_run")
                 desc.setEndSound(SoundCommand("eln:compressor_end"))
@@ -641,10 +640,10 @@ class TransparentNodeRegistry {
                 val desc = MagnetizerDescriptor(
                     name,
                     obj.getObj("magnetizera"),
-                    Eln.LVU, 200.0,
-                    Eln.LVU * 1.25,
+                    VoltageTier.LOW.voltage, 200.0,
+                    VoltageTier.LOW.voltage * 1.25,
                     ThermalLoadInitializer(80.0, (-100).toDouble(), 10.0, 100000.0),
-                    Eln.lowVoltageCableDescriptor,
+                    Eln.smallInsulationLowCurrentCopperCable,
                     Eln.magnetiserRecipes)
                 desc.setRunningSound("eln:Motor")
                 registerTransparentNode(id, 0, desc)
@@ -654,10 +653,10 @@ class TransparentNodeRegistry {
                 val desc = MagnetizerDescriptor(
                     name,
                     obj.getObj("magnetizerb"),
-                    Eln.MVU, 2000.0,
-                    Eln.MVU * 1.25,
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 2000.0,
+                    VoltageTier.LOW_HOUSEHOLD.voltage * 1.25,
                     ThermalLoadInitializer(80.0, (-100).toDouble(), 10.0, 100000.0),
-                    Eln.meduimVoltageCableDescriptor,
+                    Eln.smallInsulationMediumCurrentCopperCable,
                     Eln.magnetiserRecipes)
                 desc.setRunningSound("eln:Motor")
                 registerTransparentNode(id, 1, desc)
@@ -671,10 +670,10 @@ class TransparentNodeRegistry {
                 val desc = PlateMachineDescriptor(
                     name,
                     obj.getObj("platemachinea"),
-                    Eln.LVU, 200.0,
-                    Eln.LVU * 1.25,
+                    VoltageTier.LOW.voltage, 200.0,
+                    VoltageTier.LOW.voltage * 1.25,
                     ThermalLoadInitializer(80.0, (-100).toDouble(), 10.0, 100000.0),
-                    Eln.lowVoltageCableDescriptor,
+                    Eln.smallInsulationLowCurrentCopperCable,
                     Eln.plateMachineRecipes)
                 desc.setRunningSound("eln:plate_machine")
                 registerTransparentNode(id, 0, desc)
@@ -684,10 +683,10 @@ class TransparentNodeRegistry {
                 val desc = PlateMachineDescriptor(
                     name,
                     obj.getObj("platemachineb"),
-                    Eln.MVU, 2000.0,
-                    Eln.MVU * 1.25,
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 2000.0,
+                    VoltageTier.LOW_HOUSEHOLD.voltage * 1.25,
                     ThermalLoadInitializer(80.0, (-100).toDouble(), 10.0, 100000.0),
-                    Eln.meduimVoltageCableDescriptor,
+                    Eln.smallInsulationMediumCurrentCopperCable,
                     Eln.plateMachineRecipes)
                 desc.setRunningSound("eln:plate_machine")
                 registerTransparentNode(id, 1, desc)
@@ -700,8 +699,8 @@ class TransparentNodeRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "50V Egg Incubator")
                 val desc = EggIncubatorDescriptor(
                     name, obj.getObj("eggincubator"),
-                    Eln.lowVoltageCableDescriptor,
-                    Eln.LVU, 50.0)
+                    Eln.smallInsulationLowCurrentCopperCable,
+                    VoltageTier.LOW.voltage, 50.0)
                 registerTransparentNode(id, 0, desc)
             }
         }
@@ -719,7 +718,7 @@ class TransparentNodeRegistry {
                     obj.getObj("AutoMiner"),
                     powerLoad, lightCoord, miningCoord,
                     2, 1, 0,
-                    Eln.highVoltageCableDescriptor,
+                    Eln.smallInsulationMediumCurrentCopperCable,
                     1.0, 50.0
                 )
                 val ghostGroup = GhostGroup()
@@ -756,7 +755,7 @@ class TransparentNodeRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Small Rotating Solar Panel")
                 ghostGroup = GhostGroup()
                 val desc = SolarPanelDescriptor(name,
-                    obj.getObj("smallsolarpannelrot"), Eln.lowVoltageCableDescriptor.render,
+                    obj.getObj("smallsolarpannelrot"), Eln.smallInsulationLowCurrentRender,
                     ghostGroup, 0, 1, 0,
                     null, solarVoltage / 4, Eln.solarPanelBasePower * Eln.solarPanelPowerFactor,
                     0.01,
@@ -771,7 +770,7 @@ class TransparentNodeRegistry {
                 ghostGroup.addRectangle(0, 1, 0, 0, -1, 1)
                 ghostGroup.removeElement(0, 0, 0)
                 val desc = SolarPanelDescriptor(name,
-                    obj.getObj("bigSolarPanel"), Eln.meduimVoltageCableDescriptor.render,
+                    obj.getObj("bigSolarPanel"), Eln.smallInsulationMediumCurrentRender,
                     ghostGroup, 1, 1, 0,
                     groundCoordinate,
                     solarVoltage * 2, Eln.solarPanelBasePower * Eln.solarPanelPowerFactor * 8,
@@ -787,7 +786,7 @@ class TransparentNodeRegistry {
                 ghostGroup.addRectangle(0, 1, 0, 0, -1, 1)
                 ghostGroup.removeElement(0, 0, 0)
                 val desc = SolarPanelDescriptor(name,
-                    obj.getObj("bigSolarPanelrot"), Eln.meduimVoltageCableDescriptor.render,
+                    obj.getObj("bigSolarPanelrot"), Eln.smallInsulationMediumCurrentRender,
                     ghostGroup, 1, 1, 1,
                     groundCoordinate,
                     solarVoltage * 2, Eln.solarPanelBasePower * Eln.solarPanelPowerFactor * 8,
@@ -806,10 +805,10 @@ class TransparentNodeRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Wind Turbine")
                 val desc = WindTurbineDescriptor(
                     name, obj.getObj("WindTurbineMini"),
-                    Eln.lowVoltageCableDescriptor,
+                    Eln.smallInsulationLowCurrentCopperCable,
                     powerFromWind,
                     160 * Eln.windTurbinePowerFactor, 10.0,
-                    Eln.LVU * 1.18, 22.0,
+                    VoltageTier.LOW.voltage * 1.18, 22.0,
                     3,
                     7, 2, 2,
                     2, 0.07,
@@ -824,22 +823,6 @@ class TransparentNodeRegistry {
                 g.addRectangle(0, 0, 1, 3, 0, 0)
                 desc.setGhostGroup(g)
                 registerTransparentNode(id, 0, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Water Turbine")
-                val waterCoord = Coordonate(1, -1, 0, 0)
-                val desc = WaterTurbineDescriptor(
-                    name, obj.getObj("SmallWaterWheel"),
-                    Eln.lowVoltageCableDescriptor,
-                    30 * Eln.waterTurbinePowerFactor,
-                    Eln.LVU * 1.18,
-                    waterCoord,
-                    "eln:water_turbine", 1f
-                )
-                val g = GhostGroup()
-                g.addRectangle(1, 1, 0, 1, -1, 1)
-                desc.setGhostGroup(g)
-                registerTransparentNode(id, 1, desc)
             }
         }
 
@@ -861,9 +844,9 @@ class TransparentNodeRegistry {
                 val desc = ThermalDissipatorActiveDescriptor(
                     name,
                     obj.getObj("activethermaldissipatora"),
-                    Eln.LVU, 50.0,
+                    VoltageTier.LOW.voltage, 50.0,
                     800.0,
-                    Eln.lowVoltageCableDescriptor,
+                    Eln.smallInsulationLowCurrentCopperCable,
                     130.0, (-100).toDouble(),
                     200.0, 30.0,
                     10.0, 1.0
@@ -875,9 +858,9 @@ class TransparentNodeRegistry {
                 val desc = ThermalDissipatorActiveDescriptor(
                     name,
                     obj.getObj("200vactivethermaldissipatora"),
-                    Eln.MVU, 60.0,
+                    VoltageTier.LOW_HOUSEHOLD.voltage, 60.0,
                     1200.0,
-                    Eln.meduimVoltageCableDescriptor,
+                    Eln.smallInsulationMediumCurrentCopperCable,
                     130.0, (-100).toDouble(),
                     200.0, 30.0,
                     10.0, 1.0
@@ -894,7 +877,7 @@ class TransparentNodeRegistry {
                     10.0, 1.0
                 )
                 val desc = LargeRheostatDescriptor(
-                    name, dissipator, Eln.veryHighVoltageCableDescriptor, SerieEE.newE12(0.0)
+                    name, dissipator, Eln.mediumInsulationMediumCurrentCopperCable, SerieEE.newE12(0.0)
                 )
                 registerTransparentNode(id, 3, desc)
             }
@@ -913,7 +896,7 @@ class TransparentNodeRegistry {
                 doorClose.addRectangle(-2, -2, 0, 1, 0, 0)
                 val desc = TeleporterDescriptor(
                     name, obj.getObj("Transporter"),
-                    Eln.highVoltageCableDescriptor,
+                    Eln.smallInsulationMediumCurrentCopperCable,
                     Coordonate(-1, 0, 0, 0), Coordonate(-1, 1, 0, 0),
                     2,
                     powerLoad,
@@ -944,12 +927,12 @@ class TransparentNodeRegistry {
         private fun registerFuelGenerator(id: Int) {
             run {
                 val desc = FuelGeneratorDescriptor(I18N.TR_NAME(I18N.Type.NONE, "50V Fuel Generator"), obj.getObj("FuelGenerator50V"),
-                    Eln.lowVoltageCableDescriptor, Eln.fuelGeneratorPowerFactor * 1200, Eln.LVU * 1.25, Eln.fuelGeneratorTankCapacity)
+                    Eln.smallInsulationLowCurrentCopperCable, Eln.fuelGeneratorPowerFactor * 1200, VoltageTier.LOW.voltage * 1.25, Eln.fuelGeneratorTankCapacity)
                 registerTransparentNode(id, 0, desc)
             }
             run {
                 val desc = FuelGeneratorDescriptor(I18N.TR_NAME(I18N.Type.NONE, "200V Fuel Generator"), obj.getObj("FuelGenerator200V"),
-                    Eln.meduimVoltageCableDescriptor, Eln.fuelGeneratorPowerFactor * 6000, Eln.MVU * 1.25,
+                    Eln.smallInsulationMediumCurrentCopperCable, Eln.fuelGeneratorPowerFactor * 6000, VoltageTier.LOW_HOUSEHOLD.voltage * 1.25,
                     Eln.fuelGeneratorTankCapacity)
                 registerTransparentNode(id, 1, desc)
             }
@@ -957,7 +940,7 @@ class TransparentNodeRegistry {
 
         private fun registerGridDevices(id: Int) {
             run {
-                val desc = GridTransformerDescriptor("Grid DC-DC Converter", obj.getObj("GridConverter"), "textures/wire.png", Eln.highVoltageCableDescriptor)
+                val desc = GridTransformerDescriptor("Grid DC-DC Converter", obj.getObj("GridConverter"), "textures/wire.png", Eln.smallInsulationMediumCurrentCopperCable)
                 val g = GhostGroup()
                 g.addElement(1, 0, 0)
                 g.addElement(0, 0, -1)
@@ -974,7 +957,7 @@ class TransparentNodeRegistry {
                     "Utility Pole",
                     obj.getObj("UtilityPole"),
                     "textures/wire.png",
-                    Eln.highVoltageCableDescriptor,
+                    Eln.uninsulatedMediumCurrentAluminumCable,
                     false,
                     40,
                     51200.0)
@@ -990,7 +973,7 @@ class TransparentNodeRegistry {
                     "Utility Pole w/DC-DC Converter",
                     obj.getObj("UtilityPole"),
                     "textures/wire.png",
-                    Eln.highVoltageCableDescriptor,
+                    Eln.uninsulatedMediumCurrentAluminumCable,
                     true,
                     40,
                     12800.0)
@@ -1005,7 +988,7 @@ class TransparentNodeRegistry {
                 val desc = ElectricalPoleDescriptor("Transmission Tower",
                     obj.getObj("TransmissionTower"),
                     "textures/wire.png",
-                    Eln.highVoltageCableDescriptor,
+                    Eln.uninsulatedMediumCurrentAluminumCable,
                     false,
                     96,
                     51200.0)

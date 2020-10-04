@@ -15,7 +15,6 @@ import mods.eln.sim.IProcess
 import mods.eln.sim.ThermalLoad
 import mods.eln.sim.mna.component.PowerSource
 import mods.eln.sim.nbt.NbtElectricalLoad
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sound.LoopedSound
 import net.minecraft.client.audio.ISound
@@ -63,7 +62,7 @@ class FuelGeneratorDescriptor(name: String, internal val obj: Obj3D?, internal v
     internal val fuels = FuelRegistry.gasolineList
 
     init {
-        voltageLevelColor = VoltageLevelColor.fromCable(cable)
+        voltageTier = VoltageTier.NEUTRAL
     }
 
     fun draw(on: Boolean = false) {

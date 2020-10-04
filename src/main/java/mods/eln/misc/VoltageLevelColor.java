@@ -1,7 +1,6 @@
 package mods.eln.misc;
 
 import mods.eln.Eln;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
@@ -33,19 +32,7 @@ public enum VoltageLevelColor {
     private final String voltageLevel;
 
     public static VoltageLevelColor fromVoltage(double voltage) {
-        if (voltage < 0) {
-            return None;
-        } else if (voltage <= 2 * Eln.LVU) {
-            return LowVoltage;
-        } else if (voltage <= 2 * Eln.MVU) {
-            return MediumVoltage;
-        } else if (voltage <= 2 * Eln.HVU) {
-            return HighVoltage;
-        } else if (voltage <= 2 * Eln.VVU) {
-            return VeryHighVoltage;
-        } else {
-            return None;
-        }
+        return null;
     }
 
     public static VoltageLevelColor fromCable(GenericCableDescriptor descriptor) {

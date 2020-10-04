@@ -151,6 +151,6 @@ public class ModbusRtuRender extends SixNodeElementRender {
     }
 
     public CableRenderDescriptor getCableRender(LRDU lrdu) {
-        return Eln.instance.signalCableDescriptor.render;
+        return Eln.smallInsulationLowCurrentRender;
     }
 }

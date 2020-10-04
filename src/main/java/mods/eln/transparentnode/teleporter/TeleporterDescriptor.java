@@ -5,15 +5,12 @@ import mods.eln.i18n.I18N;
 import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 public class TeleporterDescriptor extends TransparentNodeDescriptor {
@@ -71,7 +68,7 @@ public class TeleporterDescriptor extends TransparentNodeDescriptor {
         this.ghostDoorOpen = ghostDoorOpen;
         this.lightCoordonate = lightCoordonate;
 
-        voltageLevelColor = VoltageLevelColor.HighVoltage;
+        voltageTier = VoltageTier.INDUSTRIAL;
     }
 
     @Override

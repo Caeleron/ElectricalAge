@@ -1,6 +1,5 @@
 package mods.eln.transparentnode
 
-import mods.eln.Eln
 import mods.eln.fluid.FuelRegistry
 import mods.eln.fluid.PreciseElementFluidHandler
 import mods.eln.generic.GenericItemUsingDamageSlot
@@ -42,7 +41,7 @@ class FuelHeatFurnaceDescriptor(name: String, model: Obj3D, val thermal: Thermal
 
     init {
         thermal.setMaximalPower(2000.0)
-        voltageLevelColor = VoltageLevelColor.Thermal
+        voltageTier = VoltageTier.NEUTRAL
     }
 
     fun draw(installedBurner: Int? = null, on: Boolean = false, heating: Boolean = false) {
@@ -117,7 +116,7 @@ class FuelHeatFurnaceElement(transparentNode: TransparentNode, descriptor: Trans
 
             when {
                 externalControlled -> {
-                    setCmd(controlLoad.u / Eln.SVU)
+                    setCmd(controlLoad.u / VoltageTier.TTL.voltage)
                 }
                 else -> {
                     setCmd(manualControl)

@@ -15,7 +15,6 @@ import mods.eln.sim.mna.component.ResistorSwitch
 import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.sim.process.destruct.VoltageStateWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sixnode.lampsupply.LampSupplyElement
 import net.minecraft.client.gui.GuiButton
@@ -39,7 +38,7 @@ class EmergencyLampDescriptor(name: String, val cable: GenericCableDescriptor, v
     val lightWall: Obj3D.Obj3DPart = model.getPart("lightWall")
 
     init {
-        voltageLevelColor = VoltageLevelColor.fromCable(cable)
+        voltageTier = VoltageTier.NEUTRAL;
         setDefaultIcon("emergencylamp")
     }
 

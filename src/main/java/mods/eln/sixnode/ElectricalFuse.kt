@@ -13,7 +13,6 @@ import mods.eln.sim.ThermalLoad
 import mods.eln.sim.mna.component.Resistor
 import mods.eln.sim.nbt.NbtElectricalLoad
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.client.IItemRenderer
@@ -21,7 +20,6 @@ import org.lwjgl.opengl.GL11
 import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
-import javax.xml.crypto.Data
 
 class ElectricalFuseHolderDescriptor(name: String, obj: Obj3D) :
     SixNodeDescriptor(name, ElectricalFuseHolderElement::class.java, ElectricalFuseHolderRender::class.java) {
@@ -31,7 +29,7 @@ class ElectricalFuseHolderDescriptor(name: String, obj: Obj3D) :
     private val fuseOk = obj.getPart("FuseOk")
 
     init {
-        voltageLevelColor = VoltageLevelColor.Neutral
+        voltageTier = VoltageTier.TTL
     }
 
     override fun handleRenderType(item: ItemStack?, type: IItemRenderer.ItemRenderType?) = true
@@ -190,8 +188,8 @@ class ElectricalFuseHolderElement(sixNode: SixNode, side: Direction, descriptor:
     }
 
     fun computeElectricalLoad() {
-        Eln.veryHighVoltageCableDescriptor.applyTo(aLoad)
-        Eln.veryHighVoltageCableDescriptor.applyTo(bLoad)
+        Eln.uninsulatedHighCurrentCopperCable.applyTo(aLoad)
+        Eln.uninsulatedHighCurrentCopperCable.applyTo(bLoad)
         refreshSwitchResistor()
     }
 

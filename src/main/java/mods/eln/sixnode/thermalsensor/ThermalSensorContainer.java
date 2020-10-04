@@ -3,8 +3,7 @@ package mods.eln.sixnode.thermalsensor;
 import mods.eln.gui.ISlotSkin.SlotSkin;
 import mods.eln.misc.BasicContainer;
 import mods.eln.node.six.SixNodeItemSlot;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
-import mods.eln.sixnode.genericcable.GenericCableDescriptor;
+import mods.eln.sixnode.electriccable.ElectricCableDescriptor;
 import mods.eln.sixnode.thermalcable.ThermalCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -19,7 +18,7 @@ public class ThermalSensorContainer extends BasicContainer {
     public ThermalSensorContainer(EntityPlayer player, IInventory inventory, boolean acceptsElectricalCable) {
         super(player, inventory, new Slot[]{
             new SixNodeItemSlot(inventory, cableSlotId, 152, 62, 1, acceptsElectricalCable ?
-                new Class[]{ThermalCableDescriptor.class, GenericCableDescriptor.class} :
+                new Class[]{ThermalCableDescriptor.class, ElectricCableDescriptor.class} :
                 new Class[]{ThermalCableDescriptor.class}, SlotSkin.medium,
                 new String[]{tr("Cable slot")})
         });

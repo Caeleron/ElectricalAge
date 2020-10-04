@@ -49,7 +49,7 @@ public class ElectricalWatchDescriptor extends SixNodeDescriptor {
             }
         }
 
-        voltageLevelColor = VoltageLevelColor.Neutral;
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     @Override

@@ -5,14 +5,11 @@ import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.sim.ElectricalLoad;
 import mods.eln.sim.mna.component.Resistor;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,7 +50,7 @@ public class ElectricalRelayDescriptor extends SixNodeDescriptor {
             }
         }
 
-        voltageLevelColor = VoltageLevelColor.fromCable(cable);
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     void applyTo(ElectricalLoad load) {
@@ -103,7 +100,7 @@ public class ElectricalRelayDescriptor extends SixNodeDescriptor {
         if (relay0 != null) relay0.draw(factor * (r0rOn - r0rOff) + r0rOff, 0f, 0f, 1f);
         if (relay1 != null) relay1.draw(factor * (r1rOn - r1rOff) + r1rOff, 0f, 0f, 1f);
         GL11.glPushMatrix();
-        voltageLevelColor.setGLColor();
+        VoltageTierHelpers.Companion.setGLColor(voltageTier);
         if (backplate != null) backplate.draw();
         GL11.glPopMatrix();
         UtilsClient.enableCulling();

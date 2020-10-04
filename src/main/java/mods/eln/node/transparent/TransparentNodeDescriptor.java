@@ -21,7 +21,7 @@ import static mods.eln.i18n.I18N.tr;
 
 public class TransparentNodeDescriptor extends GenericItemBlockUsingDamageDescriptor implements IItemRenderer {
     public Class ElementClass, RenderClass;
-    protected VoltageLevelColor voltageLevelColor = VoltageLevelColor.None;
+    protected VoltageTier voltageTier = VoltageTier.NEUTRAL;
 
     public final EntityMetaTag tileEntityMetaTag;
 
@@ -45,7 +45,7 @@ public class TransparentNodeDescriptor extends GenericItemBlockUsingDamageDescri
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return voltageLevelColor != VoltageLevelColor.None;
+        return voltageTier != VoltageTier.NEUTRAL;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class TransparentNodeDescriptor extends GenericItemBlockUsingDamageDescri
         if (getIcon() == null)
             return;
 
-        voltageLevelColor.drawIconBackground(type);
+        VoltageTierHelpers.Companion.drawIconBackground(type, voltageTier);
 
         // remove "eln:" to add the full path replace("eln:", "textures/blocks/") + ".png";
         String icon = getIcon().getIconName().substring(4);

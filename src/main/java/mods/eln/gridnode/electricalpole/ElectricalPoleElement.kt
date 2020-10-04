@@ -6,6 +6,7 @@ import mods.eln.gridnode.GridElement
 import mods.eln.misc.Direction
 import mods.eln.misc.LRDU
 import mods.eln.misc.Utils
+import mods.eln.misc.VoltageTier
 import mods.eln.node.NodeBase
 import mods.eln.node.NodePeriodicPublishProcess
 import mods.eln.node.transparent.TransparentNode
@@ -150,7 +151,7 @@ class ElectricalPoleElement(node: TransparentNode, descriptor: TransparentNodeDe
 
     override fun initialize() {
         trafo?.apply {
-            voltageSecondaryWatchdog.setUNominal(Eln.veryHighVoltageCableDescriptor.electricalNominalVoltage)
+            voltageSecondaryWatchdog.setUNominal(VoltageTier.DISTRIBUTION_GRID.voltage)
             secondaryMaxCurrent = desc.cableDescriptor.electricalMaximalCurrent.toFloat()
             interSystemProcess.setRatio(0.25)
         }

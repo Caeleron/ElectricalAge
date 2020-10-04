@@ -3,6 +3,7 @@ package mods.eln.transparentnode.powercapacitor;
 import mods.eln.Eln;
 import mods.eln.item.DielectricItem;
 import mods.eln.misc.Obj3D;
+import mods.eln.misc.VoltageTier;
 import mods.eln.misc.series.ISerie;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import net.minecraft.inventory.IInventory;
@@ -34,7 +35,7 @@ public class PowerCapacitorDescriptor extends TransparentNodeDescriptor {
 
     public double getCValue(int cableCount, double nominalDielVoltage) {
         if (cableCount == 0) return 0;
-        double uTemp = nominalDielVoltage / Eln.LVU;
+        double uTemp = nominalDielVoltage / VoltageTier.LOW.getVoltage();
         return serie.getValue(cableCount - 1) / uTemp / uTemp;
     }
 

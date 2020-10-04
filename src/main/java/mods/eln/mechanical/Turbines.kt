@@ -34,7 +34,7 @@ abstract class TurbineDescriptor(baseName: String, obj: Obj3D) :
     abstract val efficiencyCurve: Float
     // If efficiency is below this fraction, do nothing.
     open val efficiencyCutoff = 0f
-    val optimalRads = absoluteMaximumShaftSpeed * 0.8f
+    val optimalRads = absoluteMaximumShaftSpeed * 0.2f
     // Power stats
     val power: List<Double> by lazy {
         fluidTypes.map { FuelRegistry.heatEnergyPerMilliBucket(it) * fluidConsumption }

@@ -5,16 +5,15 @@ import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.Utils;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.ElectricalLoad;
 import mods.eln.sim.ThermalLoad;
 import mods.eln.sim.mna.component.Resistor;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -57,7 +56,7 @@ public class ThermalDissipatorActiveDescriptor extends TransparentNodeDescriptor
             rot = obj.getPart("rot");
         }
 
-        voltageLevelColor = VoltageLevelColor.fromCable(cableDescriptor);
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     double warmLimit, coolLimit;

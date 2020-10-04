@@ -7,15 +7,14 @@ import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.Utils;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTierHelpers;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.ElectricalLoad;
 import mods.eln.sim.PhysicalConstant;
 import mods.eln.sim.ThermalLoad;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import javax.xml.crypto.Data;
 import java.util.List;
 
 import static mods.eln.i18n.I18N.tr;
@@ -47,7 +46,7 @@ public class TurbineDescriptor extends TransparentNodeDescriptor {
             main = obj.getPart("main");
         }
 
-        voltageLevelColor = VoltageLevelColor.fromVoltage(nominalU);
+        voltageTier = VoltageTierHelpers.Companion.fromVoltage(nominalU);
     }
 
     private Obj3DPart main;

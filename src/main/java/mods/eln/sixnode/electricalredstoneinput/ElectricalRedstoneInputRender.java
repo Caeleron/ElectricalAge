@@ -48,6 +48,6 @@ public class ElectricalRedstoneInputRender extends SixNodeElementRender {
 
     @Override
     public CableRenderDescriptor getCableRender(LRDU lrdu) {
-        return Eln.instance.signalCableDescriptor.render;
+        return Eln.smallInsulationLowCurrentRender;
     }
 }

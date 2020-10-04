@@ -141,7 +141,7 @@ public class ElectricalGateSourceElement extends SixNodeElement {
 
     @Override
     public void initialize() {
-        Eln.instance.signalCableDescriptor.applyTo(outputGate);
+        Eln.smallInsulationLowCurrentCopperCable.applyTo(outputGate);
         computeElectricalLoad();
     }
 

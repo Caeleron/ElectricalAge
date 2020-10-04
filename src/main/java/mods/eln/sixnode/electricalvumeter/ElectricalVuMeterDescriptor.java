@@ -5,12 +5,10 @@ import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.awt.Color;
 import java.util.List;
 
@@ -51,7 +49,7 @@ public class ElectricalVuMeterDescriptor extends SixNodeDescriptor {
             }
         }
 
-        voltageLevelColor = VoltageLevelColor.SignalVoltage;
+        voltageTier = VoltageTier.TTL;
     }
 
     void draw(float factor, float distance, TileEntity entity) {

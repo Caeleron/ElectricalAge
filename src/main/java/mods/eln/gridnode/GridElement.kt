@@ -6,8 +6,6 @@ import mods.eln.node.transparent.TransparentNode
 import mods.eln.node.transparent.TransparentNodeDescriptor
 import mods.eln.node.transparent.TransparentNodeElement
 import mods.eln.sim.ElectricalLoad
-import mods.eln.sim.ThermalLoad
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
 import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.entity.player.EntityPlayerMP
@@ -18,7 +16,6 @@ import org.apache.commons.lang3.tuple.Pair
 
 import java.io.DataOutputStream
 import java.io.IOException
-import java.util.ArrayList
 import java.util.HashMap
 import java.util.HashSet
 import java.util.UUID

@@ -9,7 +9,6 @@ import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.node.six.SixNodeElementInventory;
 import mods.eln.node.six.SixNodeElementRender;
 import mods.eln.node.six.SixNodeEntity;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
 import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
@@ -67,10 +66,10 @@ public class ElectricalSensorRender extends SixNodeElementRender {
     @Override
     public CableRenderDescriptor getCableRender(LRDU lrdu) {
         if (descriptor.voltageOnly) {
-            if (lrdu == front) return Eln.instance.signalCableDescriptor.render;
+            if (lrdu == front) return Eln.smallInsulationLowCurrentRender;
             if (lrdu == front.inverse()) return cableRender;
         } else {
-            if (lrdu == front) return Eln.instance.signalCableDescriptor.render;
+            if (lrdu == front) return Eln.smallInsulationLowCurrentRender;
             if (lrdu == front.left() || lrdu == front.right()) return cableRender;
         }
         return super.getCableRender(lrdu);

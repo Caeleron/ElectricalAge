@@ -6,11 +6,9 @@ import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,7 +63,7 @@ public class ElectricalDataLoggerDescriptor extends SixNodeDescriptor {
             setPlaceDirection(Direction.YN);
         }
 
-        voltageLevelColor = VoltageLevelColor.SignalVoltage;
+        voltageTier = VoltageTier.TTL;
     }
 
     void draw(DataLogs log, Direction side, LRDU front, int objPosMX, int objPosMZ, byte color) {

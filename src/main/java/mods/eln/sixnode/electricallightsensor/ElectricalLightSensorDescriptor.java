@@ -1,15 +1,12 @@
 package mods.eln.sixnode.electricallightsensor;
 
-import mods.eln.Eln;
 import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,7 +30,7 @@ public class ElectricalLightSensorDescriptor extends SixNodeDescriptor {
             pinDistance = Utils.getSixNodePinDistance(main);
         }
 
-        voltageLevelColor = VoltageLevelColor.SignalVoltage;
+        voltageTier = VoltageTier.TTL;
     }
 
     void draw() {
@@ -45,7 +42,7 @@ public class ElectricalLightSensorDescriptor extends SixNodeDescriptor {
         super.addInformation(itemStack, entityPlayer, list, par4);
         if (dayLightOnly) {
             Collections.addAll(list, tr("Provides an electrical voltage\nwhich is proportional to\nthe intensity of daylight.").split("\n"));
-            list.add(tr("0V at night, %1$V at noon.", Utils.plotValue(Eln.SVU)));
+            list.add(tr("0V at night, %1$V at noon.", Utils.plotValue(VoltageTier.TTL.getVoltage())));
         } else {
             Collections.addAll(list, tr("Provides an electrical voltage\nin the presence of light.").split("\n"));
         }

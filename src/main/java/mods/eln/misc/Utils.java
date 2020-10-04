@@ -1446,7 +1446,7 @@ public class Utils {
     }
 
     public static String plotSignal(double U, double I) {
-        return plotVolt("U", U) + plotAmpere("I", I) + plotPercent("Value", U / Eln.SVU);
+        return plotVolt("U", U) + plotAmpere("I", I) + plotPercent("Value", U / VoltageTier.TTL.getVoltage());
     }
 
     public static float limit(float value, float min, float max) {

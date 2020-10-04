@@ -1,11 +1,10 @@
 package mods.eln.item;
 
+import mods.eln.Eln;
 import mods.eln.misc.Utils;
-import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTierHelpers;
 import mods.eln.sim.ElectricalLoad;
 import mods.eln.sim.RegulatorThermalLoadToElectricalResistor;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
-import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -18,28 +17,23 @@ public class HeatingCorpElement extends GenericItemUsingDamageDescriptorUpgrade 
     public double electricalNominalU;
     double electricalNominalP;
     double electricalMaximalP;
-    public GenericCableDescriptor cableDescriptor;
-
     double electricalR;
-
     double Umax;
 
     public HeatingCorpElement(String name,
                               double electricalNominalU, double electricalNominalP,
-                              double electricalMaximalP,
-                              GenericCableDescriptor cableDescriptor) {
+                              double electricalMaximalP) {
         super(name);
 
         this.electricalNominalU = electricalNominalU;
         this.electricalNominalP = electricalNominalP;
         this.electricalMaximalP = electricalMaximalP;
-        this.cableDescriptor = cableDescriptor;
 
         electricalR = electricalNominalU * electricalNominalU / electricalNominalP;
 
         Umax = Math.sqrt(electricalMaximalP * electricalR);
 
-        voltageLevelColor = VoltageLevelColor.fromVoltage(electricalNominalU);
+        voltageTier = VoltageTierHelpers.Companion.fromVoltage(electricalNominalU);
     }
 /*
     public void applyTo(ElectricalResistor resistor) {
@@ -47,7 +41,7 @@ public class HeatingCorpElement extends GenericItemUsingDamageDescriptorUpgrade 
 	}*/
 
     public void applyTo(ElectricalLoad load) {
-        cableDescriptor.applyTo(load);
+        Eln.uninsulatedHighCurrentCopperCable.applyTo(load);
     }
 
     public void applyTo(RegulatorThermalLoadToElectricalResistor regulator) {

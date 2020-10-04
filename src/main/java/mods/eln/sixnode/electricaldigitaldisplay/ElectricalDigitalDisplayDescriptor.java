@@ -4,6 +4,7 @@ import mods.eln.misc.Obj3D;
 import mods.eln.misc.Utils;
 import mods.eln.misc.UtilsClient;
 import mods.eln.misc.VoltageLevelColor;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -44,7 +45,7 @@ public class ElectricalDigitalDisplayDescriptor extends SixNodeDescriptor {
         for(int i = 1; i < 4; i++) {
             colons[i - 1] = obj.getPart("colon" + i);
         }
-        voltageLevelColor = VoltageLevelColor.Neutral;
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> list, boolean par4) {

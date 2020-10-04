@@ -12,7 +12,7 @@ import static mods.eln.i18n.I18N.tr;
 
 public class SixNodeDescriptor extends GenericItemBlockUsingDamageDescriptor implements IItemRenderer {
     public Class ElementClass, RenderClass;
-    public VoltageLevelColor voltageLevelColor = VoltageLevelColor.None;
+    public VoltageTier voltageTier = VoltageTier.NEUTRAL;
 
     public SixNodeDescriptor(String name, Class ElementClass, Class RenderClass) {
         super(name);
@@ -28,7 +28,7 @@ public class SixNodeDescriptor extends GenericItemBlockUsingDamageDescriptor imp
 
     @Override
     public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return voltageLevelColor != VoltageLevelColor.None;
+        return voltageTier != VoltageTier.NEUTRAL;
     }
 
     @Override
@@ -45,7 +45,7 @@ public class SixNodeDescriptor extends GenericItemBlockUsingDamageDescriptor imp
         if (getIcon() == null)
             return;
 
-        voltageLevelColor.drawIconBackground(type);
+        VoltageTierHelpers.Companion.drawIconBackground(type, voltageTier);
 
         // remove "eln:" to add the full path replace("eln:", "textures/blocks/") + ".png";
         String icon = getIcon().getIconName().substring(4);

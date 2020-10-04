@@ -5,11 +5,9 @@ import mods.eln.misc.*;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.crypto.Data;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +33,7 @@ public class ElectricalEntitySensorDescriptor extends SixNodeDescriptor {
             pinDistance = Utils.getSixNodePinDistance(detector);
         }
 
-        voltageLevelColor = VoltageLevelColor.SignalVoltage;
+        voltageTier = VoltageTier.TTL;
     }
 
     void draw(boolean state, EntitySensorFilterDescriptor filter) {

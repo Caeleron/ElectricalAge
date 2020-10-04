@@ -5,6 +5,7 @@ import mods.eln.i18n.I18N;
 import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Utils;
+import mods.eln.misc.VoltageTier;
 import mods.eln.node.NodeBase;
 import mods.eln.node.six.SixNode;
 import mods.eln.node.six.SixNodeDescriptor;
@@ -88,7 +89,7 @@ public class ElectricalVuMeterElement extends SixNodeElement {
         super.networkSerialize(stream);
         try {
             stream.writeByte(front.toInt() << 4);
-            stream.writeFloat((float) (inputGate.getU() / Eln.instance.SVU));
+            stream.writeFloat((float) (inputGate.getU() / VoltageTier.TTL.getVoltage()));
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -51,7 +51,7 @@ public class PowerInductorDescriptor extends TransparentNodeDescriptor {
 
         double coreFactor = coreDescriptor.cableMultiplicator;
 
-        return Eln.instance.lowVoltageCableDescriptor.electricalRs * coreFactor;
+        return Eln.uninsulatedHighCurrentCopperCable.electricalRs * coreFactor;
     }
 
     public void setParent(net.minecraft.item.Item item, int damage) {

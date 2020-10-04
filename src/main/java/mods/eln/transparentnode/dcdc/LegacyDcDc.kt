@@ -24,6 +24,7 @@ import mods.eln.misc.PhysicalInterpolator
 import mods.eln.misc.SlewLimiter
 import mods.eln.misc.Utils
 import mods.eln.misc.VoltageLevelColor
+import mods.eln.misc.VoltageTier
 import mods.eln.node.NodeBase
 import mods.eln.node.NodePeriodicPublishProcess
 import mods.eln.node.six.SixNodeItemSlot
@@ -41,7 +42,7 @@ import mods.eln.sim.mna.process.TransformerInterSystemProcess
 import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.sim.process.destruct.VoltageStateWatchDog
 import mods.eln.sim.process.destruct.WorldExplosion
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor
+import mods.eln.sixnode.electriccable.ElectricCableDescriptor
 import mods.eln.sixnode.genericcable.GenericCableDescriptor
 import mods.eln.sound.LoopedSound
 import net.minecraft.client.audio.ISound
@@ -81,7 +82,7 @@ class LegacyDcDcDescriptor(name: String, objM: Obj3D, coreM: Obj3D, casingM: Obj
         casingLeftDoor = casingM.getPart("DoorL")
         casingRightDoor = casingM.getPart("DoorR")
 
-        voltageLevelColor = VoltageLevelColor.Neutral
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     override fun addInformation(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>, par4: Boolean) {
@@ -550,10 +551,10 @@ class LegacyDcDcGui(player: EntityPlayer, inventory: IInventory, val render: Leg
 class LegacyDcDcContainer(player: EntityPlayer, inventory: IInventory) : BasicContainer(player, inventory,
     arrayOf(
         SixNodeItemSlot(inventory, primaryCableSlotId, 58, 30, 16,
-            arrayOf<Class<*>>(ElectricalCableDescriptor::class.java),
+            arrayOf<Class<*>>(ElectricCableDescriptor::class.java),
             SlotSkin.medium, arrayOf(I18N.tr("Electrical cable slot"))),
         SixNodeItemSlot(inventory, secondaryCableSlotId, 100, 30, 16,
-            arrayOf<Class<*>>(ElectricalCableDescriptor::class.java),
+            arrayOf<Class<*>>(ElectricCableDescriptor::class.java),
             SlotSkin.medium, arrayOf(I18N.tr("Electrical cable slot"))),
         GenericItemUsingDamageSlot(inventory, ferromagneticSlotId, 58 + (100 - 58) / 2, 30, 1,
             arrayOf<Class<*>>(FerromagneticCoreDescriptor::class.java),

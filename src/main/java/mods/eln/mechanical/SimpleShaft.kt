@@ -7,7 +7,6 @@ import mods.eln.misc.*
 import mods.eln.node.transparent.*
 import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sound.LoopedSound
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
 import net.minecraftforge.client.IItemRenderer
@@ -27,7 +26,7 @@ abstract class SimpleShaftDescriptor(name: String, elm: KClass<out TransparentNo
     internal open val sound: String? = null
 
     init {
-        voltageLevelColor = VoltageLevelColor.Neutral
+        voltageTier = VoltageTier.NEUTRAL;
     }
 
     open fun preDraw() {}

@@ -1,11 +1,9 @@
 package mods.eln.sixnode.powersocket;
 
 import mods.eln.gui.ISlotSkin;
-import mods.eln.gui.SlotFilter;
 import mods.eln.misc.BasicContainer;
 import mods.eln.node.six.SixNodeItemSlot;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
-import mods.eln.sixnode.genericcable.GenericCableDescriptor;
+import mods.eln.sixnode.electriccable.ElectricCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -18,7 +16,7 @@ public class PowerSocketContainer extends BasicContainer {
 
     public PowerSocketContainer(EntityPlayer player, IInventory inventory) {
         super(player, inventory, new Slot[]{
-            new SixNodeItemSlot(inventory, cableSlotId, 150, 8, 1, new Class[]{GenericCableDescriptor.class}, ISlotSkin.SlotSkin.medium, tr("Electrical cable slot\nMust be populated to connect.").split("\n"))
+            new SixNodeItemSlot(inventory, cableSlotId, 150, 8, 1, new Class[]{ElectricCableDescriptor.class}, ISlotSkin.SlotSkin.medium, tr("Electrical cable slot\nMust be populated to connect.").split("\n"))
         });
     }
 }

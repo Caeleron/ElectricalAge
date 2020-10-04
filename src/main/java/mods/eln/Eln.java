@@ -26,8 +26,6 @@ import mods.eln.cable.CableRenderDescriptor;
 import mods.eln.client.ClientKeyHandler;
 import mods.eln.client.SoundLoader;
 import mods.eln.crafting.CraftingRegistry;
-import mods.eln.entity.ReplicatorEntity;
-import mods.eln.entity.ReplicatorPopProcess;
 import mods.eln.generic.GenericCreativeTab;
 import mods.eln.generic.GenericItemUsingDamageDescriptor;
 import mods.eln.generic.GenericItemUsingDamageDescriptorWithComment;
@@ -49,6 +47,7 @@ import mods.eln.misc.Obj3DFolder;
 import mods.eln.misc.RecipesList;
 import mods.eln.misc.Utils;
 import mods.eln.misc.Version;
+import mods.eln.misc.VoltageTier;
 import mods.eln.misc.WindProcess;
 import mods.eln.node.NodeBlockEntity;
 import mods.eln.node.NodeManager;
@@ -80,7 +79,6 @@ import mods.eln.packets.TransparentNodeRequestPacketHandler;
 import mods.eln.packets.TransparentNodeResponsePacket;
 import mods.eln.packets.TransparentNodeResponsePacketHandler;
 import mods.eln.registry.BlockRegistry;
-import mods.eln.registry.EntityRegistry;
 import mods.eln.registry.ItemRegistry;
 import mods.eln.registry.SixNodeRegistry;
 import mods.eln.registry.TransparentNodeRegistry;
@@ -98,7 +96,7 @@ import mods.eln.sim.nbt.NbtElectricalLoad;
 import mods.eln.simplenode.computerprobe.ComputerProbeBlock;
 import mods.eln.simplenode.energyconverter.EnergyConverterElnToOtherBlock;
 import mods.eln.sixnode.PortableNaNDescriptor;
-import mods.eln.sixnode.electricalcable.ElectricalCableDescriptor;
+import mods.eln.sixnode.electriccable.ElectricCableDescriptor;
 import mods.eln.sixnode.electricaldatalogger.DataLogsPrintDescriptor;
 import mods.eln.sixnode.lampsocket.LightBlock;
 import mods.eln.sixnode.lampsocket.LightBlockEntity;
@@ -114,7 +112,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
@@ -132,8 +129,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import static mods.eln.i18n.I18N.TR;
-import static mods.eln.i18n.I18N.TR_NAME;
-import static mods.eln.i18n.I18N.Type;
 import static mods.eln.i18n.I18N.tr;
 
 @Mod(modid = Eln.MODID, name = Eln.NAME, version = "@VERSION@")
@@ -195,14 +190,6 @@ public class Eln {
     public static GenericItemUsingDamageDescriptorWithComment dustTin,
         dustCopper, dustSilver;
     public static final HashMap<String, ItemStack> dictionnaryOreFromMod = new HashMap<>();
-    public static int replicatorRegistrationId = -1;
-    public static CableRenderDescriptor stdCableRenderSignal;
-    public static CableRenderDescriptor stdCableRenderSignalBus;
-    public static CableRenderDescriptor stdCableRender50V;
-    public static CableRenderDescriptor stdCableRender200V;
-    public static CableRenderDescriptor stdCableRender800V;
-    public static CableRenderDescriptor stdCableRender3200V;
-    public static CableRenderDescriptor stdCableRenderCreative;
 
     public static CableRenderDescriptor uninsulatedLowCurrentRender;
     public static CableRenderDescriptor uninsulatedMediumCurrentRender;
@@ -215,13 +202,6 @@ public class Eln {
     public static CableRenderDescriptor bigInsulationLowCurrentRender;
 
     public static final double gateOutputCurrent = 0.100;
-    public static final double SVU = 50, SVII = gateOutputCurrent / 50,
-        SVUinv = 1.0 / SVU;
-    public static final double LVU = 50;
-    public static final double MVU = 200;
-    public static final double HVU = 800;
-    public static final double VVU = 3200;
-    public static final double SVP = gateOutputCurrent * SVU;
     public static final double cableHeatingTime = 30;
     public static final double cableWarmLimit = 130;
     public static final double cableThermalConductionTao = 0.5;
@@ -270,14 +250,26 @@ public class Eln {
     public static int electricalInterSystemOverSampling;
     public static CopperCableDescriptor copperCableDescriptor;
     public static GraphiteDescriptor GraphiteDescriptor;
-    public static ElectricalCableDescriptor creativeCableDescriptor;
-    public static ElectricalCableDescriptor veryHighVoltageCableDescriptor;
-    public static ElectricalCableDescriptor highVoltageCableDescriptor;
-    public static ElectricalCableDescriptor signalCableDescriptor;
-    public static ElectricalCableDescriptor lowVoltageCableDescriptor;
-    public static ElectricalCableDescriptor batteryCableDescriptor;
-    public static ElectricalCableDescriptor meduimVoltageCableDescriptor;
-    public static ElectricalCableDescriptor signalBusCableDescriptor;
+
+    public static ElectricCableDescriptor uninsulatedLowCurrentCopperCable;
+    public static ElectricCableDescriptor uninsulatedMediumCurrentCopperCable;
+    public static ElectricCableDescriptor uninsulatedHighCurrentCopperCable;
+    public static ElectricCableDescriptor smallInsulationLowCurrentCopperCable;
+    public static ElectricCableDescriptor smallInsulationMediumCurrentCopperCable;
+    public static ElectricCableDescriptor smallInsulationHighCurrentCopperCable;
+    public static ElectricCableDescriptor mediumInsulationLowCurrentCopperCable;
+    public static ElectricCableDescriptor mediumInsulationMediumCurrentCopperCable;
+    public static ElectricCableDescriptor bigInsulationLowCurrentCopperCable;
+    public static ElectricCableDescriptor uninsulatedLowCurrentAluminumCable;
+    public static ElectricCableDescriptor uninsulatedMediumCurrentAluminumCable;
+    public static ElectricCableDescriptor uninsulatedHighCurrentAluminumCable;
+    public static ElectricCableDescriptor smallInsulationLowCurrentAluminumCable;
+    public static ElectricCableDescriptor smallInsulationMediumCurrentAluminumCable;
+    public static ElectricCableDescriptor smallInsulationHighCurrentAluminumCable;
+    public static ElectricCableDescriptor mediumInsulationLowCurrentAluminumCable;
+    public static ElectricCableDescriptor mediumInsulationMediumCurrentAluminumCable;
+    public static ElectricCableDescriptor bigInsulationLowCurrentAluminumCable;
+
     public static PortableNaNDescriptor portableNaNDescriptor = null;
     public static CableRenderDescriptor stdPortableNaN = null;
     public static OreRegenerate oreRegenerate;
@@ -291,7 +283,6 @@ public class Eln {
     public static int modbusPort;
     public static double xRayScannerRange;
     public static boolean addOtherModOreToXRay;
-    public static boolean replicatorPop;
     public static boolean xRayScannerCanBeCrafted = true;
     public static boolean forceOreRegen;
     public static boolean explosionEnable;
@@ -302,13 +293,11 @@ public class Eln {
     public static double heatTurbinePowerFactor = 1;
     public static double solarPanelPowerFactor = 1;
     public static double windTurbinePowerFactor = 1;
-    public static double waterTurbinePowerFactor = 1;
     public static double fuelGeneratorPowerFactor = 1;
     public static double fuelHeatFurnacePowerFactor = 1;
     public static int autominerRange = 10;
     public static boolean killMonstersAroundLamps;
     public static int killMonstersAroundLampsRange;
-    public static int maxReplicators = 100;
     public static double stdBatteryHalfLife = 2 * Utils.minecraftDay;
     public static double batteryCapacityFactor = 1.;
     public static boolean wailaEasyMode = false;
@@ -441,7 +430,6 @@ public class Eln {
     @EventHandler
     public void load(FMLInitializationEvent event) {
         Collections.addAll(oreNames, OreDictionary.getOreNames());
-        EntityRegistry.Companion.registerEntities();
         CraftingRegistry.Companion.registerCrafting();
         proxy.registerRenderers();
         TR("itemGroup.Eln");
@@ -495,8 +483,6 @@ public class Eln {
         clientLiveDataManager.start();
         simulator.init();
         simulator.addSlowProcess(wind = new WindProcess());
-        if (replicatorPop)
-            simulator.addSlowProcess(new ReplicatorPopProcess());
         simulator.addSlowProcess(itemEnergyInventoryProcess = new ItemEnergyInventoryProcess());
     }
 
@@ -536,29 +522,15 @@ public class Eln {
         OreScannerTasks.Companion.regenOreScannerFactors();
     }
 
-    public static double LVP() {
-        return 1000 * cablePowerFactor;
-    }
-    public static double MVP() {
-        return 2000 * cablePowerFactor;
-    }
-    public static double HVP() {
-        return 5000 * cablePowerFactor;
-    }
-    public static double VVP() {
-        return 15000 * cablePowerFactor;
-    }
-
     public static double getSmallRs() {
-        return lowVoltageCableDescriptor.electricalRs;
+        return uninsulatedHighCurrentCopperCable.electricalRs;
     }
     public static void applySmallRs(NbtElectricalLoad aLoad) {
-        lowVoltageCableDescriptor.applyTo(aLoad);
+        uninsulatedHighCurrentCopperCable.applyTo(aLoad);
     }
     public static void applySmallRs(Resistor r) {
-        lowVoltageCableDescriptor.applyTo(r);
+        uninsulatedHighCurrentCopperCable.applyTo(r);
     }
-
     public boolean isDevelopmentRun() {
         return (Boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
     }
