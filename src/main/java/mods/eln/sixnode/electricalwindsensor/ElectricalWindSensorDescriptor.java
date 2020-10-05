@@ -5,6 +5,7 @@ import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
@@ -51,8 +52,8 @@ public class ElectricalWindSensorDescriptor extends SixNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List list) {
+        super.addInfo(itemStack, entityPlayer, list);
         Collections.addAll(list, tr("Provides an electrical signal\ndependant on wind speed.").split("\n"));
         list.add(tr("Maximum wind speed is %1$m/s", Utils.plotValue(windMax)));
     }

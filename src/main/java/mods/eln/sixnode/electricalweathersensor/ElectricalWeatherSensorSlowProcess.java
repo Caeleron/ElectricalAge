@@ -67,6 +67,6 @@ public class ElectricalWeatherSensorSlowProcess implements IProcess, INBTTReady 
 
     @Override
     public void writeToNBT(NBTTagCompound nbt, String str) {
-        nbt.setFloat(str + "rc", rc.get());
+        nbt.setFloat(str + "rc", (float)rc.get());
     }
 }

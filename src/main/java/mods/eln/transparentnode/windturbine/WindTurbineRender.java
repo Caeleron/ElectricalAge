@@ -49,7 +49,7 @@ public class WindTurbineRender extends TransparentNodeElementRender {
         descriptor.draw(alpha, haloState);
     }
 
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         powerFactorFilter.setTarget(powerFactor);
         powerFactorFilter.step(deltaT);
         float alphaN_1 = alpha;

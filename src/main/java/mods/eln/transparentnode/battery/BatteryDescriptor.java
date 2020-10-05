@@ -5,7 +5,6 @@ import mods.eln.misc.FunctionTable;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.Utils;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTierHelpers;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.*;
@@ -15,6 +14,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -184,22 +184,21 @@ public class BatteryDescriptor extends TransparentNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
-        list.add(Utils.plotVolt(tr("Nominal voltage: "), electricalU));
-        list.add(Utils.plotPower(tr("Nominal power: "), electricalStdP));
-        list.add(Utils.plotEnergy(tr("Energy capacity: "), electricalStdDischargeTime * electricalStdP));
-        list.add(Utils.plotOhm(tr("Internal resistance: "), electricalRs * 2));
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List list) {
+        super.addInfo(itemStack, entityPlayer, list);
+        list.add(Utils.plotVolt(electricalU, tr("Nominal voltage: ")));
+        list.add(Utils.plotPower(electricalStdP, tr("Nominal power: ")));
+        list.add(Utils.plotEnergy(electricalStdDischargeTime * electricalStdP, tr("Energy capacity: ")));
+        list.add(Utils.plotOhm(electricalRs * 2, tr("Internal resistance: ")));
         list.add("");
-        list.add(Utils.plotPercent(tr("Actual charge: "), getChargeInTag(itemStack)));
-
+        list.add(Utils.plotPercent(getChargeInTag(itemStack), tr("Actual charge: ")));
         if (lifeEnable)
-            list.add(Utils.plotPercent(tr("Life: "), getLifeInTag(itemStack)));
+            list.add(Utils.plotPercent(getLifeInTag(itemStack), tr("Life: ")));
     }
 
     @Override
     public String getName(ItemStack stack) {
-        return super.getName(stack) + Utils.plotPercent(tr(" charged at "), getChargeInTag(stack));
+        return super.getName(stack) + Utils.plotPercent(getChargeInTag(stack), tr(" charged at "));
     }
 
     double getChargeInTag(ItemStack stack) {

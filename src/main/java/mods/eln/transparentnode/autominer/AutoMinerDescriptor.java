@@ -8,6 +8,7 @@ import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
@@ -107,8 +108,8 @@ public class AutoMinerDescriptor extends TransparentNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List list) {
+        super.addInfo(itemStack, entityPlayer, list);
         Collections.addAll(list, tr("Excavates on a small radius.\nExtracts ore on a bigger radius:\n10 blocks radius after 10 blocks depth.").split("\n"));
         list.add(tr("Nominal voltage: %1$V", Utils.plotValue(nominalVoltage)));
     }
@@ -173,7 +174,7 @@ public class AutoMinerDescriptor extends TransparentNodeDescriptor {
         Coordonate[] temp = new Coordonate[powerCoord.length];
         for (int idx = 0; idx < temp.length; idx++) {
             temp[idx] = new Coordonate(powerCoord[idx]);
-            temp[idx].setDimention(w.provider.dimensionId);
+            temp[idx].setDimension(w.provider.dimensionId);
         }
         return temp;
     }

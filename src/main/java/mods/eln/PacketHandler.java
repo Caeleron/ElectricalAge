@@ -86,7 +86,7 @@ public class PacketHandler {
 
         try {
             stream.writeByte(Eln.packetServerToClientInfo);
-            for (IConfigSharing c : Eln.instance.configShared) {
+            for (IConfigSharing c : Eln.configShared) {
                 c.serializeConfig(stream);
             }
         } catch (IOException e) {
@@ -97,10 +97,10 @@ public class PacketHandler {
     }
 
     private void packetServerInfo(DataInputStream stream, NetworkManager manager, EntityPlayer player) {
-        for (IConfigSharing c : Eln.instance.configShared) {
+        for (IConfigSharing c : Eln.configShared) {
             try {
                 c.deserialize(stream);
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

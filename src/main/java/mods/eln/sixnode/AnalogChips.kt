@@ -15,7 +15,6 @@ import mods.eln.misc.INBTTReady
 import mods.eln.misc.LRDU
 import mods.eln.misc.Obj3D
 import mods.eln.misc.Utils
-import mods.eln.misc.VoltageLevelColor
 import mods.eln.misc.VoltageTier
 import mods.eln.node.Node
 import mods.eln.node.Synchronizable
@@ -93,9 +92,9 @@ open class AnalogChipDescriptor(name: String, obj: Obj3D?, functionName: String,
     override fun getFrontFromPlace(side: Direction?, player: EntityPlayer?): LRDU? =
         super.getFrontFromPlace(side, player).left()
 
-    override fun addInformation(itemStack: ItemStack?, entityPlayer: EntityPlayer?, list: MutableList<String>?, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
-        if (list != null) function.infos.split("\n").forEach { list.add(it) }
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
+        function.infos.split("\n").forEach { list.add(it) }
     }
 }
 
@@ -165,12 +164,12 @@ open class AnalogChipElement(node: SixNode, side: Direction, sixNodeDescriptor: 
         inputPins.map { if (it != null && it.connectedComponents.count() > 0) it.u else null }.toTypedArray(),
         outputPin.u)
 
-    override fun readFromNBT(nbt: NBTTagCompound?) {
+    override fun readFromNBT(nbt: NBTTagCompound) {
         super.readFromNBT(nbt)
         function.readFromNBT(nbt, "function")
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?) {
+    override fun writeToNBT(nbt: NBTTagCompound) {
         super.writeToNBT(nbt)
         function.writeToNBT(nbt, "function")
     }
@@ -217,12 +216,12 @@ abstract class AnalogFunction : INBTTReady {
     abstract fun process(inputs: Array<Double?>, deltaTime: Double): Double
 
     open fun getWaila(inputs: Array<Double?>, output: Double) = mutableMapOf(
-        Pair("Inputs", (1..inputCount).map { "${inputColors[it - 1]}${Utils.plotVolt("", inputs[it - 1] ?: 0.0)}" }.joinToString(" ")),
-        Pair("Output", Utils.plotVolt("", output))
+        Pair("Inputs", (1..inputCount).map { "${inputColors[it - 1]}${Utils.plotVolt(inputs[it - 1] ?: 0.0)}" }.joinToString(" ")),
+        Pair("Output", Utils.plotVolt(output))
     )
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {}
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {}
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {}
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {}
 }
 
 class OpAmp : AnalogFunction() {
@@ -257,14 +256,14 @@ class PIDRegulator : AnalogFunction() {
         return result
     }
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
         Kp = nbt?.getDouble("Kp") ?: 1.0
         Ki = nbt?.getDouble("Ki") ?: 0.0
         Kd = nbt?.getDouble("Kd") ?: 0.0
         errorIntegral = nbt?.getDouble("errorIntegral") ?: 0.0
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
         nbt?.setDouble("Kp", Kp)
         nbt?.setDouble("Ki", Ki)
         nbt?.setDouble("Kd", Kd)
@@ -431,11 +430,11 @@ open class VoltageControlledSawtoothOscillator : AnalogFunction() {
         return out
     }
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
         out = nbt?.getDouble("out") ?: 0.0
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
         nbt?.setDouble("out", out)
     }
 }
@@ -454,11 +453,11 @@ class Amplifier : AnalogFunction() {
 
     override fun process(inputs: Array<Double?>, deltaTime: Double) = gain * (inputs[0] ?: 0.0)
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
         gain = nbt?.getDouble("gain") ?: 1.0
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
         nbt?.setDouble("gain", gain)
     }
 
@@ -587,13 +586,13 @@ class SummingUnit : AnalogFunction() {
     override fun process(inputs: Array<Double?>, deltaTime: Double) =
         gains[0] * (inputs[0] ?: 0.0) + gains[1] * (inputs[1] ?: 0.0) + gains[2] * (inputs[2] ?: 0.0)
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
         for (i in gains.indices) {
             gains[i] = nbt?.getDouble("gain$i") ?: 1.0
         }
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
         for (i in gains.indices) {
             nbt?.setDouble("gain$i", gains[i])
         }
@@ -732,12 +731,12 @@ class SampleAndHold : AnalogFunction() {
         return value
     }
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
         clock = nbt?.getBoolean("clock") ?: false
         value = nbt?.getDouble("value") ?: 0.0
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
         nbt?.setBoolean("clock", clock)
         nbt?.setDouble("value", value)
     }
@@ -756,14 +755,14 @@ class Filter: AnalogFunction() {
         return output
     }
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
         nbt?.apply {
             feedback = getDouble("feedback")
             output = getDouble("output")
         }
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
         nbt?.apply {
             setDouble("feedback", feedback)
             setDouble("output", output)

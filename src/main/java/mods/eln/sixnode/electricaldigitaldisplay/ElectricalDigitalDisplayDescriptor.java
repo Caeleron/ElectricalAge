@@ -3,13 +3,13 @@ package mods.eln.sixnode.electricaldigitaldisplay;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Utils;
 import mods.eln.misc.UtilsClient;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -48,8 +48,8 @@ public class ElectricalDigitalDisplayDescriptor extends SixNodeDescriptor {
         voltageTier = VoltageTier.NEUTRAL;
     }
 
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List<String> list) {
+        super.addInfo(itemStack, entityPlayer, list);
         list.add(tr("Displays signal value."));
     }
 

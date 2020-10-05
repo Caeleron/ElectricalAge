@@ -3,7 +3,6 @@ package mods.eln.sixnode.tutorialsign;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.UtilsClient;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.item.ItemStack;

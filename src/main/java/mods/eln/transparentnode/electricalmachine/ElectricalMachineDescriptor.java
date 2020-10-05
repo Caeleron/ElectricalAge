@@ -14,6 +14,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -77,8 +78,8 @@ public class ElectricalMachineDescriptor extends TransparentNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List list) {
+        super.addInfo(itemStack, entityPlayer, list);
         list.add(tr("Nominal voltage: %1$V", Utils.plotValue(nominalU)));
         list.add(tr("Nominal power: %1$W", Utils.plotValue(nominalP)));
     }

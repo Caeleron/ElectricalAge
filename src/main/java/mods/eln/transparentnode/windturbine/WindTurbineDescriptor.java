@@ -8,6 +8,7 @@ import mods.eln.sixnode.genericcable.GenericCableDescriptor;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import java.util.List;
@@ -123,9 +124,9 @@ public class WindTurbineDescriptor extends TransparentNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer,
-                               List<String> list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer,
+                        @NotNull List<String> list) {
+        super.addInfo(itemStack, entityPlayer, list);
 
         list.add(tr("Generates energy from wind."));
         list.add(tr("Voltage: %1$V", Utils.plotValue(maxVoltage)));

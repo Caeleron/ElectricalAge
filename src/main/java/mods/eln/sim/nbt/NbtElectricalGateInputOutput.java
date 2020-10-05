@@ -12,7 +12,7 @@ public class NbtElectricalGateInputOutput extends NbtElectricalLoad {
     }
 
     public String plot(String str) {
-        return str + " " + Utils.plotVolt("", getU()) + Utils.plotAmpere("", getCurrent());
+        return str + " " + Utils.plotVolt(getU(), "") + Utils.plotAmpere(getCurrent(), "");
     }
 
     public boolean isInputHigh() {

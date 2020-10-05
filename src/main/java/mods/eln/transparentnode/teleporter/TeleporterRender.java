@@ -53,7 +53,7 @@ public class TeleporterRender extends TransparentNodeElementRender {
         GL11.glColor3f(1f, 1f, 1f);
 
         if (!lightEnable) {
-            d.door_in.draw(doorInterpolator.get() * doorAlphaOpen, 0, 0, 1);
+            d.door_in.draw((float)doorInterpolator.get() * doorAlphaOpen, 0, 0, 1);
             d.indoor_open.draw();
         }
 
@@ -61,33 +61,33 @@ public class TeleporterRender extends TransparentNodeElementRender {
         d.ext_control.draw();
         d.ext_power.draw();
         UtilsClient.disableCulling();
-        d.door_out.draw(doorInterpolator.get() * doorAlphaOpen, 0, 0, 1);
+        d.door_out.draw((float)doorInterpolator.get() * doorAlphaOpen, 0, 0, 1);
         UtilsClient.enableCulling();
 
         //	d.outlampline0.draw();
         GL11.glColor3f(1f, 1f, 1f);
-        if (doorState == true) {
+        if (doorState) {
             UtilsClient.disableCulling();
-            d.gyro.draw(doorInterpolator.get() * doorAlphaOpen, 0, 0, 1, gyroAlpha, -0.11746f, 0.04275f, 0);
+            d.gyro.draw((float)doorInterpolator.get() * doorAlphaOpen, 0, 0, 1, gyroAlpha, -0.11746f, 0.04275f, 0);
             UtilsClient.enableCulling();
         }
 
         UtilsClient.disableLight();
         GL11.glColor3f(1f, 0.5f, 0f);
-        if (doorState == false) {
+        if (!doorState) {
             UtilsClient.disableCulling();
-            d.gyro.draw(doorInterpolator.get() * doorAlphaOpen, 0, 0, 1, gyroAlpha, -0.11746f, 0.04275f, 0);
+            d.gyro.draw((float)doorInterpolator.get() * doorAlphaOpen, 0, 0, 1, gyroAlpha, -0.11746f, 0.04275f, 0);
             UtilsClient.enableCulling();
             GL11.glColor4f(1f, 0.5f, 0f, 0.4f);
             UtilsClient.enableBlend();
-            d.gyro_alpha.draw(doorInterpolator.get() * doorAlphaOpen, 0, 0, 1, gyroAlpha, -0.11746f, 0.04275f, 0);
+            d.gyro_alpha.draw((float)doorInterpolator.get() * doorAlphaOpen, 0, 0, 1, gyroAlpha, -0.11746f, 0.04275f, 0);
             UtilsClient.disableBlend();
         }
 
         GL11.glColor3f(1f, 1f, 1f);
 
         if (lightEnable) {
-            d.door_in.draw(doorInterpolator.get() * doorAlphaOpen, 0, 0, 1);
+            d.door_in.draw((float)doorInterpolator.get() * doorAlphaOpen, 0, 0, 1);
             d.indoor_open.draw();
         }
         if (voltage > 0.6f) {
@@ -127,38 +127,22 @@ public class TeleporterRender extends TransparentNodeElementRender {
 
         if (processRatioInterpolator.get() > 0.005) {
             UtilsClient.enableBlend();
-            GL11.glColor4f(1f, 1f, 1f, blueInterpolator.get());
+            GL11.glColor4f(1f, 1f, 1f, (float)blueInterpolator.get());
 
             d.indoor_closed.draw();
-            d.door_in_charge.draw(doorInterpolator.get() * doorAlphaOpen, 0, 0, 1);
+            d.door_in_charge.draw((float)doorInterpolator.get() * doorAlphaOpen, 0, 0, 1);
             //GL11.glColor4f(0f, 0.5f, 1f,blueInterpolator.get());
             //d.outlampline0_alpha.draw();
-            d.whiteblur.draw(doorInterpolator.get() * doorAlphaOpen, 0, 0, 1);
+            d.whiteblur.draw((float)doorInterpolator.get() * doorAlphaOpen, 0, 0, 1);
             GL11.glColor4f(1f, 1f, 1f, 1f);
-
             UtilsClient.disableBlend();
         }
-
         UtilsClient.enableLight();
-
-
-        //	GL11.glColor4f(1f, 1f, 1f,1f);
-
-	
-		
-		
-		/*
-        door_in_charge = obj.getPart("door_in_charge");
-		door_in = obj.getPart("door_in");
-		indoor_closed = obj.getPart("indoor_closed");
-		indoor_open = obj.getPart("indoor_open");
-		*/
-
     }
 
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
 
         doorInterpolator.step(deltaT);
         processRatioInterpolator.step(deltaT);

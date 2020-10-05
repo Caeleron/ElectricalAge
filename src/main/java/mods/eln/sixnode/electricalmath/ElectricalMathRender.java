@@ -83,7 +83,7 @@ public class ElectricalMathRender extends SixNodeElementRender {
             front.left().glRotateOnX();
         }
 
-        descriptor.draw(interpolator.get(), ledOn);
+        descriptor.draw((float)interpolator.get(), ledOn);
     }
 
     @Override

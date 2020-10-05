@@ -43,7 +43,7 @@ public class HubRender extends SixNodeElementRender {
         super.publishUnserialize(stream);
         try {
             for (int idx = 0; idx < 4; idx++) {
-                ItemStack cableStack = Utils.unserialiseItemStack(stream);
+                ItemStack cableStack = Utils.unserializeItemStack(stream);
                 if (cableStack != null) {
                     GenericCableDescriptor desc = (GenericCableDescriptor) GenericCableDescriptor.getDescriptor(cableStack, GenericCableDescriptor.class);
                     if(desc != null) {

@@ -78,7 +78,7 @@ public class ElectricalAlarmElement extends SixNodeElement {
 
     @Override
     public String multiMeterString() {
-        return Utils.plotVolt("U:", inputGate.getU()) + Utils.plotAmpere("I:", inputGate.getCurrent());
+        return Utils.plotVolt(inputGate.getU(), "") + Utils.plotAmpere(inputGate.getCurrent(), "");
     }
 
     @Override
@@ -86,7 +86,7 @@ public class ElectricalAlarmElement extends SixNodeElement {
         Map<String, String> info = new HashMap<String, String>();
         info.put(I18N.tr("Engaged"), inputGate.stateHigh() ? I18N.tr("Yes") : I18N.tr("No"));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Input Voltage"), Utils.plotVolt("", inputGate.getU()));
+            info.put(I18N.tr("Input Voltage"), Utils.plotVolt(inputGate.getU(), ""));
         }
         return info;
     }

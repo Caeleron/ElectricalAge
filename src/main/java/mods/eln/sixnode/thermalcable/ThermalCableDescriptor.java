@@ -3,12 +3,12 @@ package mods.eln.sixnode.thermalcable;
 import mods.eln.Eln;
 import mods.eln.cable.CableRenderDescriptor;
 import mods.eln.misc.Utils;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.sim.ThermalLoad;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -69,8 +69,8 @@ public class ThermalCableDescriptor extends SixNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List list) {
+        super.addInfo(itemStack, entityPlayer, list);
 
         list.add(tr("Max. temperature: %1$°C", Utils.plotValue(thermalWarmLimit)));
         list.add(tr("Serial resistance: %1$K/W", Utils.plotValue(thermalRs * 2)));

@@ -68,11 +68,11 @@ public class ElectricalMachineRender extends TransparentNodeElementRender {
     }
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         super.refresh(deltaT);
         processState += processStatePerSecond * deltaT;
         if (processState > 1f) processState = 1f;
-        descriptor.refresh(deltaT, this, drawHandle, inEntity, outEntity, powerFactor, processState);
+        descriptor.refresh((float)deltaT, this, drawHandle, inEntity, outEntity, powerFactor, processState);
     }
 
     @Override

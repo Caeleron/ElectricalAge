@@ -75,14 +75,13 @@ class EmergencyLampDescriptor(name: String, val cable: GenericCableDescriptor, v
     override fun getFrontFromPlace(side: Direction?, player: EntityPlayer?)
         = super.getFrontFromPlace(side, player).inverse()
 
-    override fun addInformation(itemStack: ItemStack?, entityPlayer: EntityPlayer?, list: MutableList<String>,
-                                par4: Boolean) {
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
         with(list) {
             add("As long as power is provided, the internal battery")
             add("is charged and the lamp is off. On a power failure,")
             add("the lamp turns on and runs on batteries.")
-            add(Utils.plotVolt("Nominal voltage:", cable.electricalNominalVoltage))
-            add(Utils.plotEnergy("Battery capacity:", batteryCapacity))
+            add(Utils.plotVolt(cable.electricalNominalVoltage, "Nominal voltage:"))
+            add(Utils.plotEnergy(batteryCapacity, "Battery capacity:"))
         }
     }
 }
@@ -176,9 +175,9 @@ class EmergencyLampElement(sixNode: SixNode, side: Direction, descriptor: SixNod
     override fun getElectricalLoad(lrdu: LRDU, mask: Int): ElectricalLoad? = load
     override fun getThermalLoad(lrdu: LRDU, mask: Int): ThermalLoad? = null
     override fun multiMeterString() = buildString {
-        append(Utils.plotVolt("U:", load.u))
-        append(Utils.plotAmpere("I:", load.i))
-        append(Utils.plotPercent("Charge:", charge / (sixNodeElementDescriptor as EmergencyLampDescriptor).batteryCapacity))
+        append(Utils.plotVolt(load.u))
+        append(Utils.plotAmpere(load.i))
+        append(Utils.plotPercent(charge / (sixNodeElementDescriptor as EmergencyLampDescriptor).batteryCapacity, "Charge:"))
     }
     override fun thermoMeterString() = ""
     override fun getWaila() = mapOf(
@@ -188,7 +187,7 @@ class EmergencyLampElement(sixNode: SixNode, side: Direction, descriptor: SixNod
             charge <= 0.0 -> "Batteries empty"
             else -> "Fully charged"
         },
-        "Charge" to Utils.plotPercent("", charge / (sixNodeElementDescriptor as EmergencyLampDescriptor).batteryCapacity)
+        "Charge" to Utils.plotPercent(charge / (sixNodeElementDescriptor as EmergencyLampDescriptor).batteryCapacity)
     )
 
     override fun networkSerialize(stream: DataOutputStream) {
@@ -303,6 +302,6 @@ class EmergencyLampGui(private var render: EmergencyLampRender)
             buttonSupplyType.displayString = tr("Powered by cable")
         }
         charge.setValue(render.charge)
-        charge.setComment(0, Utils.plotPercent("Charge: ", render.charge.toDouble()))
+        charge.setComment(0, Utils.plotPercent(render.charge.toDouble(), "Charge:"))
     }
 }

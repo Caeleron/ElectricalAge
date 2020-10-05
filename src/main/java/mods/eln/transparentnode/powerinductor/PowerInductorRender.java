@@ -33,7 +33,7 @@ public class PowerInductorRender extends TransparentNodeElementRender {
     }
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
 
     }
 

@@ -24,15 +24,13 @@ public class AutoMinerRender extends TransparentNodeElementRender {
     private final boolean[] ledsAState;
     private final boolean[] ledsPState;
 
-    private final RenderStorage render = new RenderStorage(Eln.instance.autominerRange, 130, 24, 24);
+    private final RenderStorage render = new RenderStorage(Eln.autominerRange, 130, 24, 24);
 
-    private final PhysicalInterpolatorNoRebound pipeLengthInterpol = new PhysicalInterpolatorNoRebound(0.4f, 2f, 0.8f);
+    private final PhysicalInterpolatorNoRebound pipeLengthInterpol = new PhysicalInterpolatorNoRebound(0.4, 2, 0.8);
     private final RcInterpolator rotSpeed = new RcInterpolator(1);
     private float pipeAlpha = 0;
 
-    private final LinkedList<String> logs = new LinkedList<String>();
-
-    private final int logSizeMax = 9;
+    private final LinkedList<String> logs = new LinkedList<>();
 
     private boolean powerOk;
 
@@ -80,6 +78,7 @@ public class AutoMinerRender extends TransparentNodeElementRender {
 
     private void pushLog(String string) {
         logs.addFirst(string);
+        int logSizeMax = 9;
         if (logs.size() > logSizeMax)
             logs.removeLast();
     }
@@ -94,7 +93,7 @@ public class AutoMinerRender extends TransparentNodeElementRender {
         GL11.glPopMatrix();
 
         int len = (int) pipeLengthInterpol.get();
-        GL11.glTranslatef(0, -(pipeLengthInterpol.get() - len), 0);
+        GL11.glTranslatef(0, -((float)pipeLengthInterpol.get() - len), 0);
         for (int idx = len + 2; idx != 0; idx--) {
             if (idx != 1) {
                 descriptor.pipe.draw();
@@ -150,7 +149,7 @@ public class AutoMinerRender extends TransparentNodeElementRender {
         descriptor.draw(false, buttonsState, ledsAState, ledsPState);
     }
 
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         super.refresh(deltaT);
         pipeAlpha += rotSpeed.get() * deltaT;
         if (pipeAlpha > 360) pipeAlpha -= 360;

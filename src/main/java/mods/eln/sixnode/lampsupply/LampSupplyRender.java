@@ -2,6 +2,7 @@ package mods.eln.sixnode.lampsupply;
 
 import mods.eln.cable.CableRenderDescriptor;
 import mods.eln.cable.CableRenderType;
+import mods.eln.generic.GenericItemBlockUsingDamageDescriptor;
 import mods.eln.misc.*;
 import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.node.six.SixNodeElementInventory;
@@ -53,7 +54,7 @@ public class LampSupplyRender extends SixNodeElementRender {
             drawPowerPin(pinDistances);
             LRDU.Down.glRotateOnX();
         }
-        descriptor.draw(interpolator.get());
+        descriptor.draw((float)interpolator.get());
     }
 
     @Override
@@ -86,9 +87,9 @@ public class LampSupplyRender extends SixNodeElementRender {
                 e.aggregator = stream.readChar();
             }
 
-            ItemStack cableStack = Utils.unserialiseItemStack(stream);
+            ItemStack cableStack = Utils.unserializeItemStack(stream);
             if (cableStack != null) {
-                GenericCableDescriptor desc = (GenericCableDescriptor) GenericCableDescriptor.getDescriptor(cableStack);
+                GenericCableDescriptor desc = (GenericCableDescriptor) GenericItemBlockUsingDamageDescriptor.Companion.getDescriptor(cableStack);
                 cableRender = desc.render;
             } else {
                 cableRender = null;

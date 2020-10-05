@@ -225,7 +225,7 @@ public class ConsoleListener extends CommandBase {
             if (!checkArgCount(ics, astring, 0))
                 return;
             Eln.wind.newWindTarget();
-            cprint(ics, strOffsetL0 + "New random wind amplitude target : " + Eln.wind.getTargetNotFiltred());
+            cprint(ics, strOffsetL0 + "New random wind amplitude target : " + Eln.wind.getTargetNotFiltered());
         } else if (cmd.equalsIgnoreCase(cmdNameStr_regenOre)) {
             cprint(ics, Color.COLOR_DARK_CYAN + "ELN > " + Color.COLOR_DARK_YELLOW + cmdNameStr_regenOre);
             if (!checkArgCount(ics, astring, 1))

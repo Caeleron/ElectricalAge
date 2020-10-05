@@ -38,7 +38,7 @@ public class ElectricalVuMeterRender extends SixNodeElementRender {
             front.right().glRotateOnX();
         }
 
-        descriptor.draw(descriptor.onOffOnly ? interpolator.getTarget() : interpolator.get(), UtilsClient.distanceFromClientPlayer(tileEntity), tileEntity);
+        descriptor.draw(descriptor.onOffOnly ? (float)interpolator.getTarget() : (float)interpolator.get(), UtilsClient.distanceFromClientPlayer(tileEntity), tileEntity);
     }
 
     @Override

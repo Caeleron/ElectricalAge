@@ -1,5 +1,6 @@
 package mods.eln.sixnode.powersocket;
 
+import mods.eln.generic.GenericItemBlockUsingDamageDescriptor;
 import mods.eln.generic.GenericItemUsingDamageDescriptor;
 import mods.eln.item.BrushDescriptor;
 import mods.eln.item.ConfigCopyToolDescriptor;
@@ -105,7 +106,7 @@ public class PowerSocketElement extends SixNodeElement implements IConfigurable 
             if(handle != null && handle.element.getChannelState(handle.id)) {
                 ItemStack cable = getInventory().getStackInSlot(PowerSocketContainer.cableSlotId);
                 if (cable != null) {
-                    GenericCableDescriptor desc = (GenericCableDescriptor) GenericCableDescriptor.getDescriptor(cable);
+                    GenericCableDescriptor desc = (GenericCableDescriptor) GenericItemBlockUsingDamageDescriptor.Companion.getDescriptor(cable);
                     loadResistor.connectTo(handle.element.powerLoad, outputLoad);
                     desc.applyTo(loadResistor);
                 }
@@ -176,7 +177,7 @@ public class PowerSocketElement extends SixNodeElement implements IConfigurable 
     void setupFromInventory() {
         ItemStack cableStack = getInventory().getStackInSlot(PowerSocketContainer.cableSlotId);
         if (cableStack != null) {
-            GenericCableDescriptor desc = (GenericCableDescriptor) GenericCableDescriptor.getDescriptor(cableStack);
+            GenericCableDescriptor desc = (GenericCableDescriptor) GenericItemBlockUsingDamageDescriptor.Companion.getDescriptor(cableStack);
             desc.applyTo(outputLoad);
             voltageWatchdog.setUNominal(desc.electricalNominalVoltage);
         } else {

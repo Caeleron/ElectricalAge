@@ -18,6 +18,7 @@ abstract class LoopedSound(val sample: String, val coord: Coordonate,
 
     override fun getPitch() = 1f
     override fun getVolume() = 1f
+
     override fun isDonePlaying() = !active
 
     override fun getRepeatDelay() = 0

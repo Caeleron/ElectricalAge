@@ -74,16 +74,14 @@ public abstract class SimpleNode extends NodeBase {
     }
 
 
-    public ArrayList<IProcess> slowProcessList = new ArrayList<IProcess>(4);
-
-    public ArrayList<IProcess> electricalProcessList = new ArrayList<IProcess>(4);
-    public ArrayList<Component> electricalComponentList = new ArrayList<Component>(4);
-    public ArrayList<State> electricalLoadList = new ArrayList<State>(4);
-
-    public ArrayList<IProcess> thermalFastProcessList = new ArrayList<IProcess>(4);
-    public ArrayList<IProcess> thermalSlowProcessList = new ArrayList<IProcess>(4);
-    public ArrayList<ThermalConnection> thermalConnectionList = new ArrayList<ThermalConnection>(4);
-    public ArrayList<NbtThermalLoad> thermalLoadList = new ArrayList<NbtThermalLoad>(4);
+    public ArrayList<IProcess> slowProcessList = new ArrayList<>(4);
+    public ArrayList<IProcess> electricalProcessList = new ArrayList<>(4);
+    public ArrayList<Component> electricalComponentList = new ArrayList<>(4);
+    public ArrayList<State> electricalLoadList = new ArrayList<>(4);
+    public ArrayList<IProcess> thermalFastProcessList = new ArrayList<>(4);
+    public ArrayList<IProcess> thermalSlowProcessList = new ArrayList<>(4);
+    public ArrayList<ThermalConnection> thermalConnectionList = new ArrayList<>(4);
+    public ArrayList<NbtThermalLoad> thermalLoadList = new ArrayList<>(4);
 
     @Override
     public void connectJob() {

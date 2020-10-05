@@ -21,46 +21,46 @@ public class TurretMechanicsSimulation implements IProcess {
         shootDuration = 0;
     }
 
-    public float getTurretAngle() {
+    public double getTurretAngle() {
         return turretAngle.getPosition();
     }
 
-    public float getTurretTargetAngle() {
+    public double getTurretTargetAngle() {
         return turretAngle.getTarget();
     }
 
-    public boolean setTurretAngle(float angle) {
+    public boolean setTurretAngle(double angle) {
         angle = Utils.limit(angle, -descriptor.getProperties().actionAngle, descriptor.getProperties().actionAngle);
         boolean changed = angle != turretAngle.getTarget();
         turretAngle.setTarget(angle);
         return changed;
     }
 
-    public float getGunPosition() {
+    public double getGunPosition() {
         return gunPosition.getPosition();
     }
 
-    public float getGunTargetPosition() {
+    public double getGunTargetPosition() {
         return gunPosition.getTarget();
     }
 
-    public boolean setGunPosition(float position) {
+    public boolean setGunPosition(double position) {
         position = Utils.limit(position, 0, 1);
         boolean changed = position != gunPosition.getTarget();
         gunPosition.setTarget(position);
         return changed;
     }
 
-    public float getGunElevation() {
+    public double getGunElevation() {
         return gunElevation.getPosition();
     }
 
-    public float getGunTargetElevation() {
+    public double getGunTargetElevation() {
         return gunElevation.getTarget();
     }
 
-    public boolean setGunElevation(float elevation) {
-        if (Float.isNaN(elevation)) return false;
+    public boolean setGunElevation(double elevation) {
+        if (Double.isNaN(elevation)) return false;
         elevation = Utils.limit(elevation, descriptor.getProperties().gunMinElevation, descriptor.getProperties().gunMaxElevation);
         boolean changed = elevation != gunElevation.getTarget();
         gunElevation.setTarget(elevation);

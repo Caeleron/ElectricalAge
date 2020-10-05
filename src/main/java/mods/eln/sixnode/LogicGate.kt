@@ -78,11 +78,9 @@ open class LogicGateDescriptor(name: String, obj: Obj3D?, functionName: String, 
     override fun getFrontFromPlace(side: Direction?, player: EntityPlayer?): LRDU? =
         super.getFrontFromPlace(side, player).left()
 
-    override fun addInformation(itemStack: ItemStack?, entityPlayer: EntityPlayer?, list: MutableList<String>?, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
-        if (list != null) {
-            function.infos.split("\n").forEach { list.add(it) }
-        }
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
+        function.infos.split("\n").forEach { list.add(it) }
     }
 }
 
@@ -152,12 +150,12 @@ open class LogicGateElement(node: SixNode, side: Direction, sixNodeDescriptor: S
         inputPins.map { if (it != null && it.connectedComponents.count() > 0) it.normalized else null }.toTypedArray(),
         outputPin.u / VoltageTier.TTL.voltage)
 
-    override fun readFromNBT(nbt: NBTTagCompound?) {
+    override fun readFromNBT(nbt: NBTTagCompound) {
         super.readFromNBT(nbt)
         function.readFromNBT(nbt, "function")
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?) {
+    override fun writeToNBT(nbt: NBTTagCompound) {
         super.writeToNBT(nbt)
         function.writeToNBT(nbt, "function")
     }
@@ -212,8 +210,8 @@ abstract class LogicFunction : INBTTReady {
         Pair("Output", output.toDigitalString())
     )
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {}
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {}
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {}
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {}
 }
 
 class Not : LogicFunction() {
@@ -291,11 +289,11 @@ class SchmittTrigger : LogicFunction() {
         return state
     }
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
         state = nbt?.getBoolean(str + "state") ?: false
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
         nbt?.setBoolean(str + "state", state)
     }
 }
@@ -318,16 +316,16 @@ class Oscillator : LogicFunction() {
     }
 
     override fun getWaila(inputs: Array<Double?>, output: Double) = mutableMapOf(
-        Pair("Inputs", "${AnalogFunction.inputColors[0]} ${Utils.plotVolt("", inputs[0] ?: 0.0)}"),
+        Pair("Inputs", "${AnalogFunction.inputColors[0]} ${Utils.plotVolt(inputs[0] ?: 0.0)}"),
         Pair("Output", output.toDigitalString())
     )
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
         ramp = nbt?.getDouble(str + "ramp") ?: 0.0
         state = nbt?.getBoolean(str + "state") ?: false
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
         nbt?.setDouble(str + "ramp", ramp)
         nbt?.setBoolean(str + "state", state)
     }
@@ -356,12 +354,12 @@ abstract class TriggeredLogicFunction(private val triggerIndex: Int) : LogicFunc
     open fun onRisingEdge(inputs: List<Boolean?>, state: Boolean): Boolean = state
     open fun onFallingEdge(inputs: List<Boolean?>, state: Boolean): Boolean = state
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
         trigger = nbt?.getBoolean(str + "trigger") ?: false
         state = nbt?.getBoolean(str + "state") ?: false
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
         nbt?.setBoolean(str + "trigger", trigger)
         nbt?.setBoolean(str + "state", state)
     }
@@ -510,11 +508,11 @@ class Pal : LogicFunction() {
             (inputs[2] ?: false) * 2 +
             ((inputs[2] ?: false) xor (inputs[1] ?: false)) * 1]
 
-    override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
         truthTable.fromInt(nbt?.getInteger(str + "truthTable") ?: 0)
     }
 
-    override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
         nbt?.setInteger(str + "truthTable", truthTable.toInt())
     }
 }

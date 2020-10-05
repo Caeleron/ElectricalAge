@@ -119,7 +119,7 @@ public class ElectricalGateSourceElement extends SixNodeElement {
                 info.put(I18N.tr("State"), "§c" + I18N.tr("Off"));
             }
         }
-        info.put(I18N.tr("Output voltage"), Utils.plotVolt("", outputGate.getU()));
+        info.put(I18N.tr("Output voltage"), Utils.plotVolt(outputGate.getU(), ""));
         return info;
     }
 

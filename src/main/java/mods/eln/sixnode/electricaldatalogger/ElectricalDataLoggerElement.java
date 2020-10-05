@@ -140,7 +140,7 @@ public class ElectricalDataLoggerElement extends SixNodeElement implements IConf
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Input"), Utils.plotVolt("", inputGate.getU()));
+        info.put(I18N.tr("Input"), Utils.plotVolt(inputGate.getU(), ""));
         return info;
     }
 

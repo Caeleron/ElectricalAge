@@ -34,7 +34,7 @@ public class WirelessSignalSourceRender extends SixNodeElementRender {
     @Override
     public void draw() {
         super.draw();
-        descriptor.draw(interpolator.get(), UtilsClient.distanceFromClientPlayer(this.tileEntity), tileEntity);
+        descriptor.draw((float)interpolator.get(), UtilsClient.distanceFromClientPlayer(this.tileEntity), tileEntity);
     }
 
     @Override

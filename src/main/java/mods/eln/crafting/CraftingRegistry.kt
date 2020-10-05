@@ -77,16 +77,17 @@ class CraftingRegistry {
 
         fun checkRecipe() {
             Utils.println("No recipe for ")
+            // TODO: Re-evaluate types nullity here.
             for (d in Eln.sixNodeItem.subItemList.values) {
-                val stack = d.newItemStack()
+                val stack = d?.newItemStack()
                 if (!recipeExists(stack)) {
-                    Utils.println("  " + d.name)
+                    Utils.println("  " + d?.name)
                 }
             }
             for (d in Eln.transparentNodeItem.subItemList.values) {
-                val stack = d.newItemStack()
+                val stack = d?.newItemStack()
                 if (!recipeExists(stack)) {
-                    Utils.println("  " + d.name)
+                    Utils.println("  " + d?.name)
                 }
             }
             for (d in Eln.sharedItem.subItemList.values) {

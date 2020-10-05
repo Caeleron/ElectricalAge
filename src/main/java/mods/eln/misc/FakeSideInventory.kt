@@ -1,94 +1,64 @@
-package mods.eln.misc;
+package mods.eln.misc
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
+import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.ISidedInventory
+import net.minecraft.item.ItemStack
 
-public class FakeSideInventory implements ISidedInventory {
-
-    static private final FakeSideInventory instance = new FakeSideInventory();
-
-    public static FakeSideInventory getInstance() {
-        return instance;
+class FakeSideInventory : ISidedInventory {
+    override fun getSizeInventory(): Int {
+        return 0
     }
 
-    @Override
-    public int getSizeInventory() {
-        return 0;
+    override fun getStackInSlot(var1: Int): ItemStack? {
+        return null
     }
 
-    @Override
-    public ItemStack getStackInSlot(int var1) {
-        return null;
+    override fun decrStackSize(var1: Int, var2: Int): ItemStack? {
+        return null
     }
 
-    @Override
-    public ItemStack decrStackSize(int var1, int var2) {
-        return null;
+    override fun getStackInSlotOnClosing(var1: Int): ItemStack? {
+        return null
     }
 
-    @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
-        return null;
+    override fun setInventorySlotContents(var1: Int, var2: ItemStack) {}
+    override fun getInventoryName(): String {
+        return "FakeSideInventory"
     }
 
-    @Override
-    public void setInventorySlotContents(int var1, ItemStack var2) {
-
+    override fun hasCustomInventoryName(): Boolean {
+        return false
     }
 
-    @Override
-    public String getInventoryName() {
-        return "FakeSideInventory";
+    override fun getInventoryStackLimit(): Int {
+        return 0
     }
 
-    @Override
-    public boolean hasCustomInventoryName() {
-        return false;
+    override fun markDirty() {}
+    override fun isUseableByPlayer(var1: EntityPlayer): Boolean {
+        return false
     }
 
-    @Override
-    public int getInventoryStackLimit() {
-        return 0;
+    override fun openInventory() {}
+    override fun closeInventory() {}
+    override fun isItemValidForSlot(var1: Int, var2: ItemStack): Boolean {
+        return false
     }
 
-    @Override
-    public void markDirty() {
-
+    override fun getAccessibleSlotsFromSide(var1: Int): IntArray {
+        return intArrayOf()
     }
 
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
-        return false;
+    override fun canInsertItem(var1: Int, var2: ItemStack, var3: Int): Boolean {
+        return false
     }
 
-    @Override
-    public void openInventory() {
-
+    override fun canExtractItem(var1: Int, var2: ItemStack, var3: Int): Boolean {
+        return false
     }
 
-    @Override
-    public void closeInventory() {
-
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        return false;
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int var1) {
-        return new int[]{};
-    }
-
-    @Override
-    public boolean canInsertItem(int var1, ItemStack var2, int var3) {
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int var1, ItemStack var2, int var3) {
-        return false;
+    companion object {
+        @JvmStatic
+        val instance = FakeSideInventory()
     }
 }

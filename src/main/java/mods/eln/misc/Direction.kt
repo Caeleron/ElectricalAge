@@ -1,151 +1,77 @@
-package mods.eln.misc;
+package mods.eln.misc
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Vec3;
-import net.minecraftforge.common.util.ForgeDirection;
-import org.lwjgl.opengl.GL11;
+import mods.eln.misc.LRDU
+import mods.eln.misc.Utils.isTheClass
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.Vec3
+import net.minecraftforge.common.util.ForgeDirection
+import org.lwjgl.opengl.GL11
 
 /**
  * Represents the 6 possible directions along the axis of a block.
  */
-public enum Direction {
-    /**
-     * -X
-     */
+enum class Direction(var int: Int) {
     XN(0),
-    /**
-     * +X
-     */
     XP(1),
-
-    /**
-     * -Y
-     */
-    YN(2), //MC-Code starts with 0 here
-    /**
-     * +Y
-     */
-    YP(3), // 1...
-
-    /**
-     * -Z
-     */
+    YN(2),  //MC-Code starts with 0 here
+    YP(3),  // 1...
     ZN(4),
-    /**
-     * +Z
-     */
     ZP(5);
 
-    static final Direction[] intToDir = {XN, XP, YN, YP, ZN, ZP};
+    val isNotY: Boolean
+        get() = this != YP && this != YN
+    val isY: Boolean
+        get() = this == YP || this == YN
 
-    public static final Direction[] all = {XN, XP, YN, YP, ZN, ZP};
-
-    public static final Direction[][] axes = {{XN, XP}, {YN, YP}, {ZN, ZP}};
-
-    int dir;
-
-    Direction(int dir) {
-        this.dir = dir;
+    fun applyTo(vector: DoubleArray, distance: Double) {
+        if (int == 0) vector[0] -= distance
+        if (int == 1) vector[0] += distance
+        if (int == 2) vector[1] -= distance
+        if (int == 3) vector[1] += distance
+        if (int == 4) vector[2] -= distance
+        if (int == 5) vector[2] += distance
     }
 
-    public int getInt() {
-        return dir;
+    fun applyTo(vector: IntArray, distance: Int) {
+        if (int == 0) vector[0] -= distance
+        if (int == 1) vector[0] += distance
+        if (int == 2) vector[1] -= distance
+        if (int == 3) vector[1] += distance
+        if (int == 4) vector[2] -= distance
+        if (int == 5) vector[2] += distance
     }
 
-    public boolean isNotY() {
-        return this != YP && this != YN;
-    }
-
-    public boolean isY() {
-        return this == YP || this == YN;
-    }
-
-    public void applyTo(double[] vector, double distance) {
-        if (dir == 0) vector[0] -= distance;
-        if (dir == 1) vector[0] += distance;
-        if (dir == 2) vector[1] -= distance;
-        if (dir == 3) vector[1] += distance;
-        if (dir == 4) vector[2] -= distance;
-        if (dir == 5) vector[2] += distance;
-    }
-
-    public void applyTo(int[] vector, int distance) {
-        if (dir == 0) vector[0] -= distance;
-        if (dir == 1) vector[0] += distance;
-        if (dir == 2) vector[1] -= distance;
-        if (dir == 3) vector[1] += distance;
-        if (dir == 4) vector[2] -= distance;
-        if (dir == 5) vector[2] += distance;
-    }
-
-    public int getHorizontalIndex() {
-        switch (this) {
-            case XN:
-                return 0;
-            case XP:
-                return 1;
-            case YN:
-                return 0;
-            case YP:
-                return 0;
-            case ZN:
-                return 2;
-            case ZP:
-                return 3;
-            default:
-                return 0;
+    val horizontalIndex: Int
+        get() = when (this) {
+            XN -> 0
+            XP -> 1
+            YN -> 0
+            YP -> 0
+            ZN -> 2
+            ZP -> 3
         }
-    }
-
-    public static Direction fromHorizontalIndex(int nbr) {
-        switch (nbr) {
-            case 0:
-                return XN;
-            case 1:
-                return XP;
-            case 2:
-                return ZN;
-            case 3:
-                return ZP;
-            default:
-                return XN;
-        }
-    }
-
-	/*public CoordinateTuple ApplyToCoordinates(CoordinateTuple coordinates) {
-		CoordinateTuple ret = new CoordinateTuple(coordinates);
-		
-		ret.coords[dir / 2] += GetSign();
-		
-		return ret;
-	}*/
-
     /**
      * Get the tile entity next to a tile entity following this direction.
      *
      * @param tileEntity tile entity to check
      * @return Adjacent tile entity or null if none exists
      */
-    public TileEntity applyToTileEntity(TileEntity tileEntity) {
-        if (tileEntity == null) return null;
-        int coords[] = {tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord};
-
-        coords[dir / 2] += getSign();
-
-        if (tileEntity.getWorldObj() != null && tileEntity.getWorldObj().blockExists(coords[0], coords[1], coords[2])) {
-            return tileEntity.getWorldObj().getTileEntity(coords[0], coords[1], coords[2]);
+    fun applyToTileEntity(tileEntity: TileEntity?): TileEntity? {
+        if (tileEntity == null) return null
+        val coords = intArrayOf(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord)
+        coords[int / 2] += sign
+        return if (tileEntity.worldObj != null && tileEntity.worldObj.blockExists(coords[0], coords[1], coords[2])) {
+            tileEntity.worldObj.getTileEntity(coords[0], coords[1], coords[2])
         } else {
-            return null;
+            null
         }
     }
 
-    public TileEntity applyToTileEntityAndSameClassThan(TileEntity tileEntity, Class c) {
-        if (tileEntity == null) return null;
-        TileEntity findedEntity = applyToTileEntity(tileEntity);
-        if (findedEntity == null) return null;
-        if (!Utils.isTheClass(findedEntity, c)) return null;
-        return findedEntity;
+    fun applyToTileEntityAndSameClassThan(tileEntity: TileEntity?, c: Class<*>?): TileEntity? {
+        if (tileEntity == null) return null
+        val findedEntity = applyToTileEntity(tileEntity) ?: return null
+        return if (!isTheClass(findedEntity, c!!)) null else findedEntity
     }
 
     /**
@@ -153,23 +79,22 @@ public enum Direction {
      *
      * @return Inverse direction
      */
-    public Direction getInverse() {
-        int inverseDir = dir - getSign();
-
-        for (Direction direction : Direction.values()) {
-            if (direction.dir == inverseDir) return direction;
+    val inverse: Direction
+        get() {
+            val inverseDir = int - sign
+            for (direction in values()) {
+                if (direction.int == inverseDir) return direction
+            }
+            return this
         }
-
-        return this;
-    }
 
     /**
      * Convert this direction to a Minecraft side value.
      *
      * @return Minecraft side value
      */
-    public int toSideValue() {
-        return (dir + 4) % 6;
+    fun toSideValue(): Int {
+        return (int + 4) % 6
     }
 
     /**
@@ -177,502 +102,419 @@ public enum Direction {
      *
      * @return -1 if the direction is negative, +1 if the direction is positive
      */
-    private int getSign() {
-        return (dir % 2) * 2 - 1;
-    }
+    private val sign: Int
+        get() = int % 2 * 2 - 1
 
-    public void renderBlockFace(int x, int y, float spriteDim) {
-        switch (this) {
-            case XN:
-                GL11.glNormal3f(-1.0f, 0.0f, 0.0f);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(-0.5F, 0.5F, 0.5f);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(-0.5F, 0.5F, -0.5f);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(-0.5F, -0.5F, -0.5f);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(-0.5F, -0.5F, 0.5f);
-                break;
-            case XP:
-                GL11.glNormal3f(1.0f, 0.0f, 0.0f);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(0.5F, 0.5F, -0.5f);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(0.5F, 0.5F, 0.5f);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(0.5F, -0.5F, 0.5f);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(0.5F, -0.5F, -0.5f);
-                break;
-            case YN:
-                GL11.glNormal3f(0.0f, -1.0f, 0.0f);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(0.5F, -0.5f, -0.5F);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(0.5F, -0.5f, 0.5F);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(-0.5F, -0.5f, 0.5F);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(-0.5F, -0.5f, -0.5F);
-                break;
-            case YP:
-                GL11.glNormal3f(0.0f, 1.0f, 0.0f);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(-0.5F, 0.5f, -0.5F);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(-0.5F, 0.5f, 0.5F);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(0.5F, 0.5f, 0.5F);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(0.5F, 0.5f, -0.5F);
-                break;
-            case ZN:
-                GL11.glNormal3f(0.0f, 0.0f, -1.0f);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(-0.5F, 0.5F, -0.5f);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(0.5F, 0.5F, -0.5f);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(0.5F, -0.5F, -0.5f);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(-0.5F, -0.5F, -0.5f);
-                break;
-            case ZP:
-                GL11.glNormal3f(0.0f, 0.0f, 1.0f);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(0.5F, 0.5F, 0.5f);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim);
-                GL11.glVertex3f(-0.5F, 0.5F, 0.5f);
-                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(-0.5F, -0.5F, 0.5f);
-                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim);
-                GL11.glVertex3f(0.5F, -0.5F, 0.5f);
-                break;
-            default:
-                break;
+    fun renderBlockFace(x: Int, y: Int, spriteDim: Float) {
+        when (this) {
+            XN -> {
+                GL11.glNormal3f(-1.0f, 0.0f, 0.0f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, 0.5f)
+            }
+            XP -> {
+                GL11.glNormal3f(1.0f, 0.0f, 0.0f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, -0.5f)
+            }
+            YN -> {
+                GL11.glNormal3f(0.0f, -1.0f, 0.0f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, -0.5f)
+            }
+            YP -> {
+                GL11.glNormal3f(0.0f, 1.0f, 0.0f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, -0.5f)
+            }
+            ZN -> {
+                GL11.glNormal3f(0.0f, 0.0f, -1.0f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, -0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, -0.5f)
+            }
+            ZP -> {
+                GL11.glNormal3f(0.0f, 0.0f, 1.0f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 0) * spriteDim)
+                GL11.glVertex3f(-0.5f, 0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 0) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(-0.5f, -0.5f, 0.5f)
+                GL11.glTexCoord2f((x + 1) * spriteDim, (y + 1) * spriteDim)
+                GL11.glVertex3f(0.5f, -0.5f, 0.5f)
+            }
         }
     }
 
-    static public Direction fromInt(int idx) {
-        for (Direction direction : Direction.values()) {
-            if (direction.dir == idx) return direction;
+    fun right(): Direction {
+        return when (this) {
+            XN -> ZP
+            XP -> ZN
+            YN -> ZN
+            YP -> ZP
+            ZN -> XN
+            ZP -> XP
         }
-        return null;
     }
 
-    static public Direction fromIntMinecraftSide(int idx) {
-        idx = (idx + 2) % 6;
-        for (Direction direction : Direction.values()) {
-            if (direction.dir == idx) return direction;
+    fun left(): Direction {
+        return right().inverse
+    }
+
+    fun up(): Direction {
+        return when (this) {
+            XN -> YP
+            XP -> YP
+            YN -> XP
+            YP -> XP
+            ZN -> YP
+            ZP -> YP
         }
-        return null;
     }
 
-    public Direction right() {
-        switch (this) {
-            case XN:
-                return ZP;
-            case XP:
-                return ZN;
-            case YN:
-                return ZN;
-            case YP:
-                return ZP;
-            case ZN:
-                return XN;
-            case ZP:
-                return XP;
+    fun down(): Direction {
+        return up().inverse
+    }
+
+    fun back(): Direction {
+        return inverse
+    }
+
+    fun applyLRDU(lrdu: LRDU): Direction {
+        return when (lrdu) {
+            LRDU.Down -> down()
+            LRDU.Left -> left()
+            LRDU.Right -> right()
+            LRDU.Up -> up()
         }
-        return null;
     }
 
-    public Direction left() {
-        return right().getInverse();
-    }
-
-    public Direction up() {
-        switch (this) {
-            case XN:
-                return YP;
-            case XP:
-                return YP;
-            case YN:
-                return XP;
-            case YP:
-                return XP;
-            case ZN:
-                return YP;
-            case ZP:
-                return YP;
+    fun getLRDUGoingTo(target: Direction): LRDU? {
+        for (lrdu in LRDU.values()) {
+            if (target == applyLRDU(lrdu)) return lrdu
         }
-        return null;
+        return null
     }
 
-    public Direction down() {
-        return up().getInverse();
-    }
-
-    public Direction back() {
-        return getInverse();
-    }
-
-    public Direction applyLRDU(LRDU lrdu) {
-        switch (lrdu) {
-            case Down:
-                return this.down();
-            case Left:
-                return this.left();
-            case Right:
-                return this.right();
-            case Up:
-                return this.up();
-            default:
-                break;
-        }
-        return null;
-    }
-
-    public LRDU getLRDUGoingTo(Direction target) {
-        for (LRDU lrdu : LRDU.values()) {
-            if (target == applyLRDU(lrdu)) return lrdu;
-        }
-        return null;
-    }
-
-    public void glRotateXnRef() {
+    fun glRotateXnRef() {
         //toCheck
-        switch (this) {
-            case XN:
-                break;
-            case XP:
-                //GL11.glScalef(-1f, 1, -1f);
-                GL11.glRotatef(180, 0f, 1f, 0f);
-                break;
-            case YN:
-                GL11.glRotatef(90f, 0f, 0f, 1f);
-                GL11.glScalef(1f, -1f, -1f);
-                break;
-            case YP:
-                GL11.glRotatef(90f, 0f, 0f, -1f);
-                break;
-            case ZN:
-                GL11.glRotatef(270f, 0f, 1f, 0f);
-                break;
-            case ZP:
-                GL11.glRotatef(90f, 0f, 1f, 0f);
-                break;
-            default:
-                break;
+        when (this) {
+            XN -> {
+            }
+            XP ->                 //GL11.glScalef(-1f, 1, -1f);
+                GL11.glRotatef(180f, 0f, 1f, 0f)
+            YN -> {
+                GL11.glRotatef(90f, 0f, 0f, 1f)
+                GL11.glScalef(1f, -1f, -1f)
+            }
+            YP -> GL11.glRotatef(90f, 0f, 0f, -1f)
+            ZN -> GL11.glRotatef(270f, 0f, 1f, 0f)
+            ZP -> GL11.glRotatef(90f, 0f, 1f, 0f)
         }
     }
 
-    public void glRotateXnRefInv() {
+    fun glRotateXnRefInv() {
         //toCheck
-        switch (this) {
-            case XN:
-                break;
-            case XP:
-                //GL11.glScalef(-1f, 1, -1f);
-                GL11.glRotatef(180, 0f, -1f, 0f);
-                break;
-            case YN:
-                GL11.glScalef(1f, -1f, -1f);
-                GL11.glRotatef(90f, 0f, 0f, -1f);
-                break;
-            case YP:
-                GL11.glRotatef(90f, 0f, 0f, 1f);
-                break;
-            case ZN:
-                GL11.glRotatef(270f, 0f, -1f, 0f);
-                break;
-            case ZP:
-                GL11.glRotatef(90f, 0f, -1f, 0f);
-                break;
-            default:
-                break;
+        when (this) {
+            XN -> {
+            }
+            XP ->                 //GL11.glScalef(-1f, 1, -1f);
+                GL11.glRotatef(180f, 0f, -1f, 0f)
+            YN -> {
+                GL11.glScalef(1f, -1f, -1f)
+                GL11.glRotatef(90f, 0f, 0f, -1f)
+            }
+            YP -> GL11.glRotatef(90f, 0f, 0f, 1f)
+            ZN -> GL11.glRotatef(270f, 0f, -1f, 0f)
+            ZP -> GL11.glRotatef(90f, 0f, -1f, 0f)
         }
     }
 
-    public void glRotateZnRef() {
+    fun glRotateZnRef() {
         //toCheck
-        switch (this) {
-            case XN:
-                GL11.glRotatef(90f, 0f, 1f, 0f);
-                break;
-            case XP:
-                GL11.glRotatef(90f, 0f, -1f, 0f);
-                break;
-            case YN:
-                GL11.glRotatef(90f, 1f, 0f, 0f);
-                GL11.glScalef(1f, -1, 1f);
-                break;
-            case YP:
-                GL11.glRotatef(90f, 1f, 0f, 0f);
-                GL11.glScalef(1f, 1f, 1f);
-                break;
-            case ZN:
-                //GL11.glRotatef(90f, 0f, -1f, 0f);
-                break;
-            case ZP:
-                GL11.glRotatef(180f, 0f, 1f, 0f);
-                break;
-            default:
-                break;
+        when (this) {
+            XN -> GL11.glRotatef(90f, 0f, 1f, 0f)
+            XP -> GL11.glRotatef(90f, 0f, -1f, 0f)
+            YN -> {
+                GL11.glRotatef(90f, 1f, 0f, 0f)
+                GL11.glScalef(1f, -1f, 1f)
+            }
+            YP -> {
+                GL11.glRotatef(90f, 1f, 0f, 0f)
+                GL11.glScalef(1f, 1f, 1f)
+            }
+            ZN -> {
+            }
+            ZP -> GL11.glRotatef(180f, 0f, 1f, 0f)
         }
     }
 
-    public TileEntity getTileEntity(Coordonate coordonate) {
-        int x = coordonate.x, y = coordonate.y, z = coordonate.z;
-        switch (this) {
-            case XN:
-                x--;
-                break;
-            case XP:
-                x++;
-                break;
-            case YN:
-                y--;
-                break;
-            case YP:
-                y++;
-                break;
-            case ZN:
-                z--;
-                break;
-            case ZP:
-                z++;
-                break;
-            default:
-                break;
+    fun getTileEntity(coordonate: Coordonate): TileEntity {
+        var x = coordonate.x
+        var y = coordonate.y
+        var z = coordonate.z
+        when (this) {
+            XN -> x--
+            XP -> x++
+            YN -> y--
+            YP -> y++
+            ZN -> z--
+            ZP -> z++
         }
-
-        return coordonate.world().getTileEntity(x, y, z);
+        return coordonate.world().getTileEntity(x, y, z)
     }
 
-    public void writeToNBT(NBTTagCompound nbt, String name) {
-        nbt.setByte(name, (byte) getInt());
+    fun writeToNBT(nbt: NBTTagCompound, name: String?) {
+        nbt.setByte(name, int.toByte())
     }
 
-    static public Direction readFromNBT(NBTTagCompound nbt, String name) {
-        return Direction.fromInt(nbt.getByte(name));
-    }
-
-    public void rotateFromXN(double[] p) {
-        double x = p[0], y = p[1], z = p[2];
-        switch (this) {
-            case XN:
-                break;
-            case XP:
-                p[0] = -x;
-                p[2] = -z;
-                break;
-            case YN:
-                p[0] = y;
-                p[1] = x;
-                p[2] = -z;
-                break;
-            case YP:
-                p[0] = y;
-                p[1] = -x;
-                p[2] = z;
-                break;
-            case ZN:
-                p[0] = -z;
-                p[2] = x;
-                break;
-            case ZP:
-                p[0] = z;
-                p[2] = -x;
-                break;
-            default:
-                break;
+    fun rotateFromXN(p: DoubleArray) {
+        val x = p[0]
+        val y = p[1]
+        val z = p[2]
+        when (this) {
+            XN -> {
+            }
+            XP -> {
+                p[0] = -x
+                p[2] = -z
+            }
+            YN -> {
+                p[0] = y
+                p[1] = x
+                p[2] = -z
+            }
+            YP -> {
+                p[0] = y
+                p[1] = -x
+                p[2] = z
+            }
+            ZN -> {
+                p[0] = -z
+                p[2] = x
+            }
+            ZP -> {
+                p[0] = z
+                p[2] = -x
+            }
         }
     }
 
-    public void rotateFromXN(int[] p) {
-        int x = p[0], y = p[1], z = p[2];
-        switch (this) {
-            case XN:
-                break;
-            case XP:
-                p[0] = -x;
-                p[2] = -z;
-                break;
-            case YN:
-                p[0] = y;
-                p[1] = x;
-                p[2] = -z;
-                break;
-            case YP:
-                p[0] = y;
-                p[1] = -x;
-                p[2] = z;
-                break;
-            case ZN:
-                p[0] = -z;
-                p[2] = x;
-                break;
-            case ZP:
-                p[0] = z;
-                p[2] = -x;
-                break;
-            default:
-                break;
+    fun rotateFromXN(p: IntArray) {
+        val x = p[0]
+        val y = p[1]
+        val z = p[2]
+        when (this) {
+            XN -> {
+            }
+            XP -> {
+                p[0] = -x
+                p[2] = -z
+            }
+            YN -> {
+                p[0] = y
+                p[1] = x
+                p[2] = -z
+            }
+            YP -> {
+                p[0] = y
+                p[1] = -x
+                p[2] = z
+            }
+            ZN -> {
+                p[0] = -z
+                p[2] = x
+            }
+            ZP -> {
+                p[0] = z
+                p[2] = -x
+            }
         }
     }
 
-    public void rotateFromXN(Vec3 p) {
-        double x = p.xCoord, y = p.yCoord, z = p.zCoord;
-        switch (this) {
-            case XN:
-                break;
-            case XP:
-                p.xCoord = -x;
-                p.zCoord = -z;
-                break;
-            case YN:
-                p.xCoord = y;
-                p.yCoord = x;
-                p.zCoord = -z;
-                break;
-            case YP:
-                p.xCoord = y;
-                p.yCoord = -x;
-                p.zCoord = z;
-                break;
-            case ZN:
-                p.xCoord = -z;
-                p.zCoord = x;
-                break;
-            case ZP:
-                p.xCoord = z;
-                p.zCoord = -x;
-                break;
-            default:
-                break;
+    fun rotateFromXN(p: Vec3) {
+        val x = p.xCoord
+        val y = p.yCoord
+        val z = p.zCoord
+        when (this) {
+            XN -> {
+            }
+            XP -> {
+                p.xCoord = -x
+                p.zCoord = -z
+            }
+            YN -> {
+                p.xCoord = y
+                p.yCoord = x
+                p.zCoord = -z
+            }
+            YP -> {
+                p.xCoord = y
+                p.yCoord = -x
+                p.zCoord = z
+            }
+            ZN -> {
+                p.xCoord = -z
+                p.zCoord = x
+            }
+            ZP -> {
+                p.xCoord = z
+                p.zCoord = -x
+            }
         }
     }
 
-    public void rotateFromXN(Coordonate p) {
-        int x = p.x, y = p.y, z = p.z;
-        switch (this) {
-            case XN:
-                break;
-            case XP:
-                p.x = -x;
-                p.z = -z;
-                break;
-            case YN:
-                p.x = y;
-                p.y = x;
-                p.z = -z;
-                break;
-            case YP:
-                p.x = y;
-                p.y = -x;
-                p.z = z;
-                break;
-            case ZN:
-                p.x = -z;
-                p.z = x;
-                break;
-            case ZP:
-                p.x = z;
-                p.z = -x;
-                break;
-            default:
-                break;
+    fun rotateFromXN(p: Coordonate) {
+        val x = p.x
+        val y = p.y
+        val z = p.z
+        when (this) {
+            XN -> {
+            }
+            XP -> {
+                p.x = -x
+                p.z = -z
+            }
+            YN -> {
+                p.x = y
+                p.y = x
+                p.z = -z
+            }
+            YP -> {
+                p.x = y
+                p.y = -x
+                p.z = z
+            }
+            ZN -> {
+                p.x = -z
+                p.z = x
+            }
+            ZP -> {
+                p.x = z
+                p.z = -x
+            }
         }
     }
 
-    public void glTranslate(float v) {
-        switch (this) {
-            case XN:
-                GL11.glTranslatef(-v, 0f, 0f);
-                break;
-            case XP:
-                GL11.glTranslatef(v, 0f, 0f);
-                break;
-            case YN:
-                GL11.glTranslatef(0f, -v, 0f);
-                break;
-            case YP:
-                GL11.glTranslatef(0f, v, 0f);
-                break;
-            case ZN:
-                GL11.glTranslatef(0f, 0f, -v);
-                break;
-            case ZP:
-                GL11.glTranslatef(0f, 0f, v);
-                break;
-            default:
-                break;
+    fun glTranslate(v: Float) {
+        when (this) {
+            XN -> GL11.glTranslatef(-v, 0f, 0f)
+            XP -> GL11.glTranslatef(v, 0f, 0f)
+            YN -> GL11.glTranslatef(0f, -v, 0f)
+            YP -> GL11.glTranslatef(0f, v, 0f)
+            ZN -> GL11.glTranslatef(0f, 0f, -v)
+            ZP -> GL11.glTranslatef(0f, 0f, v)
         }
     }
 
-    public static Direction from(ForgeDirection direction) {
-        switch (direction) {
-            case DOWN:
-                return YN;
-            case EAST:
-                return XP;
-            case NORTH:
-                return ZN;
-            case SOUTH:
-                return ZP;
-            case UP:
-                return YP;
-            case WEST:
-                return XN;
-            default:
-                return YN;
+    fun toForge(): ForgeDirection {
+        return when (this) {
+            YN -> ForgeDirection.DOWN
+            XP -> ForgeDirection.EAST
+            ZN -> ForgeDirection.NORTH
+            ZP -> ForgeDirection.SOUTH
+            YP -> ForgeDirection.UP
+            XN -> ForgeDirection.WEST
         }
     }
 
-    public ForgeDirection toForge() {
-        switch (this) {
-            case YN:
-                return ForgeDirection.DOWN;
-            case XP:
-                return ForgeDirection.EAST;
-            case ZN:
-                return ForgeDirection.NORTH;
-            case ZP:
-                return ForgeDirection.SOUTH;
-            case YP:
-                return ForgeDirection.UP;
-            case XN:
-                return ForgeDirection.WEST;
-            default:
-                return ForgeDirection.UNKNOWN;
+    fun glRotateZnRefInv() {
+        when (this) {
+            XN -> GL11.glRotatef(-90f, 0f, 1f, 0f)
+            XP -> GL11.glRotatef(-90f, 0f, -1f, 0f)
+            YN -> {
+                GL11.glRotatef(-90f, 1f, 0f, 0f)
+                GL11.glScalef(1f, -1f, 1f)
+            }
+            YP -> {
+                GL11.glRotatef(-90f, 1f, 0f, 0f)
+                GL11.glScalef(1f, 1f, 1f)
+            }
+            ZN -> {
+            }
+            ZP -> GL11.glRotatef(-180f, 0f, 1f, 0f)
         }
     }
 
-    public void glRotateZnRefInv() {
-        switch (this) {
-            case XN:
-                GL11.glRotatef(-90f, 0f, 1f, 0f);
-                break;
-            case XP:
-                GL11.glRotatef(-90f, 0f, -1f, 0f);
-                break;
-            case YN:
-                GL11.glRotatef(-90f, 1f, 0f, 0f);
-                GL11.glScalef(1f, -1, 1f);
-                break;
-            case YP:
-                GL11.glRotatef(-90f, 1f, 0f, 0f);
-                GL11.glScalef(1f, 1f, 1f);
-                break;
-            case ZN:
-                //GL11.glRotatef(90f, 0f, -1f, 0f);
-                break;
-            case ZP:
-                GL11.glRotatef(-180f, 0f, 1f, 0f);
-                break;
-            default:
-                break;
+    companion object {
+        val intToDir = arrayOf(XN, XP, YN, YP, ZN, ZP)
+        val all = arrayOf(XN, XP, YN, YP, ZN, ZP)
+        val axes = arrayOf(arrayOf(XN, XP), arrayOf(YN, YP), arrayOf(ZN, ZP))
+        @JvmStatic
+        fun fromHorizontalIndex(nbr: Int): Direction {
+            return when (nbr) {
+                0 -> XN
+                1 -> XP
+                2 -> ZN
+                3 -> ZP
+                else -> XN
+            }
+        }
+
+        @JvmStatic
+        fun fromInt(idx: Int): Direction? {
+            for (direction in values()) {
+                if (direction.int == idx) return direction
+            }
+            return null
+        }
+
+        @JvmStatic
+        fun fromIntMinecraftSide(side: Int): Direction? {
+            var idx = side
+            idx = (idx + 2) % 6
+            for (direction in values()) {
+                if (direction.int == idx) return direction
+            }
+            return null
+        }
+
+        @JvmStatic
+        fun readFromNBT(nbt: NBTTagCompound, name: String): Direction {
+            return fromInt(nbt.getByte(name).toInt())!!
+        }
+
+        @JvmStatic
+        fun from(direction: ForgeDirection?): Direction {
+            return when (direction) {
+                ForgeDirection.DOWN -> YN
+                ForgeDirection.EAST -> XP
+                ForgeDirection.NORTH -> ZN
+                ForgeDirection.SOUTH -> ZP
+                ForgeDirection.UP -> YP
+                ForgeDirection.WEST -> XN
+                else -> YN
+            }
         }
     }
 }

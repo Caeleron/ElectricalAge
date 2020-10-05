@@ -191,10 +191,10 @@ public class ElectricalMachineElement extends TransparentNodeElement implements 
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Power consumption"), Utils.plotPower("", slowRefreshProcess.getPower()));
-        info.put(I18N.tr("Voltage"), Utils.plotVolt("", electricalLoad.getU()));
+        info.put(I18N.tr("Power consumption"), Utils.plotPower(slowRefreshProcess.getPower(), ""));
+        info.put(I18N.tr("Voltage"), Utils.plotVolt(electricalLoad.getU(), ""));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Power provided"), Utils.plotPower("", electricalLoad.getI() * electricalLoad.getU()));
+            info.put(I18N.tr("Power provided"), Utils.plotPower(electricalLoad.getI() * electricalLoad.getU(), ""));
         }
         return info;
     }

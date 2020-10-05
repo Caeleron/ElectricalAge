@@ -33,7 +33,7 @@ public class PowerCapacitorRender extends TransparentNodeElementRender {
     }
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
 
     }
 

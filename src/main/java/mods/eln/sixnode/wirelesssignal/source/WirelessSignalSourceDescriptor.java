@@ -1,12 +1,12 @@
 package mods.eln.sixnode.wirelesssignal.source;
 
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.sixnode.electricalgatesource.ElectricalGateSourceRenderObj;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
@@ -32,8 +32,8 @@ public class WirelessSignalSourceDescriptor extends SixNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List<String> list) {
+        super.addInfo(itemStack, entityPlayer, list);
         if (autoReset) {
             Collections.addAll(list, tr("Acts like a\npush button.").split("\n"));
         } else {

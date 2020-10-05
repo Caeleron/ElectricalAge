@@ -4,7 +4,6 @@ import mods.eln.Eln
 import mods.eln.i18n.I18N
 import mods.eln.misc.IConfigSharing
 import mods.eln.misc.Utils
-import mods.eln.misc.VoltageLevelColor
 import mods.eln.misc.VoltageTierHelpers
 import mods.eln.sim.mna.component.Resistor
 import mods.eln.sixnode.lampsocket.LampSocketType

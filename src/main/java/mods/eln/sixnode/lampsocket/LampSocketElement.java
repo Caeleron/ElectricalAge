@@ -209,13 +209,13 @@ public class LampSocketElement extends SixNodeElement implements IConfigurable {
 
     @Override
     public String multiMeterString() {
-        return Utils.plotVolt("U:", positiveLoad.getU()) + Utils.plotAmpere("I:", lampResistor.getCurrent());
+        return Utils.plotVolt(positiveLoad.getU(), "") + Utils.plotAmpere(lampResistor.getCurrent(), "");
     }
 
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Power consumption"), Utils.plotPower("", lampResistor.getI() * lampResistor.getU()));
+        info.put(I18N.tr("Power consumption"), Utils.plotPower(lampResistor.getI() * lampResistor.getU(), ""));
         if (lampDescriptor != null) {
             info.put(I18N.tr("Bulb"), lampDescriptor.name);
         } else {
@@ -225,7 +225,7 @@ public class LampSocketElement extends SixNodeElement implements IConfigurable {
             if (poweredByLampSupply) {
                 info.put(I18N.tr("Channel"), channel);
             }
-            info.put(I18N.tr("Voltage"), Utils.plotVolt("", positiveLoad.getU()));
+            info.put(I18N.tr("Voltage"), Utils.plotVolt(positiveLoad.getU(), ""));
             ItemStack lampStack = acceptingInventory.getInventory().getStackInSlot(0);
             if (lampStack != null && lampDescriptor != null) {
                 info.put(I18N.tr("Life Left: "), Utils.plotValue(lampDescriptor.getLifeInTag(lampStack)) + " Hours");

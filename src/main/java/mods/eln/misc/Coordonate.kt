@@ -1,297 +1,254 @@
-package mods.eln.misc;
+package mods.eln.misc
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import mods.eln.node.NodeBlockEntity;
-import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
+import cpw.mods.fml.common.FMLCommonHandler
+import mods.eln.node.NodeBlockEntity
+import net.minecraft.block.Block
+import net.minecraft.entity.Entity
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.AxisAlignedBB
+import net.minecraft.util.Vec3
+import net.minecraft.world.World
+import net.minecraftforge.common.DimensionManager
 
-public class Coordonate implements INBTTReady {
+class Coordonate : INBTTReady {
+    @JvmField
+    var x = 0
+    @JvmField
+    var y = 0
+    @JvmField
+    var z = 0
+    @JvmField
+    var dimention = 0
 
-    public int x, y, z, dimention;
-
-    public Coordonate() {
-        x = 0;
-        y = 0;
-        z = 0;
-        dimention = 0;
+    constructor() {
+        x = 0
+        y = 0
+        z = 0
+        dimention = 0
     }
 
-    public Coordonate(Coordonate coord) {
-        x = coord.x;
-        y = coord.y;
-        z = coord.z;
-        dimention = coord.dimention;
+    constructor(coord: Coordonate) {
+        x = coord.x
+        y = coord.y
+        z = coord.z
+        dimention = coord.dimention
     }
 
-    public Coordonate(NBTTagCompound nbt, String str) {
-        readFromNBT(nbt, str);
+    constructor(nbt: NBTTagCompound, str: String) {
+        readFromNBT(nbt, str)
     }
 
-    @Override
-    public int hashCode() {
-        return (x + y) * 0x10101010 + z;
+    override fun hashCode(): Int {
+        return (x + y) * 0x10101010 + z
     }
 
-
-    public int worldDimension() {
-        return dimention;
+    fun worldDimension(): Int {
+        return dimention
     }
 
-    private World w = null;
-
-    public World world() {
-        //	Side sideCS = FMLCommonHandler.instance().getEffectiveSide();
-        //	if (sideCS == Side.CLIENT) return null;
-
-        //Minecraft m = Minecraft.getMinecraft();
-        //if(FMLCommonHandler.instance().getSidedDelegate().)
-        //WorldManager
-        //Minecraft.getMinecraft().
-        //World
-        //Minecraft m = Minecraft.getMinecraft();
-
-		
-		/*if(w == null) *///w = FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(worldDimension());
-
-        if (w == null) {
-            return FMLCommonHandler.instance().getMinecraftServerInstance().worldServerForDimension(worldDimension());
-        }
-        return w;
+    private var w: World? = null
+    fun world(): World {
+        return if (w == null) {
+            FMLCommonHandler.instance().minecraftServerInstance.worldServerForDimension(worldDimension())
+        } else w!!
     }
 
-    public Coordonate(NodeBlockEntity entity) {
-        x = entity.xCoord;
-        y = entity.yCoord;
-        z = entity.zCoord;
-        dimention = entity.getWorldObj().provider.dimensionId;
+    constructor(entity: NodeBlockEntity) {
+        x = entity.xCoord
+        y = entity.yCoord
+        z = entity.zCoord
+        dimention = entity.worldObj.provider.dimensionId
     }
 
-    public Coordonate(int x, int y, int z, int dimention) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.dimention = dimention;
+    constructor(x: Int, y: Int, z: Int, dimention: Int) {
+        this.x = x
+        this.y = y
+        this.z = z
+        this.dimention = dimention
     }
 
-    public Coordonate(int x, int y, int z, World world) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.dimention = world.provider.dimensionId;
-        if (world.isRemote)
-            this.w = world;
+    constructor(x: Int, y: Int, z: Int, world: World) {
+        this.x = x
+        this.y = y
+        this.z = z
+        dimention = world.provider.dimensionId
+        if (world.isRemote) w = world
     }
 
-    public Coordonate(TileEntity entity) {
-        this.x = entity.xCoord;
-        this.y = entity.yCoord;
-        this.z = entity.zCoord;
-        this.dimention = entity.getWorldObj().provider.dimensionId;
-        if (entity.getWorldObj().isRemote)
-            this.w = entity.getWorldObj();
+    constructor(entity: TileEntity) {
+        x = entity.xCoord
+        y = entity.yCoord
+        z = entity.zCoord
+        dimention = entity.worldObj.provider.dimensionId
+        if (entity.worldObj.isRemote) w = entity.worldObj
     }
 
-    public Coordonate newWithOffset(int x, int y, int z) {
-        return new Coordonate(this.x + x, this.y + y, this.z + z, dimention);
+    fun newWithOffset(x: Int, y: Int, z: Int): Coordonate {
+        return Coordonate(this.x + x, this.y + y, this.z + z, dimention)
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Coordonate)) return false;
-        Coordonate id = (Coordonate) obj;
-        return id.x == x && id.y == y && id.z == z && id.dimention == dimention;
+    override fun equals(other: Any?): Boolean {
+        if (other !is Coordonate) return false
+        return other.x == x && other.y == y && other.z == z && other.dimention == dimention
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound nbt, String str) {
-        x = nbt.getInteger(str + "x");
-        y = nbt.getInteger(str + "y");
-        z = nbt.getInteger(str + "z");
-        dimention = nbt.getInteger(str + "d");
+    override fun readFromNBT(nbt: NBTTagCompound, str: String) {
+        x = nbt!!.getInteger(str + "x")
+        y = nbt.getInteger(str + "y")
+        z = nbt.getInteger(str + "z")
+        dimention = nbt.getInteger(str + "d")
     }
 
-    @Override
-    public void writeToNBT(NBTTagCompound nbt, String str) {
-        nbt.setInteger(str + "x", x);
-        nbt.setInteger(str + "y", y);
-        nbt.setInteger(str + "z", z);
-        nbt.setInteger(str + "d", dimention);
+    override fun writeToNBT(nbt: NBTTagCompound, str: String) {
+        nbt!!.setInteger(str + "x", x)
+        nbt.setInteger(str + "y", y)
+        nbt.setInteger(str + "z", z)
+        nbt.setInteger(str + "d", dimention)
     }
 
-    @Override
-    public String toString() {
-        return "X : " + x + " Y : " + y + " Z : " + z + " D : " + dimention;
+    override fun toString(): String {
+        return "X : $x Y : $y Z : $z D : $dimention"
     }
 
-    public void move(Direction dir) {
-        switch (dir) {
-            case XN:
-                x--;
-                break;
-            case XP:
-                x++;
-                break;
-            case YN:
-                y--;
-                break;
-            case YP:
-                y++;
-                break;
-            case ZN:
-                z--;
-                break;
-            case ZP:
-                z++;
-                break;
-            default:
-                break;
+    fun move(dir: Direction?) {
+        when (dir) {
+            Direction.XN -> x--
+            Direction.XP -> x++
+            Direction.YN -> y--
+            Direction.YP -> y++
+            Direction.ZN -> z--
+            Direction.ZP -> z++
+            else -> {
+            }
         }
     }
 
-    public Coordonate moved(final Direction direction) {
-        Coordonate moved = new Coordonate(this);
-        moved.move(direction);
-        return moved;
+    fun moved(direction: Direction?): Coordonate {
+        val moved = Coordonate(this)
+        moved.move(direction)
+        return moved
     }
 
-    public Block getBlock() {
-        return world().getBlock(x, y, z);
+    var block: Block
+        get() = world().getBlock(x, y, z)
+        set(b) {
+            world().setBlock(x, y, z, b)
+        }
+
+    fun getAxisAlignedBB(ray: Int): AxisAlignedBB {
+        return AxisAlignedBB.getBoundingBox(
+            x - ray.toDouble(), y - ray.toDouble(), z - ray.toDouble(),
+            x + ray + 1.toDouble(), y + ray + 1.toDouble(), z + ray + 1.toDouble())
     }
 
-    public static AxisAlignedBB getAxisAlignedBB(Coordonate a, Coordonate b) {
-        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(
-            Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z, b.z),
-            Math.max(a.x, b.x) + 1.0, Math.max(a.y, b.y) + 1.0, Math.max(a.z, b.z) + 1.0);
-        return bb;
+    fun distanceTo(e: Entity): Double {
+        return Math.abs(e.posX - (x + 0.5)) + Math.abs(e.posY - (y + 0.5)) + Math.abs(e.posZ - (z + 0.5))
     }
 
-    public AxisAlignedBB getAxisAlignedBB(int ray) {
-        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(
-            x - ray, y - ray, z - ray,
-            x + ray + 1, y + ray + 1, z + ray + 1);
-        return bb;
+    val meta: Int
+        get() = world().getBlockMetadata(x, y, z)
+    val blockExist: Boolean
+        get() {
+            val w = DimensionManager.getWorld(dimention) ?: return false
+            return w.blockExists(x, y, z)
+        }
+    val worldExist: Boolean
+        get() = DimensionManager.getWorld(dimention) != null
+
+    fun copyTo(v: DoubleArray) {
+        v[0] = x + 0.5
+        v[1] = y + 0.5
+        v[2] = z + 0.5
     }
 
-    public double distanceTo(Entity e) {
-        return Math.abs(e.posX - (x + 0.5)) + Math.abs(e.posY - (y + 0.5)) + Math.abs(e.posZ - (z + 0.5));
-    }
-	
-	/*public void setBlock(int id, int meta) {
-		world().setBlock(x, y, z, id, meta, 2);
-	}*/
-
-    public int getMeta() {
-        return world().getBlockMetadata(x, y, z);
+    fun setPosition(vp: DoubleArray) {
+        x = vp[0].toInt()
+        y = vp[1].toInt()
+        z = vp[2].toInt()
     }
 
-    public boolean getBlockExist() {
-        World w = DimensionManager.getWorld(dimention);
-        if (w == null) return false;
-        return w.blockExists(x, y, z);
+    fun setPosition(vp: Vec3) {
+        x = vp.xCoord.toInt()
+        y = vp.yCoord.toInt()
+        z = vp.zCoord.toInt()
     }
 
-    public boolean getWorldExist() {
-        return DimensionManager.getWorld(dimention) != null;
+    val tileEntity: TileEntity
+        get() = world().getTileEntity(x, y, z)
+
+    fun invalidate() {
+        x = -1
+        y = -1
+        z = -1
+        dimention = -5123
     }
 
-    public void copyTo(double[] v) {
-        v[0] = x + 0.5;
-        v[1] = y + 0.5;
-        v[2] = z + 0.5;
+    val isValid: Boolean
+        get() = dimention != -5123
 
+    fun trueDistanceTo(c: Coordonate): Double {
+        val dx = x - c.x.toLong()
+        val dy = y - c.y.toLong()
+        val dz = z - c.z.toLong()
+        return Math.sqrt(dx * dx + dy * dy + (dz * dz).toDouble())
     }
 
-    public void setPosition(double[] vp) {
-        this.x = (int) vp[0];
-        this.y = (int) vp[1];
-        this.z = (int) vp[2];
+    fun setDimension(dimension: Int) {
+        this.dimention = dimension
+        w = null
     }
 
-    public void setPosition(Vec3 vp) {
-        this.x = (int) vp.xCoord;
-        this.y = (int) vp.yCoord;
-        this.z = (int) vp.zCoord;
+    fun copyFrom(c: Coordonate) {
+        x = c.x
+        y = c.y
+        z = c.z
+        dimention = c.dimention
     }
 
-    public TileEntity getTileEntity() {
-        return world().getTileEntity(x, y, z);
+    fun applyTransformation(front: Direction, coordonate: Coordonate) {
+        front.rotateFromXN(this)
+        x += coordonate.x
+        y += coordonate.y
+        z += coordonate.z
     }
 
-    public void invalidate() {
-        x = -1;
-        y = -1;
-        z = -1;
-        dimention = -5123;
+    fun setWorld(worldObj: World) {
+        if (worldObj.isRemote) w = worldObj
+        dimention = worldObj.provider.dimensionId
     }
 
-    public boolean isValid() {
-        return dimention != -5123;
+    fun setMetadata(meta: Int) {
+        world().setBlockMetadataWithNotify(x, y, z, meta, 0)
     }
 
-    public double trueDistanceTo(Coordonate c) {
-        long dx = x - c.x;
-        long dy = y - c.y;
-        long dz = z - c.z;
-        return Math.sqrt(dx * dx + dy * dy + dz * dz);
-    }
-
-    public void setDimention(int dimention) {
-        this.dimention = dimention;
-        w = null;
-    }
-
-    public void copyFrom(Coordonate c) {
-        this.x = c.x;
-        this.y = c.y;
-        this.z = c.z;
-        this.dimention = c.dimention;
-    }
-
-    public void applyTransformation(Direction front, Coordonate coordonate) {
-        front.rotateFromXN(this);
-        x += coordonate.x;
-        y += coordonate.y;
-        z += coordonate.z;
-    }
-
-    public void setWorld(World worldObj) {
-        if (worldObj.isRemote)
-            w = worldObj;
-        dimention = worldObj.provider.dimensionId;
-    }
-
-    public void setMetadata(int meta) {
-        world().setBlockMetadataWithNotify(x, y, z, meta, 0);
-    }
-
-    public void setBlock(Block b) {
-        world().setBlock(x, y, z, b);
-    }
-
-    public int compareTo(Coordonate o) {
+    operator fun compareTo(o: Coordonate): Int {
         if (dimention != o.dimention) {
-            return dimention - o.dimention;
+            return dimention - o.dimention
         } else if (x != o.x) {
-            return x - o.x;
+            return x - o.x
         } else if (y != o.y) {
-            return y - o.y;
+            return y - o.y
         } else if (z != o.z) {
-            return z - o.z;
+            return z - o.z
         }
-        return 0;
+        return 0
     }
 
-    public Coordonate subtract(Coordonate b) {
-        return newWithOffset(-b.x, -b.y, -b.z);
+    fun subtract(b: Coordonate): Coordonate {
+        return newWithOffset(-b.x, -b.y, -b.z)
     }
 
-    public Coordonate negate() {
-        return new Coordonate(-x, -y, -z, dimention);
+    fun negate(): Coordonate {
+        return Coordonate(-x, -y, -z, dimention)
+    }
+
+    companion object {
+        @JvmStatic
+        fun getAxisAlignedBB(a: Coordonate, b: Coordonate): AxisAlignedBB {
+            return AxisAlignedBB.getBoundingBox(
+                Math.min(a.x, b.x).toDouble(), Math.min(a.y, b.y).toDouble(), Math.min(a.z, b.z).toDouble(),
+                Math.max(a.x, b.x) + 1.0, Math.max(a.y, b.y) + 1.0, Math.max(a.z, b.z) + 1.0)
+        }
     }
 }

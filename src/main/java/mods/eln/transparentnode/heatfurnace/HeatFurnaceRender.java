@@ -50,14 +50,14 @@ public class HeatFurnaceRender extends TransparentNodeElementRender {
     @Override
     public void draw() {
         front.glRotateXnRef();
-        descriptor.draw(interpolator.get());
+        descriptor.draw((float)interpolator.get());
 
         if (entityItemIn != null)
             drawEntityItem(entityItemIn, -0.1, -0.30, 0, counter, 0.8f);
     }
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         if (!Utils.isPlayerAround(tileEntity.getWorldObj(), coord.getAxisAlignedBB(1)))
             interpolator.setTarget(0f);
         else

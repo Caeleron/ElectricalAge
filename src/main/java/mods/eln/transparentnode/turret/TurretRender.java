@@ -24,7 +24,7 @@ public class TurretRender extends TransparentNodeElementRender {
     private final TransparentNodeElementInventory inventory = new TransparentNodeElementInventory(1, 1, this);
     EntitySensorFilterDescriptor filter = null;
     boolean filterIsSpare;
-    float chargePower;
+    double chargePower;
 
     public TurretRender(TransparentNodeEntity tileEntity,
                         TransparentNodeDescriptor descriptor) {
@@ -33,15 +33,15 @@ public class TurretRender extends TransparentNodeElementRender {
         simulation = new TurretMechanicsSimulation(this.descriptor);
     }
 
-    public float getTurretAngle() {
+    public double getTurretAngle() {
         return simulation.getTurretAngle();
     }
 
-    public float getGunPosition() {
+    public double getGunPosition() {
         return simulation.getGunPosition();
     }
 
-    public float getGunElevation() {
+    public double getGunElevation() {
         return simulation.getGunElevation();
     }
 
@@ -83,7 +83,7 @@ public class TurretRender extends TransparentNodeElementRender {
     }
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         super.refresh(deltaT);
         simulation.process(deltaT);
     }
@@ -92,16 +92,16 @@ public class TurretRender extends TransparentNodeElementRender {
     public void networkUnserialize(DataInputStream stream) {
         super.networkUnserialize(stream);
         try {
-            simulation.setTurretAngle(stream.readFloat());
-            simulation.setGunPosition(stream.readFloat());
-            simulation.setGunElevation(stream.readFloat());
+            simulation.setTurretAngle(stream.readDouble());
+            simulation.setGunPosition(stream.readDouble());
+            simulation.setGunElevation(stream.readDouble());
             simulation.setSeekMode(stream.readBoolean());
             if (stream.readBoolean()) simulation.shoot();
             simulation.setEnabled(stream.readBoolean());
-            ItemStack filterStack = Utils.unserialiseItemStack(stream);
+            ItemStack filterStack = Utils.unserializeItemStack(stream);
             filter = (EntitySensorFilterDescriptor) EntitySensorFilterDescriptor.getDescriptor(filterStack);
             filterIsSpare = stream.readBoolean();
-            chargePower = stream.readFloat();
+            chargePower = stream.readDouble();
         } catch (IOException e) {
             e.printStackTrace();
         }

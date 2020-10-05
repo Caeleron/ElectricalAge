@@ -29,7 +29,6 @@ public abstract class SimpleNodeBlock extends BlockContainer {
         return this;
     }
 
-
     Direction getFrontForPlacement(EntityLivingBase e) {
         return Utils.entityLivingViewDirection(e).getInverse();
     }

@@ -1,11 +1,10 @@
-package mods.eln.misc;
+package mods.eln.misc
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.IOException
 
-public interface IConfigSharing {
-    void serializeConfig(DataOutputStream stream) throws IOException;
-
-    void deserialize(DataInputStream stream) throws IOException;
+interface IConfigSharing {
+    fun serializeConfig(stream: DataOutputStream)
+    fun deserialize(stream: DataInputStream)
 }

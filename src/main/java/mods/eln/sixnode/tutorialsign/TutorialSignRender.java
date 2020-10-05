@@ -29,7 +29,7 @@ public class TutorialSignRender extends SixNodeElementRender {
     @Override
     public void draw() {
         super.draw();
-        descriptor.draw(lightInterpol.get());
+        descriptor.draw((float)lightInterpol.get());
     }
 
     @Override

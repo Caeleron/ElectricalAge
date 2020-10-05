@@ -90,7 +90,7 @@ public class PowerCapacitorElement extends TransparentNodeElement {
 
     @Override
     public String multiMeterString(Direction side) {
-        return Utils.plotAmpere("I", capacitor.getCurrent());
+        return Utils.plotAmpere(capacitor.getCurrent(), "");
     }
 
     @Override

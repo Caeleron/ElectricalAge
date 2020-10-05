@@ -40,9 +40,7 @@ public abstract class ValueWatchdog implements IProcess {
             timeout = timeoutReset;
         }
         if (timeout < 0) {
-            Utils.print("%s destroying %s",
-                getClass().getName(),
-                destructable.describe());
+            Utils.println(getClass().getName() + " destroying " + destructable.describe());
             destructable.destructImpl();
         }
     }

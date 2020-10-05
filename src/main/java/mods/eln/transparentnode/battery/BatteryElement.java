@@ -148,17 +148,17 @@ public class BatteryElement extends TransparentNodeElement {
     @Override
     public String multiMeterString(Direction side) {
         String str = "";
-        str += Utils.plotVolt("Ubat:", batteryProcess.getU());
-        str += Utils.plotAmpere("I:", batteryProcess.getDischargeCurrent());
-        str += Utils.plotPercent("Charge:", batteryProcess.getCharge());
+        str += Utils.plotVolt(batteryProcess.getU(), "");
+        str += Utils.plotAmpere(batteryProcess.getDischargeCurrent(), "");
+        str += Utils.plotPercent(batteryProcess.getCharge(), "Charge:");
         // batteryProcess.life is a percentage from 1.0 to 0.0.
-        str += Utils.plotPercent("Life:", batteryProcess.life);
+        str += Utils.plotPercent(batteryProcess.life, "Life:");
         return str;
     }
 
     @Override
     public String thermoMeterString(Direction side) {
-        return Utils.plotCelsius("Tbat:", thermalLoad.Tc);
+        return Utils.plotCelsius(thermalLoad.Tc, "");
     }
 
     @Override
@@ -269,13 +269,13 @@ public class BatteryElement extends TransparentNodeElement {
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Charge"), Utils.plotPercent("", batteryProcess.getCharge()));
-        info.put(I18N.tr("Energy"), Utils.plotEnergy("", batteryProcess.getEnergy()));
-        info.put(I18N.tr("Life"), Utils.plotPercent("", batteryProcess.life));
+        info.put(I18N.tr("Charge"), Utils.plotPercent(batteryProcess.getCharge(), ""));
+        info.put(I18N.tr("Energy"), Utils.plotEnergy(batteryProcess.getEnergy(), ""));
+        info.put(I18N.tr("Life"), Utils.plotPercent(batteryProcess.life, ""));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Voltage"), Utils.plotVolt("", batteryProcess.getU()));
-            info.put(I18N.tr("Current"), Utils.plotAmpere("", batteryProcess.getDischargeCurrent()));
-            info.put(I18N.tr("Temperature"), Utils.plotCelsius("", thermalLoad.Tc));
+            info.put(I18N.tr("Voltage"), Utils.plotVolt(batteryProcess.getU(), ""));
+            info.put(I18N.tr("Current"), Utils.plotAmpere(batteryProcess.getDischargeCurrent(), ""));
+            info.put(I18N.tr("Temperature"), Utils.plotCelsius(thermalLoad.Tc, ""));
         }
         int subSystemSize = positiveLoad.getSubSystem().component.size();
         String textColor = "";

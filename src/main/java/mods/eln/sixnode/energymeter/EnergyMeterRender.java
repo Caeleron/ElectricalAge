@@ -106,7 +106,7 @@ public class EnergyMeterRender extends SixNodeElementRender {
             mod = Mod.valueOf(stream.readUTF());
             timerCouter = stream.readDouble();
             // energyStack = stream.readDouble();
-            ItemStack itemStack = Utils.unserialiseItemStack(stream);
+            ItemStack itemStack = Utils.unserializeItemStack(stream);
             energyUnit = stream.readByte();
             timeUnit = stream.readByte();
             if (itemStack != null) {

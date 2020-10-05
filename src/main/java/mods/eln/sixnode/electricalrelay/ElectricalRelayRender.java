@@ -41,7 +41,7 @@ public class ElectricalRelayRender extends SixNodeElementRender {
         drawSignalPin(front, new float[]{2.5f, 2.5f, 2.5f, 2.5f});
         front.glRotateOnX();
 
-        descriptor.draw(interpolator.get());
+        descriptor.draw((float)interpolator.get());
     }
 
     @Override

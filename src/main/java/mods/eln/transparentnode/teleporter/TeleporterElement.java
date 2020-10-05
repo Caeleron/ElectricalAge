@@ -627,9 +627,9 @@ public class TeleporterElement extends TransparentNodeElement implements ITelepo
         Map<String, String> info = new HashMap<String, String>();
         info.put(I18N.tr("Destination"), targetName);
         info.put(I18N.tr("Distance"),
-            Utils.plotValue(getTeleportCoordonate().trueDistanceTo(getTarget(targetName).getTeleportCoordonate()), "m"));
-        info.put(I18N.tr("Required energy"), Utils.plotEnergy("", energyTarget));
-        info.put(I18N.tr("Charge power"), Utils.plotPower("", powerCharge));
+            Utils.plotValue(getTeleportCoordonate().trueDistanceTo(getTarget(targetName).getTeleportCoordonate()), "m", ""));
+        info.put(I18N.tr("Required energy"), Utils.plotEnergy(energyTarget, ""));
+        info.put(I18N.tr("Charge power"), Utils.plotPower(powerCharge, ""));
         return info;
     }
 }

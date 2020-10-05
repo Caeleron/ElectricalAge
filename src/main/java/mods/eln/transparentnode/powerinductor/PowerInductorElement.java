@@ -60,7 +60,7 @@ public class PowerInductorElement extends TransparentNodeElement {
 
     @Override
     public String multiMeterString(Direction side) {
-        return Utils.plotAmpere("I", inductor.getCurrent());
+        return Utils.plotAmpere(inductor.getCurrent(), "");
     }
 
     @Override

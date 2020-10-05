@@ -9,7 +9,6 @@ import mods.eln.misc.Direction
 import mods.eln.misc.LRDU
 import mods.eln.misc.Utils
 import mods.eln.misc.UtilsClient
-import mods.eln.misc.VoltageLevelColor
 import mods.eln.misc.VoltageTier
 import mods.eln.node.NodeBase
 import mods.eln.node.six.SixNode
@@ -21,7 +20,6 @@ import mods.eln.sim.ElectricalLoad
 import mods.eln.sim.IProcess
 import mods.eln.sim.ThermalLoad
 import mods.eln.sim.mna.component.Resistor
-import mods.eln.sim.mna.misc.MnaConst
 import mods.eln.sim.nbt.NbtElectricalLoad
 import mods.eln.sim.nbt.NbtThermalLoad
 import mods.eln.sim.process.destruct.ThermalLoadWatchDog
@@ -90,8 +88,8 @@ class ElectricCableDescriptor(name: String, render: CableRenderDescriptor, val m
         return NodeBase.MASK_ELECTRIC
     }
 
-    override fun addInformation(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
         list.add(I18N.tr("Nominal Ratings:"))
         list.add("  " + I18N.tr("Serial resistance: %1$\u2126", Utils.plotValue(electricalRs * 2)))
     }
@@ -138,7 +136,7 @@ class ElectricCableElement(sixNode: SixNode, side: Direction, descriptor: SixNod
     }
 
     override fun thermoMeterString(): String {
-        return Utils.plotCelsius("T", thermalLoad.Tc)
+        return Utils.plotCelsius(thermalLoad.Tc)
     }
 
     override fun initialize() {
@@ -148,10 +146,10 @@ class ElectricCableElement(sixNode: SixNode, side: Direction, descriptor: SixNod
 
     override fun getWaila(): Map<String, String>? {
         val info: MutableMap<String, String> = HashMap()
-        info[I18N.tr("Current")] = Utils.plotAmpere("", electricalLoad.i)
-        info[I18N.tr("Temperature")] = Utils.plotCelsius("", thermalLoad.t)
+        info[I18N.tr("Current")] = Utils.plotAmpere(electricalLoad.i)
+        info[I18N.tr("Temperature")] = Utils.plotCelsius(thermalLoad.t)
         if (Eln.wailaEasyMode) {
-            info[I18N.tr("Voltage")] = Utils.plotVolt("", electricalLoad.u)
+            info[I18N.tr("Voltage")] = Utils.plotVolt(electricalLoad.u)
         }
         val ss = electricalLoad.subSystem
         if (ss != null) {

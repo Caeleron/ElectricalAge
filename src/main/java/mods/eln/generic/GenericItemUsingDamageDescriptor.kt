@@ -104,7 +104,7 @@ open class GenericItemUsingDamageDescriptor {
         VoltageTierHelpers.drawIconBackground(type, voltageTier)
         // remove "eln:" to add the full path replace("eln:", "textures/blocks/") + ".png";
         val icon = icon!!.iconName.substring(4)
-        UtilsClient.drawIcon(type, ResourceLocation("eln", "textures/items/$icon.png"))
+        UtilsClient.drawIcon(type!!, ResourceLocation("eln", "textures/items/$icon.png"))
     }
 
     open fun onUpdate(stack: ItemStack?, world: World?, entity: Entity?, par4: Int, par5: Boolean) {}

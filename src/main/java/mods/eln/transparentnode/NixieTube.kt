@@ -20,7 +20,7 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 import java.io.IOException
 
-class NixieTubeDescriptor(val name: String, val obj: Obj3D) : TransparentNodeDescriptor(name, NixieTubeElement::class.java, NixieTubeRender::class.java) {
+class NixieTubeDescriptor(name: String, val obj: Obj3D) : TransparentNodeDescriptor(name, NixieTubeElement::class.java, NixieTubeRender::class.java) {
     val display = obj.getPart("display")
     val base = obj.getPart("base")
     val tube = obj.getPart("tube")
@@ -28,12 +28,13 @@ class NixieTubeDescriptor(val name: String, val obj: Obj3D) : TransparentNodeDes
     val pinDistance = Utils.getSixNodePinDistance(base)!!
 
     init {
+        this.name = name
         voltageTier = VoltageTier.LOW_HOUSEHOLD
     }
 
-    override fun addInformation(itemStack: ItemStack?, entityPlayer: EntityPlayer?, list: MutableList<String>?, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
-        list?.add(tr("Displays a single glowing digit."))
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
+        list.add(tr("Displays a single glowing digit."))
     }
 
     fun draw(_digit: Int, blank: Boolean, _dots: Int) {
@@ -151,9 +152,9 @@ class NixieTubeElement(node: TransparentNode, _descriptor: TransparentNodeDescri
     override fun getThermalLoad(side: Direction?, lrdu: LRDU?): ThermalLoad? = null
     override fun thermoMeterString(side: Direction?): String = ""
     override fun multiMeterString(side: Direction?): String =
-        Utils.plotVolt("N:", digitIn.bornedU) + " " +
-            Utils.plotVolt("B:", blankIn.bornedU) + " " +
-            Utils.plotVolt("D:", dotsIn.bornedU)
+        Utils.plotVolt(digitIn.bornedU, "N:") + " " +
+            Utils.plotVolt(blankIn.bornedU, "B:") + " " +
+            Utils.plotVolt(dotsIn.bornedU, "D:")
     override fun onBlockActivated(entityPlayer: EntityPlayer?, side: Direction?, vx: Float, vy: Float, vz: Float): Boolean = false
 
     override fun getWaila(): MutableMap<String, String> {
@@ -221,7 +222,7 @@ class NixieTubeRender(entity: TransparentNodeEntity, _descriptor: TransparentNod
         connTypes = null  // Force refresh
     }
 
-    override fun getCableRender(side: Direction?, lrdu: LRDU?): CableRenderDescriptor? {
+    override fun getCableRender(side: Direction?, lrdu: LRDU): CableRenderDescriptor? {
         return if (connection.get(lrdu)) { Eln.smallInsulationLowCurrentRender } else { null }
     }
 }

@@ -1,9 +1,8 @@
-package mods.eln.misc;
+package mods.eln.misc
 
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagCompound
 
-public interface INBTTReady {
-    public abstract void readFromNBT(NBTTagCompound nbt, String str);
-
-    public abstract void writeToNBT(NBTTagCompound nbt, String str);
+interface INBTTReady {
+    fun readFromNBT(nbt: NBTTagCompound, str: String)
+    fun writeToNBT(nbt: NBTTagCompound, str: String)
 }

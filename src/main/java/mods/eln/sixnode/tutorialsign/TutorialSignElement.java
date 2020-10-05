@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static mods.eln.i18n.I18N.tr;
-
 public class TutorialSignElement extends SixNodeElement {
 
     static HashMap<String, String> baliseMap = null;
@@ -34,7 +32,7 @@ public class TutorialSignElement extends SixNodeElement {
 
     public static String getText(String balise) {
         if (baliseMap == null) {
-            baliseMap = new HashMap<String, String>();
+            baliseMap = new HashMap<>();
 
 		/*
 			try {
@@ -89,8 +87,8 @@ public class TutorialSignElement extends SixNodeElement {
 
                     counter = (counter + 1) & 1;
                 }
-            } catch (IOException e) {
-
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         String text = baliseMap.get(balise);

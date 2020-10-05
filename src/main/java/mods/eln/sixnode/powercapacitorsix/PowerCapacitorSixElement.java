@@ -101,18 +101,18 @@ public class PowerCapacitorSixElement extends SixNodeElement implements IConfigu
 
     @Override
     public String multiMeterString() {
-        return Utils.plotVolt("U", Math.abs(capacitor.getU())) + Utils.plotAmpere("I", capacitor.getCurrent());
+        return Utils.plotVolt(Math.abs(capacitor.getU()), "") + Utils.plotAmpere(capacitor.getCurrent(), "");
     }
 
     @Nullable
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Capacity"), Utils.plotValue(capacitor.getC(), "F"));
-        info.put(I18N.tr("Charge"), Utils.plotEnergy("", capacitor.getE()));
+        info.put(I18N.tr("Capacity"), Utils.plotValue(capacitor.getC(), "F", ""));
+        info.put(I18N.tr("Charge"), Utils.plotEnergy(capacitor.getE(), ""));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Voltage drop"), Utils.plotVolt("", Math.abs(capacitor.getU())));
-            info.put(I18N.tr("Current"), Utils.plotAmpere("", Math.abs(capacitor.getCurrent())));
+            info.put(I18N.tr("Voltage drop"), Utils.plotVolt(Math.abs(capacitor.getU()), ""));
+            info.put(I18N.tr("Current"), Utils.plotAmpere(Math.abs(capacitor.getCurrent()), ""));
 
         }
         return info;

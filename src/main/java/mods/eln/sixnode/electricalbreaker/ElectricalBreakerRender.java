@@ -44,7 +44,7 @@ public class ElectricalBreakerRender extends SixNodeElementRender {
         super.draw();
 
         front.glRotateOnX();
-        descriptor.draw(interpol.get(), UtilsClient.distanceFromClientPlayer(tileEntity));
+        descriptor.draw((float)interpol.get(), UtilsClient.distanceFromClientPlayer(tileEntity));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ElectricalBreakerRender extends SixNodeElementRender {
             uMax = stream.readFloat();
             uMin = stream.readFloat();
 
-            ItemStack itemStack = Utils.unserialiseItemStack(stream);
+            ItemStack itemStack = Utils.unserializeItemStack(stream);
             if (itemStack != null) {
                 GenericCableDescriptor desc = (GenericCableDescriptor) GenericCableDescriptor.getDescriptor(itemStack, GenericCableDescriptor.class);
                 //ElectricalCableDescriptor desc = (ElectricalCableDescriptor) ElectricalCableDescriptor.getDescriptor(itemStack, ElectricalCableDescriptor.class);

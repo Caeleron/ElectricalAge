@@ -1,45 +1,42 @@
-package mods.eln.misc;
+package mods.eln.misc
 
-public class LRDUCubeMask {
+class LRDUCubeMask {
+    var lrduMaskArray = arrayOfNulls<LRDUMask>(6)
+    fun getSide(direction: Direction): LRDUMask? {
+        return lrduMaskArray[direction.int]
+    }
 
-    public LRDUMask[] lrduMaskArray = new LRDUMask[6];
-
-    public LRDUCubeMask() {
-        for (int idx = 0; idx < 6; idx++) {
-            lrduMaskArray[idx] = new LRDUMask();
+    fun clear() {
+        for (lrduMask in lrduMaskArray) {
+            lrduMask!!.set(0)
         }
     }
 
-    LRDUMask getSide(Direction direction) {
-        return lrduMaskArray[direction.getInt()];
+    operator fun set(direction: Direction, lrdu: LRDU?, value: Boolean) {
+        get(direction)!![lrdu!!] = value
     }
 
-    public void clear() {
-        for (LRDUMask lrduMask : lrduMaskArray) {
-            lrduMask.set(0);
+    operator fun get(direction: Direction, lrdu: LRDU?): Boolean {
+        return get(direction)!![lrdu!!]
+    }
+
+    operator fun get(direction: Direction): LRDUMask? {
+        return lrduMaskArray[direction.int]
+    }
+
+    fun getTranslate(side: Direction): LRDUMask {
+        val mask = LRDUMask()
+        for (lrdu in LRDU.values()) {
+            val otherSide = side.applyLRDU(lrdu)
+            val otherLrdu = otherSide.getLRDUGoingTo(side)
+            mask[lrdu] = this[otherSide, otherLrdu]
         }
+        return mask
     }
 
-    public void set(Direction direction, LRDU lrdu, boolean value) {
-        get(direction).set(lrdu, value);
-    }
-
-    public boolean get(Direction direction, LRDU lrdu) {
-        return get(direction).get(lrdu);
-    }
-
-    public LRDUMask get(Direction direction) {
-        return lrduMaskArray[direction.getInt()];
-    }
-
-    public LRDUMask getTranslate(Direction side) {
-        LRDUMask mask = new LRDUMask();
-
-        for (LRDU lrdu : LRDU.values()) {
-            Direction otherSide = side.applyLRDU(lrdu);
-            LRDU otherLrdu = otherSide.getLRDUGoingTo(side);
-            mask.set(lrdu, this.get(otherSide, otherLrdu));
+    init {
+        for (idx in 0..5) {
+            lrduMaskArray[idx] = LRDUMask()
         }
-        return mask;
     }
 }

@@ -9,7 +9,7 @@ import mods.eln.sim.ThermalLoad
 import net.minecraft.entity.player.EntityPlayer
 import org.lwjgl.opengl.GL11
 
-class BasicFloodlightDescriptor(val name: String, val obj: Obj3D): TransparentNodeDescriptor(name, BasicFloodlightElement::class.java, BasicFloodlightRender::class.java) {
+class BasicFloodlightDescriptor(name: String, val obj: Obj3D): TransparentNodeDescriptor(name, BasicFloodlightElement::class.java, BasicFloodlightRender::class.java) {
     val base: Obj3D.Obj3DPart
     val swivel: Obj3D.Obj3DPart
     val head: Obj3D.Obj3DPart
@@ -19,6 +19,7 @@ class BasicFloodlightDescriptor(val name: String, val obj: Obj3D): TransparentNo
     val bulb2_on: Obj3D.Obj3DPart
 
     init {
+        this.name = name
         base = obj.getPart("Lamp_Base_Cube.008")
         swivel = obj.getPart("Lamp_Swivel_Cube.014")
         head = obj.getPart("Lamp_Head_Cylinder.004")
@@ -86,7 +87,7 @@ class BasicFloodlightRender(val tileEntity: TransparentNodeEntity, val descripto
         (descriptor as BasicFloodlightDescriptor).draw(front, x, y)
     }
 
-    override fun refresh(deltaT: Float) {
+    override fun refresh(deltaT: Double) {
         x += deltaT * 6
         y += deltaT * 6
         if (x > 180) x = 0.0
@@ -94,7 +95,7 @@ class BasicFloodlightRender(val tileEntity: TransparentNodeEntity, val descripto
     }
 }
 
-class MotorizedFloodlightDescriptor(val name: String, val obj: Obj3D): TransparentNodeDescriptor(name, MotorizedFloodlightElement::class.java, MotorizedFloodlightRender::class.java) {
+class MotorizedFloodlightDescriptor(name: String, val obj: Obj3D): TransparentNodeDescriptor(name, MotorizedFloodlightElement::class.java, MotorizedFloodlightRender::class.java) {
 
     val base: Obj3D.Obj3DPart
     val swivel: Obj3D.Obj3DPart
@@ -107,7 +108,7 @@ class MotorizedFloodlightDescriptor(val name: String, val obj: Obj3D): Transpare
 
 
     init {
-
+        this.name = name
         base = obj.getPart("Lamp_Base_Cube.008")
         swivel = obj.getPart("Lamp_Swivel_Cube.014")
         head = obj.getPart("Lamp_Head_Cylinder.004")
@@ -179,7 +180,7 @@ class MotorizedFloodlightRender(val tileEntity: TransparentNodeEntity, val descr
         (descriptor as BasicFloodlightDescriptor).draw(front, x, y)
     }
 
-    override fun refresh(deltaT: Float) {
+    override fun refresh(deltaT: Double) {
         x += deltaT * 6
         y += deltaT * 6
         if (x > 180) x = 0.0

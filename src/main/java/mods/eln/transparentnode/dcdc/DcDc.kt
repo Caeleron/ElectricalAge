@@ -24,7 +24,6 @@ import mods.eln.misc.Obj3D
 import mods.eln.misc.PhysicalInterpolator
 import mods.eln.misc.SlewLimiter
 import mods.eln.misc.Utils
-import mods.eln.misc.VoltageLevelColor
 import mods.eln.misc.VoltageTier
 import mods.eln.node.NodeBase
 import mods.eln.node.NodePeriodicPublishProcess
@@ -84,8 +83,8 @@ class DcDcDescriptor(name: String, objM: Obj3D, coreM: Obj3D, casingM: Obj3D, va
         voltageTier = VoltageTier.NEUTRAL
     }
 
-    override fun addInformation(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
         Collections.addAll(list, *I18N.tr("Transforms an input voltage to\nan output voltage.")!!.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
     }
 
@@ -195,8 +194,8 @@ class DcDcElement(transparentNode: TransparentNode, descriptor: TransparentNodeD
     override fun getElectricalLoad(side: Direction, lrdu: LRDU): ElectricalLoad? {
         if (lrdu != LRDU.Down) return null
         return when (side) {
-            front.right() -> secondaryLoad
-            front.left() -> primaryLoad
+            front.right() -> primaryLoad
+            front.left() -> secondaryLoad
             else -> null
         }
     }
@@ -215,12 +214,10 @@ class DcDcElement(transparentNode: TransparentNode, descriptor: TransparentNodeD
     }
 
     override fun multiMeterString(side: Direction): String {
-        if (side == front.left())
-            return Utils.plotVolt("UP+:", primaryLoad.u) + Utils.plotAmpere("IP+:", -primaryLoad.current)
-        return if (side == front.right())
-            Utils.plotVolt("US+:", secondaryLoad.u) + Utils.plotAmpere("IS+:", -secondaryLoad.current)
-        else
-            Utils.plotVolt("UP+:", primaryLoad.u) + Utils.plotAmpere("IP+:", primaryVoltageSource.current) + Utils.plotVolt("  US+:", secondaryLoad.u) + Utils.plotAmpere("IS+:", secondaryVoltageSource.current)
+        return Utils.plotVolt(primaryLoad.u, "Primary Voltage:") +
+            Utils.plotAmpere(primaryVoltageSource.current, "Primary Current:") +
+            Utils.plotVolt(secondaryLoad.u, "Secondary Voltage:") +
+            Utils.plotAmpere(secondaryVoltageSource.current, "Secondary Current:")
     }
 
     override fun thermoMeterString(side: Direction): String? {
@@ -341,8 +338,8 @@ class DcDcElement(transparentNode: TransparentNode, descriptor: TransparentNodeD
         val info = HashMap<String, String>()
         info[I18N.tr("Ratio")] = Utils.plotValue(interSystemProcess.ratio)
         if (Eln.wailaEasyMode) {
-            info["Voltages"] = "\u00A7a" + Utils.plotVolt("", primaryLoad.u) + " " +
-                "\u00A7e" + Utils.plotVolt("", secondaryLoad.u)
+            info["Voltages"] = "\u00A7a" + Utils.plotVolt(primaryLoad.u) + " " +
+                "\u00A7e" + Utils.plotVolt(secondaryLoad.u)
         }
         try {
             val leftSubSystemSize = primaryLoad.subSystem.component.size
@@ -414,7 +411,7 @@ class DcDcRender(tileEntity: TransparentNodeEntity, val descriptor: TransparentN
 
     val inventory = TransparentNodeElementInventory(4, 64, this)
 
-    val load = SlewLimiter(0.5f)
+    val load = SlewLimiter(0.5)
 
     var primaryStackSize: Byte = 0
     var secondaryStackSize: Byte = 0
@@ -437,20 +434,20 @@ class DcDcRender(tileEntity: TransparentNodeEntity, val descriptor: TransparentN
         addLoopedSound(object : LoopedSound("eln:Transformer", coordonate(), ISound.AttenuationType.LINEAR) {
             override fun getVolume(): Float {
                 return if (load.position > (descriptor as DcDcDescriptor).minimalLoadToHum)
-                    0.1f * (load.position - descriptor.minimalLoadToHum) / (1 - descriptor.minimalLoadToHum)
+                    (0.1f * (load.position - descriptor.minimalLoadToHum) / (1 - descriptor.minimalLoadToHum)).toFloat()
                 else
                     0f
             }
         })
 
         coordinate = Coordonate(tileEntity)
-        doorOpen = PhysicalInterpolator(0.4f, 4.0f, 0.9f, 0.05f)
+        doorOpen = PhysicalInterpolator(0.4, 4.0, 0.9, 0.05)
     }
 
     override fun draw() {
         GL11.glPushMatrix()
         front.glRotateXnRef()
-        (descriptor as DcDcDescriptor).draw(feroPart, primaryStackSize.toInt(), secondaryStackSize.toInt(), hasCasing, doorOpen.get())
+        (descriptor as DcDcDescriptor).draw(feroPart, primaryStackSize.toInt(), secondaryStackSize.toInt(), hasCasing, doorOpen.get().toFloat())
         GL11.glPopMatrix()
         cableRenderType = drawCable(front.down(), priRender, priConn, cableRenderType)
         cableRenderType = drawCable(front.down(), secRender, secConn, cableRenderType)
@@ -461,22 +458,22 @@ class DcDcRender(tileEntity: TransparentNodeEntity, val descriptor: TransparentN
         try {
             primaryStackSize = stream.readByte()
             secondaryStackSize = stream.readByte()
-            val feroStack = Utils.unserialiseItemStack(stream)
+            val feroStack = Utils.unserializeItemStack(stream)
             if (feroStack != null) {
                 val feroDesc: GenericItemUsingDamageDescriptor? = GenericItemUsingDamageDescriptor.getDescriptor(feroStack, FerromagneticCoreDescriptor::class.java)
                 if (feroDesc != null)
                     feroPart = (feroDesc as FerromagneticCoreDescriptor).feroPart
             }
-            val priStack = Utils.unserialiseItemStack(stream)
+            val priStack = Utils.unserializeItemStack(stream)
             if (priStack != null) {
-                val priDesc: GenericItemBlockUsingDamageDescriptor? = GenericCableDescriptor.getDescriptor(priStack, GenericCableDescriptor::class.java)
+                val priDesc: GenericItemBlockUsingDamageDescriptor? = GenericItemBlockUsingDamageDescriptor.getDescriptor(priStack, GenericCableDescriptor::class.java)
                 if (priDesc != null)
                     priRender = (priDesc as GenericCableDescriptor).render
             }
 
-            val secStack = Utils.unserialiseItemStack(stream)
+            val secStack = Utils.unserializeItemStack(stream)
             if (secStack != null) {
-                val secDesc: GenericItemBlockUsingDamageDescriptor? = GenericCableDescriptor.getDescriptor(secStack, GenericCableDescriptor::class.java)
+                val secDesc: GenericItemBlockUsingDamageDescriptor? = GenericItemBlockUsingDamageDescriptor.getDescriptor(secStack, GenericCableDescriptor::class.java)
                 if (secDesc != null)
                     secRender = (secDesc as GenericCableDescriptor).render
             }
@@ -499,7 +496,7 @@ class DcDcRender(tileEntity: TransparentNodeEntity, val descriptor: TransparentN
             }
             cableRenderType = null
 
-            load.target = stream.readFloat()
+            load.target = stream.readDouble()
             hasCasing = stream.readBoolean()
 
         } catch (e: IOException) {
@@ -523,15 +520,15 @@ class DcDcRender(tileEntity: TransparentNodeEntity, val descriptor: TransparentN
         cableRenderType = null
     }
 
-    override fun refresh(deltaT: Float) {
+    override fun refresh(deltaT: Double) {
         super.refresh(deltaT)
         load.step(deltaT)
 
         if (hasCasing) {
             if (!Utils.isPlayerAround(tileEntity.worldObj, coordinate.moved(front).getAxisAlignedBB(0)))
-                doorOpen.target = 0f
+                doorOpen.target = 0.0
             else
-                doorOpen.target = 1f
+                doorOpen.target = 1.0
             doorOpen.step(deltaT)
         }
     }

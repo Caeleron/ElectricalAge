@@ -5,8 +5,6 @@ import org.lwjgl.opengl.GL11
 /**
  * A series of convenience functions for drawing with OpenGL.
  */
-
-
 inline fun <T> preserveMatrix(body: () -> T): T {
     val ret: T
     try {

@@ -1,69 +1,71 @@
-package mods.eln.misc;
+package mods.eln.misc
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.IOException
 
-public class LRDUMask {
+class LRDUMask {
+    @JvmField
+    var mask: Int
 
-    public int mask;
-
-    public LRDUMask() {
-        mask = 0;
+    constructor() {
+        mask = 0
     }
 
-    public LRDUMask(int mask) {
-        this.mask = mask;
+    constructor(mask: Int) {
+        this.mask = mask
     }
 
-    public static final LRDUMask[] array = {new LRDUMask(1), new LRDUMask(2), new LRDUMask(4), new LRDUMask(8)};
-
-    public boolean left() {
-        return (mask & 1) != 0;
+    fun left(): Boolean {
+        return mask and 1 != 0
     }
 
-    public boolean right() {
-        return (mask & 2) != 0;
+    fun right(): Boolean {
+        return mask and 2 != 0
     }
 
-    public boolean down() {
-        return (mask & 4) != 0;
+    fun down(): Boolean {
+        return mask and 4 != 0
     }
 
-    public boolean up() {
-        return (mask & 8) != 0;
+    fun up(): Boolean {
+        return mask and 8 != 0
     }
 
-    public void set(int mask) {
-        this.mask = mask;
+    fun set(mask: Int) {
+        this.mask = mask
     }
 
-    public void set(LRDU lrdu, boolean value) {
+    operator fun set(lrdu: LRDU, value: Boolean) {
         if (value) {
-            this.mask |= (1 << lrdu.dir);
+            mask = mask or (1 shl lrdu.dir)
         } else {
-            this.mask &= ~(1 << lrdu.dir);
+            mask = mask and (1 shl lrdu.dir).inv()
         }
     }
 
-    public boolean get(LRDU lrdu) {
-        return (mask & (1 << lrdu.dir)) != 0;
+    operator fun get(lrdu: LRDU): Boolean {
+        return mask and (1 shl lrdu.dir) != 0
     }
 
-    public void serialize(DataOutputStream stream) {
+    fun serialize(stream: DataOutputStream) {
         try {
-            stream.writeByte(mask);
-        } catch (IOException e) {
-            e.printStackTrace();
+            stream.writeByte(mask)
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 
-    public void deserialize(DataInputStream stream) {
+    fun deserialize(stream: DataInputStream) {
         try {
-            set(stream.readByte());
-        } catch (IOException e) {
-            e.printStackTrace();
-            set(0);
+            set(stream.readByte().toInt())
+        } catch (e: IOException) {
+            e.printStackTrace()
+            set(0)
         }
+    }
+
+    companion object {
+        val array = arrayOf(LRDUMask(1), LRDUMask(2), LRDUMask(4), LRDUMask(8))
     }
 }

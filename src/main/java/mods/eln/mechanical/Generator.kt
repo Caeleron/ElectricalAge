@@ -68,14 +68,14 @@ class GeneratorDescriptor(
         obj.getPart("LED_6")
     ).requireNoNulls()
 
-    override fun addInformation(stack: ItemStack, player: EntityPlayer, list: MutableList<String>, par4: Boolean) {
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
         list.add("Converts mechanical energy into ")
         list.add("electricity, or (badly) vice versa.")
         list.add("Nominal usage ->")
-        list.add(Utils.plotVolt("  Voltage out: ", nominalU.toDouble()))
-        list.add(Utils.plotPower("  Power out: ", nominalP.toDouble()))
-        list.add(Utils.plotRads("  Rads: ", nominalRads.toDouble()))
-        list.add(Utils.plotRads("Max rads:  ", absoluteMaximumShaftSpeed))
+        list.add(Utils.plotVolt(nominalU.toDouble(), "Nominal Voltage:"))
+        list.add(Utils.plotPower(nominalP.toDouble(), "Nominal Power:"))
+        list.add(Utils.plotRads(nominalRads.toDouble(), "Nominal Speed:"))
+        list.add(Utils.plotRads(absoluteMaximumShaftSpeed, "Absolute Maximum Speed:"))
     }
 }
 
@@ -86,13 +86,13 @@ class GeneratorRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescr
     val desc = desc_ as GeneratorDescriptor
 
     val ledColors: Array<Color> = arrayOf(
-        java.awt.Color.black,
-        java.awt.Color.black,
-        java.awt.Color.black,
-        java.awt.Color.black,
-        java.awt.Color.black,
-        java.awt.Color.black,
-        java.awt.Color.black
+        Color.black,
+        Color.black,
+        Color.black,
+        Color.black,
+        Color.black,
+        Color.black,
+        Color.black
     )
     val ledColorBase: Array<HSLColor> = arrayOf(
         GREEN,
@@ -142,7 +142,7 @@ class GeneratorRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescr
         super.networkUnserialize(stream)
         val power = stream.readDouble()
         calcPower(power)
-        volumeSetting.target = 0.05f + Math.abs(power / desc.nominalP).toFloat() / 4f
+        volumeSetting.target = 0.05 + Math.abs(power / desc.nominalP).toFloat() / 4.0
     }
 }
 
@@ -269,7 +269,7 @@ class GeneratorElement(node: TransparentNode, desc_: TransparentNodeDescriptor) 
     override fun multiMeterString(side: Direction?) =
         Utils.plotER(shaft.energy, shaft.rads) + Utils.plotUIP(electricalPowerSource.getU(), electricalPowerSource.getI())
 
-    override fun thermoMeterString(side: Direction?) = Utils.plotCelsius("T", thermal.getT())
+    override fun thermoMeterString(side: Direction?) = Utils.plotCelsius(thermal.t)
 
     override fun onBlockActivated(entityPlayer: EntityPlayer?, side: Direction?, vx: Float, vy: Float, vz: Float): Boolean {
         return false
@@ -281,13 +281,13 @@ class GeneratorElement(node: TransparentNode, desc_: TransparentNodeDescriptor) 
     }
 
     override fun getWaila(): Map<String, String> {
-        var info = mutableMapOf<String, String>()
-        info.put("Energy", Utils.plotEnergy("", shaft.energy))
-        info.put("Speed", Utils.plotRads("", shaft.rads))
+        val info = mutableMapOf<String, String>()
+        info["Energy"] = Utils.plotEnergy( shaft.energy)
+        info["Speed"] = Utils.plotRads(shaft.rads)
         if (Eln.wailaEasyMode) {
-            info.put("Voltage", Utils.plotVolt("", electricalPowerSource.getU()))
-            info.put("Current", Utils.plotAmpere("", electricalPowerSource.getI()))
-            info.put("Temperature", Utils.plotCelsius("", thermal.t))
+            info["Voltage"] = Utils.plotVolt(electricalPowerSource.getU())
+            info["Current"] = Utils.plotAmpere(electricalPowerSource.getI())
+            info["Temperature"] = Utils.plotCelsius(thermal.t)
         }
         return info
     }

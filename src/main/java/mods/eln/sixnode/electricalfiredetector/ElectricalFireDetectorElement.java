@@ -88,7 +88,7 @@ public class ElectricalFireDetectorElement extends SixNodeElement {
         if (descriptor.batteryPowered) {
             return tr("Fire detected: ") + firePresent;
         } else {
-            return Utils.plotVolt("U:", outputGate.getU()) + Utils.plotAmpere("I:", outputGate.getCurrent());
+            return Utils.plotVolt(outputGate.getU(), "") + Utils.plotAmpere(outputGate.getCurrent(), "");
         }
     }
 
@@ -97,10 +97,10 @@ public class ElectricalFireDetectorElement extends SixNodeElement {
         Map<String, String> info = new HashMap<String, String>();
         info.put(I18N.tr("Fire present"), firePresent ? I18N.tr("Yes") : I18N.tr("No"));
         if (Eln.wailaEasyMode && !descriptor.batteryPowered) {
-            info.put(I18N.tr("Output voltage"), Utils.plotVolt("", outputGate.getU()));
+            info.put(I18N.tr("Output voltage"), Utils.plotVolt(outputGate.getU(), ""));
         }
         if (descriptor.batteryPowered) {
-            info.put(I18N.tr("Battery level"), Utils.plotPercent("", slowProcess.getBatteryLevel()));
+            info.put(I18N.tr("Battery level"), Utils.plotPercent(slowProcess.getBatteryLevel(), ""));
         }
         return info;
     }

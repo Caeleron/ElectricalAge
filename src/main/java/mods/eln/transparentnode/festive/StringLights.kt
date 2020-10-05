@@ -13,11 +13,12 @@ import org.lwjgl.opengl.GL11
 import java.io.DataInputStream
 import java.io.IOException
 
-class StringLightsDescriptor(val name: String, val obj: Obj3D): TransparentNodeDescriptor(name, FestiveElement::class.java, StringLightsRender::class.java) {
+class StringLightsDescriptor(name: String, val obj: Obj3D): TransparentNodeDescriptor(name, FestiveElement::class.java, StringLightsRender::class.java) {
     private var base: Obj3D.Obj3DPart? = null
     private var light: Obj3D.Obj3DPart? = null
 
     init {
+        this.name = name
         base = obj.getPart("Lights_Cube.009")
         light = obj.getPart("LightOn_Cube.002")
     }

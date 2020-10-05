@@ -48,7 +48,7 @@ public class BatteryGuiDraw extends GuiContainerEln {
         super.preDraw(f, x, y);
         buttonGrounded.displayString = tr("Grounded: " + render.grounded);
         energyBar.setValue((float) (render.energy / (render.descriptor.electricalStdEnergy * render.life)));
-        energyBar.setComment(0, tr("Energy: %1$", Utils.plotPercent("", energyBar.getValue()).replace(" ", "")));
+        energyBar.setComment(0, tr("Energy: %1$", Utils.plotPercent(energyBar.getValue(), "").replace(" ", "")));
 
     }
 
@@ -64,10 +64,10 @@ public class BatteryGuiDraw extends GuiContainerEln {
             str1 = tr("No charge");
         } else if (p > 0) {
             str1 = tr("Discharge");
-            str2 = Utils.plotTime("", render.energy / p);
+            str2 = Utils.plotTime(render.energy / p, "");
         } else if (energyMiss > 0) {
             str1 = tr("Charge");
-            str2 = Utils.plotTime("", -energyMiss / p);
+            str2 = Utils.plotTime(-energyMiss / p, "");
         } else {
             str1 = tr("Charged");
         }
@@ -75,17 +75,17 @@ public class BatteryGuiDraw extends GuiContainerEln {
         int xDelta = 70;
         if (render.descriptor.lifeEnable) {
             drawString(8, 8, tr("Life:"));
-            drawString(xDelta, 8, Utils.plotPercent("", render.life));
+            drawString(xDelta, 8, Utils.plotPercent( render.life, ""));
         }
         drawString(8, 17, tr("Energy:"));
         drawString(xDelta, 17,
-            Utils.plotValue(render.energy, "J/") + Utils.plotValue(render.descriptor.electricalStdEnergy * render.life, "J"));
+            Utils.plotEnergy( render.energy, "J") + Utils.plotEnergy(render.descriptor.electricalStdEnergy * render.life, "J"));
 
         if (render.power >= 0)
             drawString(8, 26, tr("Power out:"));
         else
             drawString(8, 26, tr("Power in:"));
-        drawString(xDelta, 26, Utils.plotValue(Math.abs(render.power), "W/") + Utils.plotValue(render.descriptor.electricalStdP, "W"));
+        drawString(xDelta, 26, Utils.plotPower(Math.abs(render.power), "") + Utils.plotPower(render.descriptor.electricalStdP, ""));
 
         drawString(8, 35, str1);
         drawString(xDelta, 35, str2);

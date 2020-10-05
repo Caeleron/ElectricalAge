@@ -1,265 +1,192 @@
-package mods.eln.misc;
+package mods.eln.misc
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Vec3;
-import org.lwjgl.opengl.GL11;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.util.Vec3
+import org.lwjgl.opengl.GL11
+import java.io.DataInputStream
+import java.io.DataOutputStream
+import java.io.IOException
 
 /**
  * Represents the 6 possible directions along the axis of a block.
  */
-public enum LRDU {
-    /**
+enum class LRDU(@JvmField var dir: Int) {
 
+    /**
+     *
      */
     Left(0),
-    /**
 
+    /**
+     *
      */
     Right(1),
 
     /**
-
+     *
      */
     Down(2),
-    /**
 
+    /**
+     *
      */
     Up(3);
 
-    public int dir;
-
-    LRDU(int dir) {
-        this.dir = dir;
-    }
-
-    public static LRDU fromInt(int value) {
-        switch (value) {
-            case 0:
-                return Left;
-            case 1:
-                return Right;
-            case 2:
-                return Down;
-            case 3:
-                return Up;
-        }
-        return Left;
-    }
-
-    public int toInt() {
-        return dir;
+    fun toInt(): Int {
+        return dir
     }
 
     //Don't change !
-    public LRDU inverse() {
-        switch (this) {
-            case Down:
-                return Up;
-            case Left:
-                return Right;
-            case Right:
-                return Left;
-            case Up:
-                return Down;
-        }
-        return null;
-    }
-
-	/*
-	public LRDU equivalentIfReverseDirection(Direction direction) {
-		switch(direction) {
-			case XN:
-			case XP:
-			case ZN:
-			case ZP:
-				if(this == Down || this == Up) return this;
-				return this.inverse();
-			case YN:
-			case YP:
-				if(this == Down || this == Up) return this;
-				return this.inverse();
-		}
-	
-		return null;	
-	}*/
-
-    public LRDU inverseIfLR() {
-        switch (this) {
-            case Down:
-                return Down;
-            case Left:
-                return Right;
-            case Right:
-                return Left;
-            case Up:
-                return Up;
-        }
-        return null;
-    }
-
-    public void applyTo(double vector[], double value) {
-        switch (this) {
-            case Down:
-                vector[1] -= value;
-                break;
-            case Left:
-                vector[0] -= value;
-                break;
-            case Right:
-                vector[0] += value;
-                break;
-            case Up:
-                vector[1] += value;
-                break;
-            default:
-                break;
+    fun inverse(): LRDU? {
+        return when (this) {
+            Down -> Up
+            Left -> Right
+            Right -> Left
+            Up -> Down
         }
     }
 
-    public float[] rotate4PinDistances(float[] distances) {
-        if (distances.length != 4) return distances;
-        switch (this) {
-            case Left:
-                return new float[]{distances[3], distances[2], distances[0], distances[1]};
-
-            case Down:
-                return new float[]{distances[1], distances[0], distances[3], distances[2]};
-
-            case Right:
-                return new float[]{distances[2], distances[3], distances[1], distances[0]};
-
-            case Up:
-            default:
-                return distances;
+    fun inverseIfLR(): LRDU? {
+        return when (this) {
+            Down -> Down
+            Left -> Right
+            Right -> Left
+            Up -> Up
         }
     }
 
-    public LRDU getNextClockwise() {
-        switch (this) {
-            case Down:
-                return Left;
-            case Left:
-                return Up;
-            case Right:
-                return Down;
-            case Up:
-                return Right;
-        }
-        return Left;
-    }
-
-    public void glRotateOnX() {
-        switch (this) {
-            case Left:
-                break;
-            case Up:
-                GL11.glRotatef(90f, 1f, 0f, 0f);
-                break;
-            case Right:
-                GL11.glRotatef(180f, 1f, 0f, 0f);
-                break;
-            case Down:
-                GL11.glRotatef(270f, 1f, 0f, 0f);
-                break;
+    fun applyTo(vector: DoubleArray, value: Double) {
+        when (this) {
+            Down -> vector[1] -= value
+            Left -> vector[0] -= value
+            Right -> vector[0] += value
+            Up -> vector[1] += value
         }
     }
 
-    public void rotateOnXnLeft(double[] v) {
-        double y = v[1];
-        double z = v[2];
-        switch (this) {
-            case Left:
-                break;
-            case Up:
-                v[1] = -z;
-                v[2] = y;
-                break;
-            case Right:
-                v[1] = -y;
-                v[2] = -z;
-                break;
-            case Down:
-                v[1] = z;
-                v[2] = -y;
-                break;
+    fun rotate4PinDistances(distances: FloatArray): FloatArray {
+        return if (distances.size != 4) distances else when (this) {
+            Left -> floatArrayOf(distances[3], distances[2], distances[0], distances[1])
+            Down -> floatArrayOf(distances[1], distances[0], distances[3], distances[2])
+            Right -> floatArrayOf(distances[2], distances[3], distances[1], distances[0])
+            Up -> distances
         }
     }
 
-    public void rotateOnXnLeft(Vec3 v) {
-        double y = v.yCoord;
-        double z = v.zCoord;
-        switch (this) {
-            case Left:
-                break;
-            case Up:
-                v.yCoord = -z;
-                v.zCoord = y;
-                break;
-            case Right:
-                v.yCoord = -y;
-                v.zCoord = -z;
-                break;
-            case Down:
-                v.yCoord = z;
-                v.zCoord = -y;
-                break;
+    val nextClockwise: LRDU
+        get() {
+            return when (this) {
+                Down -> Left
+                Left -> Up
+                Right -> Down
+                Up -> Right
+            }
+        }
+
+    fun glRotateOnX() {
+        when (this) {
+            Left -> {}
+            Up -> GL11.glRotatef(90f, 1f, 0f, 0f)
+            Right -> GL11.glRotatef(180f, 1f, 0f, 0f)
+            Down -> GL11.glRotatef(270f, 1f, 0f, 0f)
         }
     }
 
-    public LRDU left() {
-        switch (this) {
-            case Down:
-                return Right;
-            case Left:
-                return Down;
-            case Right:
-                return Up;
-            case Up:
-                return Left;
+    fun rotateOnXnLeft(v: DoubleArray) {
+        val y = v[1]
+        val z = v[2]
+        when (this) {
+            Left -> {}
+            Up -> {
+                v[1] = -z
+                v[2] = y
+            }
+            Right -> {
+                v[1] = -y
+                v[2] = -z
+            }
+            Down -> {
+                v[1] = z
+                v[2] = -y
+            }
         }
-        return Left;
     }
 
-    public LRDU right() {
-        switch (this) {
-            case Down:
-                return Left;
-            case Left:
-                return Up;
-            case Right:
-                return Down;
-            case Up:
-                return Right;
+    fun rotateOnXnLeft(v: Vec3) {
+        val y = v.yCoord
+        val z = v.zCoord
+        when (this) {
+            Left -> {}
+            Up -> {
+                v.yCoord = -z
+                v.zCoord = y
+            }
+            Right -> {
+                v.yCoord = -y
+                v.zCoord = -z
+            }
+            Down -> {
+                v.yCoord = z
+                v.zCoord = -y
+            }
         }
-        return Left;
     }
 
-    public void writeToNBT(NBTTagCompound nbt, String name) {
-        nbt.setByte(name, (byte) toInt());
+    fun left(): LRDU {
+        return when (this) {
+            Down -> Right
+            Left -> Down
+            Right -> Up
+            Up -> Left
+        }
     }
 
-    static public LRDU readFromNBT(NBTTagCompound nbt, String name) {
-        return LRDU.fromInt(nbt.getByte(name));
+    fun right(): LRDU {
+        return when (this) {
+            Down -> Left
+            Left -> Up
+            Right -> Down
+            Up -> Right
+        }
     }
 
-    public void serialize(DataOutputStream stream) {
+    fun writeToNBT(nbt: NBTTagCompound, name: String?) {
+        nbt.setByte(name, toInt().toByte())
+    }
+
+    fun serialize(stream: DataOutputStream) {
         try {
-            stream.writeByte(this.toInt());
-        } catch (IOException e) {
-            e.printStackTrace();
+            stream.writeByte(this.toInt())
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
     }
 
-    static public LRDU deserialize(DataInputStream stream) {
-        try {
-            return fromInt(stream.readByte());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return Up;
+    companion object {
+        @JvmStatic
+        fun fromInt(value: Int): LRDU {
+            when (value) {
+                0 -> return Left
+                1 -> return Right
+                2 -> return Down
+                3 -> return Up
+            }
+            return Left
+        }
+
+        @JvmStatic
+        fun readFromNBT(nbt: NBTTagCompound, name: String?): LRDU {
+            return fromInt(nbt.getByte(name).toInt())
+        }
+
+        @JvmStatic
+        fun deserialize(stream: DataInputStream): LRDU {
+            return try {
+                fromInt(stream.readByte().toInt())
+            } catch (e: IOException) {
+                e.printStackTrace()
+                Up
+            }
         }
     }
 }

@@ -117,18 +117,18 @@ public class ResistorElement extends SixNodeElement {
     public String multiMeterString() {
         double u = -Math.abs(aLoad.getU() - bLoad.getU());
         double i = Math.abs(r.getI());
-        return Utils.plotOhm(Utils.plotUIP(u, i), r.getR()) +
-            (control != null ? Utils.plotPercent("C", control.getNormalized()) : "");
+        return Utils.plotOhm(r.getR(), Utils.plotUIP(u, i)) +
+            (control != null ? Utils.plotPercent(control.getNormalized(), "Control Signal:") : "");
     }
 
     @Nullable
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Resistance"), Utils.plotValue(r.getR(), "\u2126"));
-        info.put(I18N.tr("Voltage drop"), Utils.plotVolt("", Math.abs(r.getU())));
+        info.put(I18N.tr("Resistance"), Utils.plotValue(r.getR(), "\u2126", ""));
+        info.put(I18N.tr("Voltage drop"), Utils.plotVolt(Math.abs(r.getU()), ""));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Current"), Utils.plotAmpere("", Math.abs(r.getI())));
+            info.put(I18N.tr("Current"), Utils.plotAmpere(Math.abs(r.getI()), ""));
 
         }
         return info;
@@ -136,7 +136,7 @@ public class ResistorElement extends SixNodeElement {
 
     @Override
     public String thermoMeterString() {
-        return Utils.plotCelsius("T", thermalLoad.Tc);
+        return Utils.plotCelsius(thermalLoad.Tc, "");
     }
 
     @Override

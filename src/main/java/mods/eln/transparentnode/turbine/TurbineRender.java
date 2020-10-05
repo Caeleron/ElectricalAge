@@ -31,12 +31,12 @@ public class TurbineRender extends TransparentNodeElementRender {
         addLoopedSound(new LoopedSound(this.descriptor.soundFile, coordonate(), ISound.AttenuationType.LINEAR) {
             @Override
             public float getVolume() {
-                return 0.1f * factorLimiter.getPosition();
+                return 0.1f * (float)factorLimiter.getPosition();
             }
 
             @Override
             public float getPitch() {
-                return 0.9f + 0.2f * factorLimiter.getPosition();
+                return 0.9f + 0.2f * (float)factorLimiter.getPosition();
             }
         });
     }
@@ -94,7 +94,7 @@ public class TurbineRender extends TransparentNodeElementRender {
     }
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         factorLimiter.step(deltaT);
         super.refresh(deltaT);
     }

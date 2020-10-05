@@ -23,7 +23,7 @@ import mods.eln.misc.FunctionTable
 import mods.eln.misc.FunctionTableYProtect
 import mods.eln.misc.Utils
 import mods.eln.misc.VoltageTier
-import mods.eln.misc.series.SerieEE
+import mods.eln.misc.series.SeriesMap
 import mods.eln.node.transparent.TransparentNodeDescriptor
 import mods.eln.sim.ThermalLoadInitializer
 import mods.eln.sim.ThermalLoadInitializerByPowerDrop
@@ -35,7 +35,6 @@ import mods.eln.transparentnode.NixieTubeDescriptor
 import mods.eln.transparentnode.autominer.AutoMinerDescriptor
 import mods.eln.transparentnode.battery.BatteryDescriptor
 import mods.eln.transparentnode.dcdc.DcDcDescriptor
-import mods.eln.transparentnode.dcdc.LegacyDcDcDescriptor
 import mods.eln.transparentnode.eggincubator.EggIncubatorDescriptor
 import mods.eln.transparentnode.electricalantennarx.ElectricalAntennaRxDescriptor
 import mods.eln.transparentnode.electricalantennatx.ElectricalAntennaTxDescriptor
@@ -49,8 +48,6 @@ import mods.eln.transparentnode.festive.ChristmasTreeDescriptor
 import mods.eln.transparentnode.festive.HolidayCandleDescriptor
 import mods.eln.transparentnode.festive.StringLightsDescriptor
 import mods.eln.transparentnode.heatfurnace.HeatFurnaceDescriptor
-import mods.eln.transparentnode.powercapacitor.PowerCapacitorDescriptor
-import mods.eln.transparentnode.powerinductor.PowerInductorDescriptor
 import mods.eln.transparentnode.solarpanel.SolarPanelDescriptor
 import mods.eln.transparentnode.teleporter.TeleporterDescriptor
 import mods.eln.transparentnode.thermaldissipatoractive.ThermalDissipatorActiveDescriptor
@@ -66,7 +63,6 @@ class TransparentNodeRegistry {
     companion object {
 
         enum class TNID (val id: Int) {
-            POWER_COMPONENT(1),
             TRANSFORMER(2),
             HEAT_FURNACE(3),
             TURBINE(4),
@@ -92,7 +88,6 @@ class TransparentNodeRegistry {
         }
 
         fun register() {
-            registerPowerComponent(TNID.POWER_COMPONENT.id)
             registerTransformer(TNID.TRANSFORMER.id)
             registerHeatFurnace(TNID.HEAT_FURNACE.id)
             registerTurbine(TNID.TURBINE.id)
@@ -144,42 +139,19 @@ class TransparentNodeRegistry {
         }
          */
 
-        private fun registerPowerComponent(id: Int) {
-            var name: String
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Power inductor")
-                val desc = PowerInductorDescriptor(
-                    name, null, SerieEE.newE12(-1.0)
-                )
-                registerHiddenTransparentNode(id, 1, desc)
-            }
-            run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Power capacitor")
-                val desc = PowerCapacitorDescriptor(
-                    name, null, SerieEE.newE6(-2.0), 300.0
-                )
-                registerHiddenTransparentNode(id, 2, desc)
-            }
-        }
-
         private fun registerTransformer(id: Int) {
             var name: String
-            run {
-                val desc = LegacyDcDcDescriptor(I18N.TR_NAME(I18N.Type.NONE, "Legacy DC-DC Converter"), obj.getObj("transformator"),
-                    obj.getObj("feromagneticcorea"), obj.getObj("transformatorCase"), 0.5f)
-                registerTransparentNode(id, 0, desc)
-            }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Variable DC-DC Converter")
                 val desc = VariableDcDcDescriptor(name, obj.getObj("variabledcdc"),
                     obj.getObj("feromagneticcorea"), obj.getObj("transformatorCase"))
-                registerTransparentNode(id, 1, desc)
+                registerTransparentNode(id, 0, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "DC-DC Converter")
                 val desc = DcDcDescriptor(name, obj.getObj("transformator"),
                     obj.getObj("feromagneticcorea"), obj.getObj("transformatorCase"), 0.5f)
-                registerTransparentNode(id, 2, desc)
+                registerTransparentNode(id, 1, desc)
             }
         }
 
@@ -189,7 +161,7 @@ class TransparentNodeRegistry {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Stone Heat Furnace")
                 val desc = HeatFurnaceDescriptor(name,
                     "stonefurnace", 4000.0,
-                    Utils.getCoalEnergyReference() * 2 / 3,
+                    Utils.coalEnergyReference * 2 / 3,
                     8, 500.0,
                     ThermalLoadInitializerByPowerDrop(780.0, (-100).toDouble(), 10.0, 2.0)
                 )
@@ -829,7 +801,7 @@ class TransparentNodeRegistry {
         private fun registerThermalDissipator(id: Int) {
             var name: String
             run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Small Passive Thermal Dissipator")
+                name = I18N.TR_NAME(I18N.Type.NONE, "Heatsink")
                 val desc = ThermalDissipatorPassiveDescriptor(
                     name,
                     obj.getObj("passivethermaldissipatora"),
@@ -840,7 +812,7 @@ class TransparentNodeRegistry {
                 registerTransparentNode(id, 0, desc)
             }
             run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Small Active Thermal Dissipator")
+                name = I18N.TR_NAME(I18N.Type.NONE, "Heatsink with 12V Fan")
                 val desc = ThermalDissipatorActiveDescriptor(
                     name,
                     obj.getObj("activethermaldissipatora"),
@@ -854,7 +826,7 @@ class TransparentNodeRegistry {
                 registerTransparentNode(id, 1, desc)
             }
             run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "200V Active Thermal Dissipator")
+                name = I18N.TR_NAME(I18N.Type.NONE, "Heatsink with 240V Fan")
                 val desc = ThermalDissipatorActiveDescriptor(
                     name,
                     obj.getObj("200vactivethermaldissipatora"),
@@ -877,7 +849,7 @@ class TransparentNodeRegistry {
                     10.0, 1.0
                 )
                 val desc = LargeRheostatDescriptor(
-                    name, dissipator, Eln.mediumInsulationMediumCurrentCopperCable, SerieEE.newE12(0.0)
+                    name, dissipator, Eln.mediumInsulationMediumCurrentCopperCable, SeriesMap.newE12(0.0)
                 )
                 registerTransparentNode(id, 3, desc)
             }
@@ -918,7 +890,7 @@ class TransparentNodeRegistry {
 
         private fun registerTurret(id: Int) {
             run {
-                val name = I18N.TR_NAME(I18N.Type.NONE, "800V Defence Turret")
+                val name = I18N.TR_NAME(I18N.Type.NONE, "Defense Turret")
                 val desc = TurretDescriptor(name, "Turret")
                 registerTransparentNode(id, 0, desc)
             }

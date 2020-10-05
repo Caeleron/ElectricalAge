@@ -53,7 +53,7 @@ class ElectricalFuseHolderDescriptor(name: String, obj: Obj3D) :
     fun draw(installedFuse: ElectricalFuseDescriptor?) {
         case?.draw()
         if (installedFuse != null) {
-            VoltageLevelColor.fromCable(installedFuse.cableDescriptor).setGLColor()
+            VoltageTierHelpers.setGLColor(VoltageTier.NEUTRAL)
             fuseType?.draw()
             GL11.glColor3f(1f, 1f, 1f)
             if (installedFuse.cableDescriptor != null) {
@@ -63,11 +63,9 @@ class ElectricalFuseHolderDescriptor(name: String, obj: Obj3D) :
         }
     }
 
-    override fun addInformation(itemStack: ItemStack?, entityPlayer: EntityPlayer?, list: MutableList<String>?, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
-        if (list != null) {
-            I18N.tr("Protects electrical components.\nFuse melts if current exceeds the\nfuse limit").split("\n").forEach { list.add(it) }
-        }
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
+        I18N.tr("Protects electrical components.\nFuse melts if current exceeds the\nfuse limit").split("\n").forEach { list.add(it) }
     }
 
     override fun getFrontFromPlace(side: Direction, player: EntityPlayer) =
@@ -160,10 +158,10 @@ class ElectricalFuseHolderElement(sixNode: SixNode, side: Direction, descriptor:
         else -> 0
     }
 
-    override fun multiMeterString() = Utils.plotAmpere("I:", Math.abs(aLoad.current))
+    override fun multiMeterString() = Utils.plotAmpere(Math.abs(aLoad.current))
 
     override fun getWaila(): MutableMap<String, String> {
-        return mutableMapOf(Pair(I18N.tr("Current"), Utils.plotAmpere("", Math.abs(aLoad.current))))
+        return mutableMapOf(Pair(I18N.tr("Current"), Utils.plotAmpere(Math.abs(aLoad.current))))
     }
 
     override fun thermoMeterString(): String? = null
@@ -234,7 +232,7 @@ class ElectricalFuseHolderRender(tileEntity: SixNodeEntity, side: Direction, des
     override fun publishUnserialize(stream: DataInputStream?) {
         super.publishUnserialize(stream)
         if (stream != null) {
-            installedFuse = GenericItemUsingDamageDescriptor.getDescriptor(Utils.unserialiseItemStack(stream)) as? ElectricalFuseDescriptor
+            installedFuse = GenericItemUsingDamageDescriptor.getDescriptor(Utils.unserializeItemStack(stream)) as? ElectricalFuseDescriptor
         }
     }
 }

@@ -6,6 +6,7 @@ import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -80,8 +81,8 @@ public class LampSupplyDescriptor extends SixNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List list) {
+        super.addInfo(itemStack, entityPlayer, list);
         list.add(tr("Supplies power to nearby lamps."));
         list.add(tr("Capable of operating 3 light channels."));
         Collections.addAll(list,tr("Supports control from a wireless signal\nchannel for each lighting channel.").split("\n"));

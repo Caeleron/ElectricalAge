@@ -93,7 +93,7 @@ public class WirelessSignalRxElement extends SixNodeElement implements IConfigur
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
         info.put(I18N.tr("Channel"), (connection ? "\u00A7a" : "\u00A7c") + channel);
-        info.put(I18N.tr("Output voltage"), Utils.plotVolt("", outputGate.getU()));
+        info.put(I18N.tr("Output voltage"), Utils.plotVolt(outputGate.getU(), ""));
         return info;
     }
 

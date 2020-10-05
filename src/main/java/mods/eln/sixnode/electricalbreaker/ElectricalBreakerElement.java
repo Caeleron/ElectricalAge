@@ -115,16 +115,16 @@ public class ElectricalBreakerElement extends SixNodeElement {
 
     @Override
     public String multiMeterString() {
-        return Utils.plotVolt("Ua:", aLoad.getU()) + Utils.plotVolt("Ub:", bLoad.getU()) + Utils.plotAmpere("I:", aLoad.getCurrent());
+        return Utils.plotVolt(aLoad.getU(), "Ua:") + Utils.plotVolt(bLoad.getU(), "Ub:") + Utils.plotAmpere(aLoad.getCurrent(), "");
     }
 
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
         info.put(I18N.tr("Contact"), switchState ? I18N.tr("Closed") : I18N.tr("Open"));
-        info.put(I18N.tr("Current"), Utils.plotAmpere("", aLoad.getCurrent()));
+        info.put(I18N.tr("Current"), Utils.plotAmpere(aLoad.getCurrent(), ""));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Voltages"), Utils.plotVolt("", aLoad.getU()) + Utils.plotVolt(" ", bLoad.getU()));
+            info.put(I18N.tr("Voltages"), Utils.plotVolt(aLoad.getU(), "") + Utils.plotVolt(bLoad.getU(), ""));
         }
         return info;
     }

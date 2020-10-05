@@ -125,7 +125,7 @@ public class ElectricalFurnaceElement extends TransparentNodeElement {
 
     @Override
     public String thermoMeterString(Direction side) {
-        return Utils.plotCelsius("T:", thermalLoad.Tc);
+        return Utils.plotCelsius(thermalLoad.Tc, "");
     }
 
     @Override
@@ -264,7 +264,7 @@ public class ElectricalFurnaceElement extends TransparentNodeElement {
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Temperature"), Utils.plotCelsius("", thermalLoad.Tc));
+        info.put(I18N.tr("Temperature"), Utils.plotCelsius(thermalLoad.Tc, ""));
         if (inventory.getStackInSlot(heatingCorpSlotId) != null) {
             info.put(I18N.tr("Heating element"), inventory.getStackInSlot(heatingCorpSlotId).getDisplayName());
         } else {

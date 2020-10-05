@@ -19,8 +19,7 @@ class GhostPowerNode(origin: Coordonate, front: Direction, offset: Coordonate, v
         connect()
     }
 
-    override fun initializeFromNBT() {
-    }
+    override fun initializeFromNBT() {}
 
     override fun getSideConnectionMask(directionA: Direction?, lrduA: LRDU?) = NodeBase.MASK_ELECTRIC
 

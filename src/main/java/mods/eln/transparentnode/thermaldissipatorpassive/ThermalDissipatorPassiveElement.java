@@ -76,7 +76,7 @@ public class ThermalDissipatorPassiveElement extends TransparentNodeElement {
     @Override
     public String thermoMeterString(Direction side) {
 
-        return Utils.plotCelsius("T : ", thermalLoad.Tc) + Utils.plotPower("P : ", thermalLoad.getPower());
+        return Utils.plotCelsius(thermalLoad.Tc, "") + Utils.plotPower(thermalLoad.getPower(), "");
     }
 
     @Override
@@ -110,9 +110,9 @@ public class ThermalDissipatorPassiveElement extends TransparentNodeElement {
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<>();
-        info.put(I18N.tr("Temperature"), Utils.plotCelsius("", thermalLoad.Tc));
+        info.put(I18N.tr("Temperature"), Utils.plotCelsius(thermalLoad.Tc, ""));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Thermal power"), Utils.plotPower("", thermalLoad.getPower()));
+            info.put(I18N.tr("Thermal power"), Utils.plotPower(thermalLoad.getPower(), ""));
         }
         return info;
     }

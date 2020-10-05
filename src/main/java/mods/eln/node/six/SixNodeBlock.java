@@ -228,7 +228,7 @@ public class SixNodeBlock extends NodeBlock {
             sixNode.sixNodeCacheBlock = Blocks.air;
 
             Chunk chunk = world.getChunkFromBlockCoords(x, z);
-            Utils.generateHeightMap(chunk);
+            // Utils.generateHeightMap(chunk); // TODO: Let's hope we didn't need this.
             Utils.updateSkylight(chunk);
             chunk.generateSkylightMap();
             Utils.updateAllLightTypes(world, x, y, z);

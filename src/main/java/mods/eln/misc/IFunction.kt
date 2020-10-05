@@ -1,5 +1,5 @@
-package mods.eln.misc;
+package mods.eln.misc
 
-public interface IFunction {
-    public abstract double getValue(double x);
+interface IFunction {
+    fun getValue(x: Double): Double
 }

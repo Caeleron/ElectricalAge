@@ -57,7 +57,7 @@ public class ElectricalSensorRender extends SixNodeElementRender {
             lowValue = stream.readFloat();
             highValue = stream.readFloat();
             dirType = stream.readByte();
-            cableRender = GenericCableDescriptor.getCableRender(Utils.unserialiseItemStack(stream));
+            cableRender = GenericCableDescriptor.getCableRender(Utils.unserializeItemStack(stream));
         } catch (IOException e) {
             e.printStackTrace();
         }

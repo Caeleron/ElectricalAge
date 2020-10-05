@@ -11,13 +11,14 @@ import org.lwjgl.opengl.GL11
 import java.io.DataInputStream
 import java.io.IOException
 
-class ChristmasTreeDescriptor(val name: String, val obj: Obj3D): TransparentNodeDescriptor(name, FestiveElement::class.java, ChristmasTreeRender::class.java) {
+class ChristmasTreeDescriptor(name: String, val obj: Obj3D): TransparentNodeDescriptor(name, FestiveElement::class.java, ChristmasTreeRender::class.java) {
     private var star: Obj3D.Obj3DPart? = null
     private var string1: Obj3D.Obj3DPart? = null
     private var string2: Obj3D.Obj3DPart? = null
     private var tree: Obj3D.Obj3DPart? = null
 
     init {
+        this.name = name
         star = obj.getPart("StarOn_Star.002")
         string1 = obj.getPart("Strip1_Star.000")
         string2 = obj.getPart("Strip2_Star.001")
@@ -71,7 +72,7 @@ class ChristmasTreeRender(val tileEntity: TransparentNodeEntity, val descriptor:
         (descriptor as ChristmasTreeDescriptor).draw(front, x, powered)
     }
 
-    override fun refresh(deltaT: Float) {
+    override fun refresh(deltaT: Double) {
         x += 1
         if (x > 20) x = 0
     }

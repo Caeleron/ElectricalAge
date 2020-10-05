@@ -1,6 +1,7 @@
 package mods.eln.sixnode.powersocket;
 
 import mods.eln.cable.CableRenderDescriptor;
+import mods.eln.generic.GenericItemBlockUsingDamageDescriptor;
 import mods.eln.misc.Coordonate;
 import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
@@ -71,9 +72,9 @@ public class PowerSocketRender extends SixNodeElementRender {
         try {
             channel = stream.readUTF();
 
-            ItemStack cableStack = Utils.unserialiseItemStack(stream);
+            ItemStack cableStack = Utils.unserializeItemStack(stream);
             if (cableStack != null) {
-                GenericCableDescriptor desc = (GenericCableDescriptor) GenericCableDescriptor.getDescriptor(cableStack);
+                GenericCableDescriptor desc = (GenericCableDescriptor) GenericItemBlockUsingDamageDescriptor.Companion.getDescriptor(cableStack);
                 cableRender = desc.render;
             } else {
                 cableRender = null;

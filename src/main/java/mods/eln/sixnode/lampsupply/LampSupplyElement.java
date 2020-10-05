@@ -1,6 +1,7 @@
 package mods.eln.sixnode.lampsupply;
 
 import mods.eln.Eln;
+import mods.eln.generic.GenericItemBlockUsingDamageDescriptor;
 import mods.eln.i18n.I18N;
 import mods.eln.item.ConfigCopyToolDescriptor;
 import mods.eln.item.IConfigurable;
@@ -228,9 +229,9 @@ public class LampSupplyElement extends SixNodeElement implements IConfigurable {
                     (channelStates[i] ? "\u00A7aON" : "\u00A7cOFF"));
             }
         }
-        info.put(I18N.tr("Total power"), Utils.plotPower("", powerLoad.getU() * powerLoad.getI()));
+        info.put(I18N.tr("Total power"), Utils.plotPower(powerLoad.getU() * powerLoad.getI(), ""));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Voltage"), Utils.plotVolt("", powerLoad.getU()));
+            info.put(I18N.tr("Voltage"), Utils.plotVolt(powerLoad.getU(), ""));
         }
         return info;
     }
@@ -328,7 +329,7 @@ public class LampSupplyElement extends SixNodeElement implements IConfigurable {
     void setupFromInventory() {
         ItemStack cableStack = getInventory().getStackInSlot(LampSupplyContainer.cableSlotId);
         if (cableStack != null) {
-            GenericCableDescriptor desc = (GenericCableDescriptor) GenericCableDescriptor.getDescriptor(cableStack);
+            GenericCableDescriptor desc = (GenericCableDescriptor) GenericItemBlockUsingDamageDescriptor.Companion.getDescriptor(cableStack);
             desc.applyTo(powerLoad);
             voltageWatchdog.setUNominal(desc.electricalNominalVoltage);
         } else {

@@ -2,13 +2,11 @@ package mods.eln.mechanical
 
 import mods.eln.Eln
 import mods.eln.cable.CableRender
-import mods.eln.cable.CableRenderDescriptor
 import mods.eln.generic.GenericItemUsingDamage
 import mods.eln.generic.GenericItemUsingDamageDescriptor
 import mods.eln.generic.GenericItemUsingDamageDescriptorWithComment
 import mods.eln.generic.GenericItemUsingDamageSlot
 import mods.eln.gui.GuiContainerEln
-import mods.eln.gui.GuiHelperContainer
 import mods.eln.gui.HelperStdContainer
 import mods.eln.gui.ISlotSkin
 import mods.eln.i18n.I18N.tr
@@ -24,13 +22,10 @@ import mods.eln.sim.process.destruct.WorldExplosion
 import mods.eln.sound.LoopedSound
 import mods.eln.sound.SoundCommand
 import net.minecraft.client.gui.GuiScreen
-import net.minecraft.entity.EntityLivingBase
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.inventory.Container
 import net.minecraft.inventory.IInventory
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
-import net.minecraft.world.World
 import org.lwjgl.opengl.GL11
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -414,14 +409,14 @@ class ClutchElement(node: TransparentNode, desc_: TransparentNodeDescriptor) : S
         val info = mutableMapOf<String, String>()
         val entries = mapOf(Pair(front.left(), leftShaft), Pair(front.right(), rightShaft)).entries
         info.put("Speeds", entries.map {
-            Utils.plotRads("", it.value.rads)
+            Utils.plotRads(it.value.rads)
         }.joinToString(", "))
         info.put("Energies", entries.map {
-            Utils.plotEnergy("", it.value.energy)
+            Utils.plotEnergy(it.value.energy)
         }.joinToString(", "))
         if(Eln.wailaEasyMode) {
             info.put("Masses", entries.map {
-                Utils.plotValue(it.value.mass * 1000, "g")
+                Utils.plotValue(value = it.value.mass * 1000, unit = "g")
             }.joinToString(", "))
             val desc = clutchPlateDescriptor
             val stack = clutchPlateStack
@@ -464,7 +459,7 @@ class ClutchRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescript
     var lAngle = 0.0
     var rAngle = 0.0
 
-    override fun refresh(deltaT: Float) {
+    override fun refresh(deltaT: Double) {
         super.refresh(deltaT)
         lAngle += deltaT * lLogRads
         rAngle += deltaT * rLogRads
@@ -501,13 +496,13 @@ class ClutchRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescript
 
     inner class ClutchLoopedSound(sound: String, coord: Coordonate) : LoopedSound(sound, coord) {
         override fun getPitch() = Math.max(0.1, Math.min(1.5, Math.abs(lRads - rRads) / 200.0)).toFloat()
-        override fun getVolume() = volumeSetting.position
+        override fun getVolume() = volumeSetting.position.toFloat()
     }
 
     init {
         addLoopedSound(ClutchLoopedSound(desc.slipSound, coordonate()))
         LRDU.values().forEach { eConn.set(it, true); mask.set(it, true) }
-        volumeSetting.target = 0f
+        volumeSetting.target = 0.0
     }
 
     var clutching = 0.0
@@ -526,10 +521,10 @@ class ClutchRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescript
         worn = stream.readBoolean()
         hasPin = stream.readBoolean()
         if(slipping && !worn) {
-            volumeSetting.target = (Math.min(1.0, Math.abs(lRads - rRads) / 20.0) * clutching * 0.5).toFloat()
+            volumeSetting.target = (Math.min(1.0, Math.abs(lRads - rRads) / 20.0) * clutching * 0.5)
         } else {
-            volumeSetting.target = 0f
-            volumeSetting.position = 0f
+            volumeSetting.target = 0.0
+            volumeSetting.position = 0.0
         }
         if(lastSlipping && !slipping && hasPin) play(SoundCommand(desc.slipStopSound))
         lastSlipping = slipping

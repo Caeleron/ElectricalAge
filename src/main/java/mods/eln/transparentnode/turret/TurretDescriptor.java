@@ -5,11 +5,11 @@ import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.Utils;
 import mods.eln.misc.UtilsClient;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTier;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 import java.util.Collections;
@@ -83,8 +83,8 @@ public class TurretDescriptor extends TransparentNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List list) {
+        super.addInfo(itemStack, entityPlayer, list);
         Collections.addAll(list, tr("Scans for entities and shoots if the\nentity matches the configurable filter criteria.").split("\n"));
         list.add(tr("Nominal voltage: %1$V", 800));
         list.add(tr("Standby power: %1$W", Utils.plotValue(getProperties().basePower)));
@@ -116,9 +116,9 @@ public class TurretDescriptor extends TransparentNodeDescriptor {
     }
 
     public void draw(TurretRender render) {
-        float turretAngle = render != null ? render.getTurretAngle() : 0;
-        float gunPosition = render != null ? render.getGunPosition() : 0;
-        float gunAngle = render != null ? -render.getGunElevation() : 0;
+        float turretAngle = render != null ? (float)render.getTurretAngle() : 0;
+        float gunPosition = render != null ? (float)render.getGunPosition() : 0;
+        float gunAngle = render != null ? -(float)render.getGunElevation() : 0;
         boolean shooting = render != null && render.isShooting();
         boolean enabled = render == null || render.isEnabled();
 

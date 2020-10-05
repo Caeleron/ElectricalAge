@@ -164,7 +164,7 @@ public class ElectricalDigitalDisplayElement extends SixNodeElement implements I
     @Override
     public Map<String, String> getWaila() {
         HashMap<String, String> info = new HashMap<>();
-        info.put("Input: ", Utils.plotVolt(input.getU()));
+        info.put("Input: ", Utils.plotVolt(input.getU(), ""));
         info.put("Min: ", String.format("%.2f", min));
         info.put("Max: ", String.format("%.2f", max));
         return info;

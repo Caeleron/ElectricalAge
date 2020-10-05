@@ -41,7 +41,7 @@ class RotaryMotorDescriptor(baseName: String, obj: Obj3D) :
         GL11.glTranslated(-0.5, -1.5, 0.5)
     }
     // Overall time for steam input changes to take effect, in seconds.
-    val inertia: Float = 3f
+    val inertia: Double = 3.0
     // Maximum fluid consumed per second, mB.
     val fluidConsumption: Float = 64f
     // How we describe the fluid in the tooltip.
@@ -66,19 +66,19 @@ class RotaryMotorDescriptor(baseName: String, obj: Obj3D) :
     @Suppress("CanBePrimaryConstructorProperty") // If you do that, it changes the constructor and BLAMO, Crash!
     override val obj: Obj3D = obj
 
-    override fun addInformation(stack: ItemStack, player: EntityPlayer, list: MutableList<String>, par4: Boolean) {
-        list.add("Converts ${fluidDescription} into mechanical energy.")
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        list.add("Converts $fluidDescription into mechanical energy.")
         list.add("Nominal usage ->")
-        list.add("  ${fluidDescription.capitalize()} input: ${fluidConsumption} mB/s")
+        list.add("  ${fluidDescription.capitalize()} input: $fluidConsumption mB/s")
         if (power.isEmpty()) {
             list.add("  No valid fluids for this turbine!")
         } else if (power.size == 1) {
-            list.add(Utils.plotPower("  Power out: ", power[0]))
+            list.add(Utils.plotPower(power[0], "Power Output:"))
         } else {
             list.add("  Power out: ${Utils.plotPower(minFluidPower  * GAS_GUZZLER_CONSTANT)}- ${Utils.plotPower(maxFluidPower * GAS_GUZZLER_CONSTANT)}")
         }
-        list.add(Utils.plotRads("  Optimal rads: ", optimalRads))
-        list.add(Utils.plotRads("Max rads:  ", absoluteMaximumShaftSpeed))
+        list.add(Utils.plotRads(optimalRads, "Nominal Speed:"))
+        list.add(Utils.plotRads(absoluteMaximumShaftSpeed, "Absolute Maximum Speed:"))
     }
 }
 
@@ -87,13 +87,13 @@ class RotaryMotorElement(node: TransparentNode, desc_: TransparentNodeDescriptor
     val desc = desc_ as RotaryMotorDescriptor
 
     val tank = PreciseElementFluidHandler(desc.fluidConsumption.toInt())
-    var fluidRate = 0f
+    var fluidRate = 0.0
     var efficiency = 0f
     val rotaryMotorSlowProcess = RotaryMotorSlowProcess()
 
     internal val throttle = NbtElectricalGateInput("throttle")
 
-    internal var volume: Float by published(0f)
+    internal var volume: Double by published(0.0)
 
     inner class RotaryMotorSlowProcess() : IProcess, INBTTReady {
         val rc = RcInterpolator(desc.inertia)
@@ -112,26 +112,26 @@ class RotaryMotorElement(node: TransparentNode, desc_: TransparentNodeDescriptor
 
             val drained = tank.drain(target * time).toFloat()
 
-            rc.target = (drained / time).toFloat()
-            rc.step(time.toFloat())
+            rc.target = (drained / time)
+            rc.step(time)
             fluidRate = rc.get()
 
             val power = fluidRate * tank.heatEnergyPerMilliBucket * efficiency
             shaft.energy += power * time.toFloat()
 
             volume = if (fluidRate > 0.25) {
-                Math.max(0.75f, (power / desc.maxFluidPower).toFloat())
+                Math.max(0.75, (power / desc.maxFluidPower))
             } else {
-                0.0f
+                0.0
             }
         }
 
-        override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
-            rc.readFromNBT(nbt, str)
+        override fun readFromNBT(nbt: NBTTagCompound, str: String) {
+            rc.readFromNBT(nbt!!, str!!)
         }
 
-        override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
-            rc.writeToNBT(nbt, str)
+        override fun writeToNBT(nbt: NBTTagCompound, str: String) {
+            rc.writeToNBT(nbt!!, str!!)
         }
     }
 
@@ -155,7 +155,7 @@ class RotaryMotorElement(node: TransparentNode, desc_: TransparentNodeDescriptor
 
     override fun onBlockActivated(entityPlayer: EntityPlayer?, side: Direction?, vx: Float, vy: Float, vz: Float) = false
 
-    override fun thermoMeterString(side: Direction?) = Utils.plotPercent(" Eff:", efficiency.toDouble()) + fluidRate.toString() + "mB/s"
+    override fun thermoMeterString(side: Direction?) = Utils.plotPercent(efficiency.toDouble(), "Efficiency:") + fluidRate.toString() + "mB/s"
 
     override fun writeToNBT(nbt: NBTTagCompound) {
         super.writeToNBT(nbt)
@@ -171,18 +171,18 @@ class RotaryMotorElement(node: TransparentNode, desc_: TransparentNodeDescriptor
 
     override fun getWaila(): Map<String, String> {
         val info = mutableMapOf<String, String>()
-        info.put("Speed", Utils.plotRads("", shaft.rads))
-        info.put("Energy", Utils.plotEnergy("", shaft.energy))
+        info["Speed"] = Utils.plotRads(shaft.rads)
+        info["Energy"] = Utils.plotEnergy(shaft.energy)
         if (Eln.wailaEasyMode) {
-            info.put("Efficiency", Utils.plotPercent("", efficiency.toDouble()))
-            info.put("Fuel usage", Utils.plotBuckets("", fluidRate / 1000.0) + "/s")
+            info["Efficiency"] = Utils.plotPercent(efficiency.toDouble())
+            info["Fuel usage"] = Utils.plotBuckets(fluidRate / 1000.0) + "/s"
         }
         return info
     }
 
     override fun networkSerialize(stream: DataOutputStream) {
         super.networkSerialize(stream)
-        stream.writeFloat(volume)
+        stream.writeDouble(volume)
     }
 }
 
@@ -192,7 +192,7 @@ class RotaryMotorRender(entity: TransparentNodeEntity, desc: TransparentNodeDesc
 
     override fun networkUnserialize(stream: DataInputStream) {
         super.networkUnserialize(stream)
-        volumeSetting.target = stream.readFloat()
+        volumeSetting.target = stream.readDouble()
     }
 
     // Prevents it from not rendering when the main block is just out of frame.

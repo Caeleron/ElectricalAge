@@ -1,7 +1,6 @@
 package mods.eln.item
 
 import mods.eln.misc.Obj3D
-import mods.eln.misc.VoltageLevelColor
 import mods.eln.misc.VoltageTier
 import mods.eln.misc.VoltageTierHelpers
 import mods.eln.misc.preserveMatrix

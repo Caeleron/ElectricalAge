@@ -3,7 +3,6 @@ package mods.eln.sixnode.wirelesssignal;
 import mods.eln.misc.Coordonate;
 import mods.eln.sixnode.wirelesssignal.tx.WirelessSignalTxElement;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
 
 import java.util.*;
@@ -168,7 +167,7 @@ public class WirelessUtils {
             dy = (txC.y - rxC.y) / distance;
             dz = (txC.z - rxC.z) / distance;
             Coordonate c = new Coordonate();
-            c.setDimention(rxC.dimention);
+            c.setDimension(rxC.dimention);
 
             for (int idx = 0; idx < distance - 1; idx++) {
                 vx += dx;

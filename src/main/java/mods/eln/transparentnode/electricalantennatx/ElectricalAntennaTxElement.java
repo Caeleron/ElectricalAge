@@ -199,9 +199,9 @@ public class ElectricalAntennaTxElement extends TransparentNodeElement {
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
         info.put(I18N.tr("Transmitting"), commandIn.getNormalized() > 0 ? "Yes" : "No");
-        info.put(I18N.tr("Efficiency"), Utils.plotPercent("", powerEfficency));
+        info.put(I18N.tr("Efficiency"), Utils.plotPercent(powerEfficency, ""));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Power"), Utils.plotPower("", powerIn.getI() * powerIn.getU()));
+            info.put(I18N.tr("Power"), Utils.plotPower(powerIn.getI() * powerIn.getU(), ""));
         }
         return info;
     }

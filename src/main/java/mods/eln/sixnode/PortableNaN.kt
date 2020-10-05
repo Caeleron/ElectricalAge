@@ -49,8 +49,8 @@ class PortableNaNDescriptor(name: String, renderIn: CableRenderDescriptor): Gene
 
     override fun applyTo(thermalLoad: ThermalLoad) = thermalLoad.set(Double.NaN, Double.NaN, Double.NaN)
 
-    override fun addInformation(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
 
         list.add(tr("Nominal Ratings:"))
         list.add("  " + tr("Voltage: Yes"))
@@ -69,7 +69,7 @@ class PortableNaNDescriptor(name: String, renderIn: CableRenderDescriptor): Gene
     override fun renderItem(type: IItemRenderer.ItemRenderType, item: ItemStack, vararg data: Any) {
         if (icon == null)
             return
-        val icon = icon.iconName.substring(4)
+        val icon = icon!!.iconName.substring(4)
         UtilsClient.drawIcon(type, ResourceLocation("eln", "textures/blocks/$icon.png"))
     }
 }
@@ -108,15 +108,15 @@ class PortableNaNElement(sixNode: SixNode, side: Direction, descriptor: SixNodeD
     }
 
     override fun thermoMeterString(): String {
-        return Utils.plotCelsius("T", thermalLoad.Tc)
+        return Utils.plotCelsius(thermalLoad.Tc)
     }
 
     override fun getWaila(): Map<String, String>? {
         val info = HashMap<String, String>()
-        info[tr("Current")] = Utils.plotAmpere("", electricalLoad.i)
-        info[tr("Temperature")] = Utils.plotCelsius("", thermalLoad.t)
+        info[tr("Current")] = Utils.plotAmpere(electricalLoad.i)
+        info[tr("Temperature")] = Utils.plotCelsius(thermalLoad.t)
         if (Eln.wailaEasyMode) {
-            info[tr("Voltage")] = Utils.plotVolt("", electricalLoad.u)
+            info[tr("Voltage")] = Utils.plotVolt(electricalLoad.u)
         }
         try {
             val subSystemSize = electricalLoad.subSystem!!.componentSize()

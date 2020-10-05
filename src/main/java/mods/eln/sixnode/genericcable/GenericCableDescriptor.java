@@ -1,6 +1,7 @@
 package mods.eln.sixnode.genericcable;
 
 import mods.eln.cable.CableRenderDescriptor;
+import mods.eln.generic.GenericItemBlockUsingDamage;
 import mods.eln.generic.GenericItemBlockUsingDamageDescriptor;
 import mods.eln.node.NodeBase;
 import mods.eln.node.six.SixNodeDescriptor;
@@ -46,7 +47,7 @@ public abstract class GenericCableDescriptor extends SixNodeDescriptor {
 
     public static CableRenderDescriptor getCableRender(ItemStack cable) {
         if(cable == null) return null;
-        GenericItemBlockUsingDamageDescriptor desc = GenericCableDescriptor.getDescriptor(cable);
+        GenericItemBlockUsingDamageDescriptor desc = GenericItemBlockUsingDamageDescriptor.Companion.getDescriptor(cable);
         if (desc instanceof GenericCableDescriptor)
             return ((GenericCableDescriptor) desc).render;
         else

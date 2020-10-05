@@ -70,18 +70,18 @@ public class PowerInductorSixElement extends SixNodeElement implements IConfigur
 
     @Override
     public String multiMeterString() {
-        return Utils.plotVolt("U", Math.abs(inductor.getU())) + Utils.plotAmpere("I", inductor.getCurrent());
+        return Utils.plotVolt(Math.abs(inductor.getU()), "") + Utils.plotAmpere(inductor.getCurrent(), "");
     }
 
     @Nullable
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Inductance"), Utils.plotValue(inductor.getL(), "H"));
-        info.put(I18N.tr("Charge"), Utils.plotEnergy("", inductor.getE()));
+        info.put(I18N.tr("Inductance"), Utils.plotValue(inductor.getL(), "H", ""));
+        info.put(I18N.tr("Charge"), Utils.plotEnergy(inductor.getE(), ""));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Voltage drop"), Utils.plotVolt("", Math.abs(inductor.getU())));
-            info.put(I18N.tr("Current"), Utils.plotAmpere("", Math.abs(inductor.getCurrent())));
+            info.put(I18N.tr("Voltage drop"), Utils.plotVolt(Math.abs(inductor.getU()), ""));
+            info.put(I18N.tr("Current"), Utils.plotAmpere(Math.abs(inductor.getCurrent()), ""));
         }
         return info;
     }

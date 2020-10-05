@@ -89,23 +89,23 @@ public class DiodeElement extends SixNodeElement {
 
     @Override
     public String multiMeterString() {
-        return Utils.plotVolt("U+:", anodeLoad.getU()) + Utils.plotVolt("U-:", catodeLoad.getU()) + Utils.plotAmpere("I:", anodeLoad.getCurrent());
+        return Utils.plotVolt(anodeLoad.getU(), "U+:") + Utils.plotVolt(catodeLoad.getU(), "U-:") + Utils.plotAmpere(anodeLoad.getCurrent(), "");
     }
 
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Current"), Utils.plotAmpere("", anodeLoad.getCurrent()));
+        info.put(I18N.tr("Current"), Utils.plotAmpere(anodeLoad.getCurrent(), ""));
         if (Eln.wailaEasyMode) {
-            info.put(I18N.tr("Forward Voltage"), Utils.plotVolt("", anodeLoad.getU() - catodeLoad.getU()));
-            info.put(I18N.tr("Temperature"), Utils.plotCelsius("", thermalLoad.getT()));
+            info.put(I18N.tr("Forward Voltage"), Utils.plotVolt(anodeLoad.getU() - catodeLoad.getU(), ""));
+            info.put(I18N.tr("Temperature"), Utils.plotCelsius(thermalLoad.getT(), ""));
         }
         return info;
     }
 
     @Override
     public String thermoMeterString() {
-        return Utils.plotCelsius("T:", thermalLoad.Tc);
+        return Utils.plotCelsius(thermalLoad.Tc, "");
     }
 
     @Override

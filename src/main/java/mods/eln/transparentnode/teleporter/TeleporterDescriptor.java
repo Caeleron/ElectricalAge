@@ -10,6 +10,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -72,8 +73,8 @@ public class TeleporterDescriptor extends TransparentNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List<String> list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List<String> list) {
+        super.addInfo(itemStack, entityPlayer, list);
         list.add(I18N.tr("It's experimental!"));
     }
 
@@ -84,7 +85,7 @@ public class TeleporterDescriptor extends TransparentNodeDescriptor {
 
     public AxisAlignedBB getBB(Coordonate c, Direction front) {
         Coordonate temp = new Coordonate(areaCoordonate);
-        temp.setDimention(c.dimention);
+        temp.setDimension(c.dimention);
         temp.applyTransformation(front, c);
 
         AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(temp.x, temp.y, temp.z, temp.x + 1, temp.y + areaH, temp.z + 1);
@@ -93,7 +94,7 @@ public class TeleporterDescriptor extends TransparentNodeDescriptor {
 
     public Coordonate getTeleportCoordonate(Direction front, Coordonate c) {
         Coordonate temp = new Coordonate(areaCoordonate);
-        temp.setDimention(c.dimention);
+        temp.setDimension(c.dimention);
         temp.applyTransformation(front, c);
 
         return temp;
@@ -114,7 +115,7 @@ public class TeleporterDescriptor extends TransparentNodeDescriptor {
         Coordonate[] temp = new Coordonate[powerCoordonate.length];
         for (int idx = 0; idx < temp.length; idx++) {
             temp[idx] = new Coordonate(powerCoordonate[idx]);
-            temp[idx].setDimention(w.provider.dimensionId);
+            temp[idx].setDimension(w.provider.dimensionId);
         }
         return temp;
     }

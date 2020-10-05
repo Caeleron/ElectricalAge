@@ -58,7 +58,7 @@ public class ElectricalFurnaceRender extends TransparentNodeElementRender {
 
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         processState += processStatePerSecond * FrameTime.getNotCaped2();
         if (processState > 1f) processState = 1f;
         counter += (System.currentTimeMillis() - time) * 0.001 * 360 / 4;

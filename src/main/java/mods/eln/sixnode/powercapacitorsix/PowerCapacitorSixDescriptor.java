@@ -5,9 +5,8 @@ import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTier;
-import mods.eln.misc.series.ISerie;
+import mods.eln.misc.series.ISeriesMapping;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -22,12 +21,12 @@ public class PowerCapacitorSixDescriptor extends SixNodeDescriptor {
     private Obj3DPart CapacitorCables;
     private Obj3DPart Base;
 
-    ISerie serie;
+    ISeriesMapping serie;
     public double dischargeTao;
 
     public PowerCapacitorSixDescriptor(String name,
                                        Obj3D obj,
-                                       ISerie serie,
+                                       ISeriesMapping serie,
                                        double dischargeTao) {
         super(name, PowerCapacitorSixElement.class, PowerCapacitorSixRender.class);
         this.serie = serie;

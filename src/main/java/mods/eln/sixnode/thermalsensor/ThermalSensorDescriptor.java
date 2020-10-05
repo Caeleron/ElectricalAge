@@ -4,11 +4,11 @@ import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -36,8 +36,8 @@ public class ThermalSensorDescriptor extends SixNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List list) {
+        super.addInfo(itemStack, entityPlayer, list);
 
         if (temperatureOnly) {
             list.add(tr("Measures temperature of cables."));

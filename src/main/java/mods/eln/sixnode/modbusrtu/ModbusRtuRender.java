@@ -49,7 +49,7 @@ public class ModbusRtuRender extends SixNodeElementRender {
             LRDU.Down.glRotateOnX();
         }
 
-        descriptor.draw(interpolator.get(), modbusActivityTimeout > 0, modbusErrorTimeout > 0);
+        descriptor.draw((float)interpolator.get(), modbusActivityTimeout > 0, modbusErrorTimeout > 0);
     }
 
     @Override

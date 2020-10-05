@@ -6,9 +6,8 @@ import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTier;
-import mods.eln.misc.series.ISerie;
+import mods.eln.misc.series.ISeriesMapping;
 import mods.eln.node.six.SixNodeDescriptor;
 import mods.eln.sim.mna.misc.MnaConst;
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,11 +20,11 @@ public class PowerInductorSixDescriptor extends SixNodeDescriptor {
     private Obj3D obj;
     Obj3DPart InductorBaseExtention, InductorCables, InductorCore, Base;
 
-    ISerie serie;
+    ISeriesMapping serie;
 
     public PowerInductorSixDescriptor(String name,
                                       Obj3D obj,
-                                      ISerie serie) {
+                                      ISeriesMapping serie) {
         super(name, PowerInductorSixElement.class, PowerInductorSixRender.class);
         this.serie = serie;
         this.obj = obj;

@@ -31,7 +31,6 @@ public class EnergyConverterElnToOtherNode extends SimpleNode {
     public double energyBufferMax;
     public double inStdVoltage;
     public double inPowerMax;
-    //public double otherOutMax = 32;
 
     public double inPowerFactor = 0.5;
 
@@ -146,14 +145,10 @@ public class EnergyConverterElnToOtherNode extends SimpleNode {
     @Override
     public void networkUnserialize(DataInputStream stream, EntityPlayerMP player) {
         try {
-            switch (stream.readByte()) {
-                case setInPowerFactor:
-                    inPowerFactor = stream.readFloat();
-                    needPublish();
-                    break;
-
-                default:
-                    break;
+            if (stream.readByte() == setInPowerFactor) {
+                // TODO: This may be some bad news.
+                inPowerFactor = stream.readFloat();
+                needPublish();
             }
         } catch (IOException e) {
             e.printStackTrace();

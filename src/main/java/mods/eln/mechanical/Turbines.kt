@@ -21,7 +21,7 @@ import java.io.DataOutputStream
 abstract class TurbineDescriptor(baseName: String, obj: Obj3D) :
     SimpleShaftDescriptor(baseName, TurbineElement::class, TurbineRender::class, EntityMetaTag.Fluid) {
     // Overall time for steam input changes to take effect, in seconds.
-    abstract val inertia: Float
+    abstract val inertia: Double
     // Optimal fluid consumed per second, mB.
     // Computed to equal a single 36LP Railcraft boiler, or half of a 36HP.
     abstract val fluidConsumption: Float
@@ -56,26 +56,26 @@ abstract class TurbineDescriptor(baseName: String, obj: Obj3D) :
         obj.getPart("Fan")
     )
 
-    override fun addInformation(stack: ItemStack, player: EntityPlayer, list: MutableList<String>, par4: Boolean) {
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
         list.add("Converts ${fluidDescription} into mechanical energy.")
         list.add("Nominal usage ->")
         list.add("  ${fluidDescription.capitalize()} input: ${fluidConsumption} mB/s")
         if (power.isEmpty()) {
             list.add("  No valid fluids for this turbine!")
         } else if (power.size == 1) {
-            list.add(Utils.plotPower("  Power out: ", power[0]))
+            list.add(Utils.plotPower(power[0], "Nominal Power:"))
         } else {
             list.add("  Power out: ${Utils.plotPower(minFluidPower)}- ${Utils.plotPower(maxFluidPower)}")
         }
-        list.add(Utils.plotRads("  Optimal rads: ", optimalRads))
-        list.add(Utils.plotRads("Max rads:  ", absoluteMaximumShaftSpeed))
+        list.add(Utils.plotRads(optimalRads, "Optimal Speed:"))
+        list.add(Utils.plotRads(absoluteMaximumShaftSpeed, "Absolute Maximum Speed:"))
     }
 }
 
 class SteamTurbineDescriptor(baseName: String, obj: Obj3D) :
     TurbineDescriptor(baseName, obj) {
     // Steam turbines are for baseload.
-    override val inertia = 20f
+    override val inertia = 20.0
     // Computed to equal a single 36LP Railcraft boiler, or half of a 36HP.
     override val fluidConsumption = 7200f
     // Computed to equal what you'd get from Railcraft steam engines, plus a small
@@ -91,7 +91,7 @@ class SteamTurbineDescriptor(baseName: String, obj: Obj3D) :
 class GasTurbineDescriptor(basename: String, obj: Obj3D) :
     TurbineDescriptor(basename, obj) {
     // The main benefit of gas turbines.
-    override val inertia = 5f
+    override val inertia = 5.0
     // Provides about 8kW of power, given gasoline.
     // Less dense fuels will be proportionally less effective.
     override val fluidConsumption = 4f
@@ -110,13 +110,13 @@ class TurbineElement(node: TransparentNode, desc_: TransparentNodeDescriptor) :
     val desc = desc_ as TurbineDescriptor
 
     val tank = PreciseElementFluidHandler(desc.fluidConsumption.toInt())
-    var fluidRate = 0f
+    var fluidRate = 0.0
     var efficiency = 0f
     val turbineSlowProcess = TurbineSlowProcess()
 
     internal val throttle = NbtElectricalGateInput("throttle")
 
-    internal var volume: Float by published(0f)
+    internal var volume: Double by published(0.0)
 
     inner class TurbineSlowProcess() : IProcess, INBTTReady {
         val rc = RcInterpolator(desc.inertia)
@@ -136,22 +136,22 @@ class TurbineElement(node: TransparentNode, desc_: TransparentNodeDescriptor) :
 
             val drained = tank.drain(target * time).toFloat()
 
-            rc.target = (drained / time).toFloat()
-            rc.step(time.toFloat())
+            rc.target = (drained / time)
+            rc.step(time)
             fluidRate = rc.get()
 
             val power = fluidRate * tank.heatEnergyPerMilliBucket * efficiency
             shaft.energy += power * time.toFloat()
 
-            volume = power / desc.maxFluidPower.toFloat()
+            volume = power / desc.maxFluidPower
         }
 
-        override fun readFromNBT(nbt: NBTTagCompound?, str: String?) {
-            rc.readFromNBT(nbt, str)
+        override fun readFromNBT(nbt: NBTTagCompound, str: String) {
+            rc.readFromNBT(nbt!!, str!!)
         }
 
-        override fun writeToNBT(nbt: NBTTagCompound?, str: String?) {
-            rc.writeToNBT(nbt, str)
+        override fun writeToNBT(nbt: NBTTagCompound, str: String) {
+            rc.writeToNBT(nbt!!, str!!)
         }
     }
 
@@ -172,7 +172,7 @@ class TurbineElement(node: TransparentNode, desc_: TransparentNodeDescriptor) :
 
     override fun onBlockActivated(entityPlayer: EntityPlayer?, side: Direction?, vx: Float, vy: Float, vz: Float) = false
 
-    override fun thermoMeterString(side: Direction?) = Utils.plotPercent(" Eff:", efficiency.toDouble()) + fluidRate.toString() + "mB/s"
+    override fun thermoMeterString(side: Direction?) = Utils.plotPercent(efficiency.toDouble(), "Efficiency:") + fluidRate.toString() + "mB/s"
 
     override fun writeToNBT(nbt: NBTTagCompound) {
         super.writeToNBT(nbt)
@@ -187,19 +187,19 @@ class TurbineElement(node: TransparentNode, desc_: TransparentNodeDescriptor) :
     }
 
     override fun getWaila(): Map<String, String> {
-        var info = mutableMapOf<String, String>()
-        info.put("Speed", Utils.plotRads("", shaft.rads))
-        info.put("Energy", Utils.plotEnergy("", shaft.energy))
+        val info = mutableMapOf<String, String>()
+        info["Speed"] = Utils.plotRads(shaft.rads)
+        info["Energy"] = Utils.plotEnergy(shaft.energy)
         if (Eln.wailaEasyMode) {
-            info.put("Efficency", Utils.plotPercent("", efficiency.toDouble()))
-            info.put("Fuel usage", Utils.plotBuckets("", fluidRate / 1000.0) + "/s")
+            info["Efficiency"] = Utils.plotPercent(efficiency.toDouble())
+            info["Fuel usage"] = Utils.plotBuckets(fluidRate / 1000.0) + "/s"
         }
         return info
     }
 
     override fun networkSerialize(stream: DataOutputStream) {
         super.networkSerialize(stream)
-        stream.writeFloat(volume)
+        stream.writeDouble(volume)
     }
 }
 
@@ -208,6 +208,6 @@ class TurbineRender(entity: TransparentNodeEntity, desc: TransparentNodeDescript
 
     override fun networkUnserialize(stream: DataInputStream) {
         super.networkUnserialize(stream)
-        volumeSetting.target = stream.readFloat()
+        volumeSetting.target = stream.readDouble()
     }
 }

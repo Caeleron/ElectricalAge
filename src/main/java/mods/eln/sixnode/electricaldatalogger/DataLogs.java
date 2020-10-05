@@ -178,8 +178,8 @@ public class DataLogs implements INBTTReady {
         fontrenderer.drawString(textHeader + " " + getYstring(0.5f, maxValue, minValue, unitType), (int) (margeX / scale), (int) ((margeY / 2 - 0.05f) / scale), 0);
         fontrenderer.drawString(textHeader + " " + getYstring(0.0f, maxValue, minValue, unitType), (int) (margeX / scale), (int) ((margeY - 0.08f) / scale), 0);
 
-        fontrenderer.drawString(textHeader + Utils.plotTime(size * samplingPeriod), (int) (0f / scale), (int) ((margeY + 0.03) / scale), 0);
-        fontrenderer.drawString(textHeader + Utils.plotTime(0), (int) ((margeX - 0.05) / scale), (int) ((margeY + 0.03) / scale), 0);
+        fontrenderer.drawString(textHeader + Utils.plotTime(size * samplingPeriod, ""), (int) (0f / scale), (int) ((margeY + 0.03) / scale), 0);
+        fontrenderer.drawString(textHeader + Utils.plotTime(0, ""), (int) ((margeX - 0.05) / scale), (int) ((margeY + 0.03) / scale), 0);
         //fontrenderer.drawString("Time", (int)(0.5f / scale), (int)(0.8f / scale), 0);
         GL11.glPopMatrix();
         //startT = System.nanoTime() - startT;
@@ -191,22 +191,22 @@ public class DataLogs implements INBTTReady {
 
         switch (unitType) {
             case celsiusType:
-                str = Utils.plotCelsius("", factor * (maxValue - minValue) + minValue - PhysicalConstant.Tamb);
+                str = Utils.plotCelsius(factor * (maxValue - minValue) + minValue - PhysicalConstant.Tamb, "");
                 break;
             case voltageType:
-                str = Utils.plotVolt("", factor * (maxValue - minValue) + minValue);
+                str = Utils.plotVolt(factor * (maxValue - minValue) + minValue, "");
                 break;
             case currentType:
-                str = Utils.plotAmpere("", factor * (maxValue - minValue) + minValue);
+                str = Utils.plotAmpere(factor * (maxValue - minValue) + minValue, "");
                 break;
             case powerType:
-                str = Utils.plotPower("", factor * (maxValue - minValue) + minValue);
+                str = Utils.plotPower(factor * (maxValue - minValue) + minValue, "");
                 break;
             case percentType:
-                str = Utils.plotPercent("", (factor * (maxValue - minValue) + minValue) * 0.01);
+                str = Utils.plotPercent((factor * (maxValue - minValue) + minValue) * 0.01, "");
                 break;
             case energyType:
-                str = Utils.plotEnergy("", (factor * (maxValue - minValue) + minValue));
+                str = Utils.plotEnergy((factor * (maxValue - minValue) + minValue), "");
                 break;
             case noType:
                 str = "" + (factor * (maxValue - minValue) + minValue);

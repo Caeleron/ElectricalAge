@@ -42,7 +42,7 @@ class GhostNodeWailaResponsePacket(var coord: Coordonate = Coordonate(0, 0, 0, 0
         realCoord.read(buf)
         itemStack = ByteBufUtils.readItemStack(buf)
         type = buf?.readByte() ?: UNKNOWN_TYPE
-        realSide = Direction.fromInt(buf?.readInt() ?: 0)
+        realSide = Direction.fromInt(buf?.readInt() ?: 0)!!
     }
 
     override fun toBytes(buf: ByteBuf?) {

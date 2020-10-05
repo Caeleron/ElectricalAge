@@ -91,7 +91,7 @@ public class ConfigCopyToolDescriptor extends GenericItemUsingDamageDescriptor {
         if(stack != null) {
             compound.setInteger(name + "Amt", stack.stackSize);
         }
-        GenericItemBlockUsingDamageDescriptor desc = GenericItemBlockUsingDamageDescriptor.getDescriptor(stack);
+        GenericItemBlockUsingDamageDescriptor desc = GenericItemBlockUsingDamageDescriptor.Companion.getDescriptor(stack);
         if(desc != null) {
             compound.setInteger(name + "Type", desc.parentItemDamage);
         } else {

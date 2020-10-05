@@ -4,9 +4,8 @@ import mods.eln.Eln;
 import mods.eln.misc.Direction;
 import mods.eln.misc.LRDU;
 import mods.eln.misc.Obj3D;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTier;
-import mods.eln.misc.series.ISerie;
+import mods.eln.misc.series.ISeriesMapping;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -27,13 +26,13 @@ public class ResistorDescriptor extends SixNodeDescriptor {
     public double thermalConductivityTao = Eln.cableThermalConductionTao;
     public double tempCoef;
     Obj3D.Obj3DPart ResistorBaseExtension, ResistorCore, ResistorTrack, ResistorWiper, Base, Cables;
-    ISerie series;
+    ISeriesMapping series;
     private Obj3D obj;
 
 
     public ResistorDescriptor(String name,
                               Obj3D obj,
-                              ISerie series,
+                              ISeriesMapping series,
                               double tempCoef,
                               boolean isRheostat) {
         super(name, ResistorElement.class, ResistorRender.class);

@@ -93,9 +93,8 @@ class FuelGeneratorDescriptor(name: String, internal val obj: Obj3D?, internal v
         }
     }
 
-    override fun addInformation(itemStack: ItemStack, entityPlayer: EntityPlayer,
-                                list: MutableList<String>, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
 
         list.add(tr("Produces electricity using gasoline."))
         list.add("  " + tr("Nominal voltage: %1$ V", Utils.plotValue(cable.electricalNominalVoltage)))
@@ -140,9 +139,9 @@ class FuelGeneratorElement(transparentNode: TransparentNode, descriptor_: Transp
         else -> 0
     }
 
-    override fun multiMeterString(side: Direction) = Utils.plotVolt("U+:", positiveLoad.u) +
-        Utils.plotAmpere("I+:", positiveLoad.current) +
-        Utils.plotPercent("Fuel level:", tankLevel)
+    override fun multiMeterString(side: Direction) = Utils.plotVolt(positiveLoad.u) +
+        Utils.plotAmpere(positiveLoad.current) +
+        Utils.plotPercent(tankLevel,"Fuel level:")
 
 
     override fun thermoMeterString(side: Direction): String? = null
@@ -158,7 +157,7 @@ class FuelGeneratorElement(transparentNode: TransparentNode, descriptor_: Transp
         super.networkSerialize(stream)
         node.lrduCubeMask.getTranslate(Direction.YN).serialize(stream)
         stream.writeBoolean(on)
-        stream.writeFloat((positiveLoad.u / descriptor.maxVoltage).toFloat())
+        stream.writeDouble(positiveLoad.u / descriptor.maxVoltage)
     }
 
     override fun onBlockActivated(player: EntityPlayer?, side: Direction?, vx: Float, vy: Float, vz: Float): Boolean {
@@ -216,10 +215,10 @@ class FuelGeneratorElement(transparentNode: TransparentNode, descriptor_: Transp
     }
 
     override fun getWaila(): Map<String, String> = mutableMapOf(
-        Pair(I18N.tr("State"), if (on) I18N.tr("ON") else I18N.tr("OFF")),
-        Pair(I18N.tr("Fuel level"), Utils.plotPercent("", tankLevel)),
-        Pair(I18N.tr("Generated power"), Utils.plotPower("", powerSource.effectiveP)),
-        Pair(I18N.tr("Voltage"), Utils.plotVolt("", powerSource.u))
+        Pair(tr("State"), if (on) tr("ON") else tr("OFF")),
+        Pair(tr("Fuel level"), Utils.plotPercent(tankLevel)),
+        Pair(tr("Generated power"), Utils.plotPower(powerSource.effectiveP)),
+        Pair(tr("Voltage"), Utils.plotVolt(powerSource.u))
     )
 }
 
@@ -229,10 +228,10 @@ class FuelGeneratorRender(tileEntity: TransparentNodeEntity, descriptor: Transpa
     private var renderPreProcess: CableRenderType? = null
     private val eConn = LRDUMask()
     private var on = false
-    private var voltageRatio = SlewLimiter(1f)
+    private var voltageRatio = SlewLimiter(1.0)
     private val sound = object : LoopedSound("eln:FuelGenerator", coordonate(), ISound.AttenuationType.LINEAR) {
         override fun getVolume() = if (on) 0.2f else 0f
-        override fun getPitch() = 0.75f + 1f * voltageRatio.position
+        override fun getPitch() = 0.75f + 1f * voltageRatio.position.toFloat()
     }
 
     init {
@@ -252,7 +251,7 @@ class FuelGeneratorRender(tileEntity: TransparentNodeEntity, descriptor: Transpa
         super.networkUnserialize(stream)
         eConn.deserialize(stream)
         val on_ = stream.readBoolean()
-        voltageRatio.target = stream.readFloat()
+        voltageRatio.target = stream.readDouble()
         if (on_ != on) {
             voltageRatio.position = voltageRatio.target
         }
@@ -260,7 +259,7 @@ class FuelGeneratorRender(tileEntity: TransparentNodeEntity, descriptor: Transpa
         renderPreProcess = null
     }
 
-    override fun refresh(deltaT: Float) {
+    override fun refresh(deltaT: Double) {
         super.refresh(deltaT)
         voltageRatio.step(deltaT)
     }

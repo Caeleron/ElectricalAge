@@ -92,14 +92,14 @@ public class ElectricalRedstoneOutputElement extends SixNodeElement {
 
     @Override
     public String multiMeterString() {
-        return Utils.plotVolt("U:", inputGate.getU()) + Utils.plotAmpere("I:", inputGate.getCurrent());
+        return Utils.plotVolt(inputGate.getU(), "") + Utils.plotAmpere(inputGate.getCurrent(), "");
     }
 
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
         info.put(I18N.tr("Redstone value"), Utils.plotValue(redstoneValue));
-        info.put(I18N.tr("Input voltage"), Utils.plotVolt("", inputGate.getU()));
+        info.put(I18N.tr("Input voltage"), Utils.plotVolt(inputGate.getU(), ""));
         return info;
     }
 

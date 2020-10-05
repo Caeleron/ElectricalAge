@@ -30,7 +30,6 @@ public abstract class SimpleNodeEntity extends TileEntity implements INodeEntity
             Utils.fatal();
             return null;
         }
-        if (this.worldObj == null) return null;
         if (node == null) {
             node = (SimpleNode) NodeManager.instance.getNodeFromCoordonate(new Coordonate(xCoord, yCoord, zCoord, this.worldObj));
             if (node == null) {

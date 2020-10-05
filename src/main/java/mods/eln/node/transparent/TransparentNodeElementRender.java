@@ -254,7 +254,7 @@ public abstract class TransparentNodeElementRender {
         s.play();
     }
 
-    private LoopedSoundManager loopedSoundManager = new LoopedSoundManager();
+    private final LoopedSoundManager loopedSoundManager = new LoopedSoundManager();
 
     @SideOnly(Side.CLIENT)
     protected void addLoopedSound(final LoopedSound loopedSound) {
@@ -268,7 +268,7 @@ public abstract class TransparentNodeElementRender {
         loopedSoundManager.dispose();
     }
 
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         loopedSoundManager.process(deltaT);
     }
 }

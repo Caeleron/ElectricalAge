@@ -105,9 +105,9 @@ class JointHubElement(node: TransparentNode, desc_: TransparentNodeDescriptor) :
     }
 
     override fun getWaila(): Map<String, String> {
-        var info = mutableMapOf<String, String>()
-        info.put("Speed", Utils.plotRads("", shaft.rads))
-        info.put("Energy", Utils.plotEnergy("", shaft.energy))
+        val info = mutableMapOf<String, String>()
+        info["Speed"] = Utils.plotRads(shaft.rads)
+        info["Energy"] = Utils.plotEnergy(shaft.energy)
         return info
     }
 }

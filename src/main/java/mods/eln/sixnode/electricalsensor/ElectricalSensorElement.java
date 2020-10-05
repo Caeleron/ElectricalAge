@@ -154,25 +154,25 @@ public class ElectricalSensorElement extends SixNodeElement implements IConfigur
         if (!descriptor.voltageOnly)
             return Utils.plotUIP(aLoad.getU(), aLoad.getCurrent());
         else
-            return Utils.plotVolt("Uin:", aLoad.getU()) + Utils.plotVolt("Uout:", outputGate.getU());
+            return Utils.plotVolt(aLoad.getU(), "Uin:") + Utils.plotVolt(outputGate.getU(), "Uout:");
     }
 
     @Override
     public Map<String, String> getWaila() {
         Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Output voltage"), Utils.plotVolt("", outputGate.getU()));
+        info.put(I18N.tr("Output voltage"), Utils.plotVolt(outputGate.getU(), ""));
         if (Eln.wailaEasyMode) {
             switch (typeOfSensor) {
                 case voltageType:
-                    info.put(I18N.tr("Measured voltage"), Utils.plotVolt("", aLoad.getU()));
+                    info.put(I18N.tr("Measured voltage"), Utils.plotVolt(aLoad.getU(), ""));
                     break;
 
                 case currantType:
-                    info.put(I18N.tr("Measured current"), Utils.plotAmpere("", aLoad.getI()));
+                    info.put(I18N.tr("Measured current"), Utils.plotAmpere(aLoad.getI(), ""));
                     break;
 
                 case powerType:
-                    info.put(I18N.tr("Measured power"), Utils.plotPower("", aLoad.getU() * aLoad.getI()));
+                    info.put(I18N.tr("Measured power"), Utils.plotPower(aLoad.getU() * aLoad.getI(), ""));
                     break;
             }
         }

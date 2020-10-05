@@ -44,7 +44,7 @@ public class ElectricalEntitySensorRender extends SixNodeElementRender {
         super.publishUnserialize(stream);
         try {
             state = stream.readBoolean();
-            ItemStack filterStack = Utils.unserialiseItemStack(stream);
+            ItemStack filterStack = Utils.unserializeItemStack(stream);
             filter = (EntitySensorFilterDescriptor) EntitySensorFilterDescriptor.getDescriptor(filterStack);
         } catch (IOException e) {
             e.printStackTrace();

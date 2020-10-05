@@ -2,12 +2,12 @@ package mods.eln.transparentnode.electricalfurnace;
 
 import mods.eln.Eln;
 import mods.eln.misc.IFunction;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTier;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.ThermalLoad;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.List;
@@ -60,8 +60,8 @@ public class ElectricalFurnaceDescriptor extends TransparentNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List list) {
+        super.addInfo(itemStack, entityPlayer, list);
         Collections.addAll(list, tr("Similar to a vanilla furnace,\nbut heats with electricity.").split("\n"));
     }
 }

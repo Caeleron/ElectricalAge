@@ -19,7 +19,7 @@ class ElectricalPoleRender(entity: TransparentNodeEntity, descriptor: Transparen
     internal var eConn = LRDUMask()
 
     private val descriptor: ElectricalPoleDescriptor
-    private val load = SlewLimiter(0.5f)
+    private val load = SlewLimiter(0.5)
 
     init {
         this.descriptor = descriptor as ElectricalPoleDescriptor
@@ -28,7 +28,7 @@ class ElectricalPoleRender(entity: TransparentNodeEntity, descriptor: Transparen
             addLoopedSound(object : LoopedSound("eln:Transformer", coordonate(), ISound.AttenuationType.LINEAR) {
                 override fun getVolume(): Float {
                     if (load.position > this@ElectricalPoleRender.descriptor.minimalLoadToHum)
-                        return 0.05f * (load.position - this@ElectricalPoleRender.descriptor.minimalLoadToHum) / (1 - this@ElectricalPoleRender.descriptor.minimalLoadToHum)
+                        return (0.05 * (load.position - this@ElectricalPoleRender.descriptor.minimalLoadToHum) / (1 - this@ElectricalPoleRender.descriptor.minimalLoadToHum)).toFloat()
                     else
                         return 0f
                 }
@@ -46,14 +46,14 @@ class ElectricalPoleRender(entity: TransparentNodeEntity, descriptor: Transparen
         eConn.deserialize(stream)
         cableRenderType = null
         try {
-            load.target = stream.readFloat()
+            load.target = stream.readDouble()
         } catch (e: IOException) {
             e.printStackTrace()
         }
 
     }
 
-    override fun refresh(deltaT: Float) {
+    override fun refresh(deltaT: Double) {
         super.refresh(deltaT)
         load.step(deltaT)
     }

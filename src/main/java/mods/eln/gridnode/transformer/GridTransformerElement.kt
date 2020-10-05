@@ -117,18 +117,13 @@ class GridTransformerElement(node: TransparentNode, descriptor: TransparentNodeD
     override fun getThermalLoad(side: Direction, lrdu: LRDU) = thermalLoad
 
     override fun multiMeterString(side: Direction): String {
-        if (side == front.up())
-            return Utils.plotVolt("UP+:", primaryLoad.u) + Utils.plotAmpere("IP+:", primaryLoad.current)
-        if (side == front.left())
-            return Utils.plotVolt("US+:", secondaryLoad.u) + Utils.plotAmpere("IS+:", secondaryLoad.current)
-
-        return (Utils.plotVolt("UP+:", primaryLoad.u) + Utils.plotAmpere("IP+:", primaryLoad.current)
-            + Utils.plotVolt("  US+:", secondaryLoad.u) + Utils.plotAmpere("IS+:", secondaryLoad.current))
+        return (Utils.plotVolt(primaryLoad.u, "Primary Voltage:") + Utils.plotAmpere(primaryLoad.current, "Primary Current:")
+            + Utils.plotVolt(secondaryLoad.u, "Secondary Voltage:") + Utils.plotAmpere(secondaryLoad.current, "Secondary Current:"))
     }
 
     override fun networkSerialize(stream: DataOutputStream) {
         super.networkSerialize(stream)
-        stream.writeFloat((secondaryLoad.current / maxCurrent).toFloat())
+        stream.writeDouble(secondaryLoad.current / maxCurrent)
     }
 
     override fun getLightOpacity(): Float {

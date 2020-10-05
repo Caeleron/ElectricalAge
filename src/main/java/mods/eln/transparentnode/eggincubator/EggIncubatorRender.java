@@ -53,7 +53,7 @@ public class EggIncubatorRender extends TransparentNodeElementRender {
     }
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         alpha += deltaT * 60;
         if (alpha >= 360) alpha -= 360;
     }

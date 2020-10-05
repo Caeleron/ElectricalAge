@@ -39,8 +39,8 @@ class ScannerDescriptor(name: String, obj: Obj3D) : SixNodeDescriptor(name, Scan
         leds[mode.value.toInt()].draw()
     }
 
-    override fun addInformation(itemStack: ItemStack?, entityPlayer: EntityPlayer?, list: MutableList<String>, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
         list.add(tr("Scans blocks to produce signals."))
         list.add(tr("- For tanks, outputs fill percentage."))
         // This string sucks. I can't use the normal Java method to fix this problem. TODO: fix this so that it is readable on windowed games.
@@ -160,7 +160,7 @@ class ScannerElement(sixNode: SixNode, side: Direction, descriptor: SixNodeDescr
     }
 
     override fun multiMeterString(): String {
-        return "Mode: ${tr(mode.name.toLowerCase().capitalize())}, Value: ${Utils.plotPercent("", outputProcess.outputNormalized)}"
+        return "Mode: ${tr(mode.name.toLowerCase().capitalize())}, Value: ${Utils.plotPercent(outputProcess.outputNormalized)}"
     }
 
     override fun thermoMeterString() = ""

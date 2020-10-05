@@ -3,10 +3,9 @@ package mods.eln.transparentnode
 import mods.eln.gui.GuiContainerEln
 import mods.eln.gui.GuiHelperContainer
 import mods.eln.gui.HelperStdContainer
-import mods.eln.i18n.I18N
 import mods.eln.i18n.I18N.tr
 import mods.eln.misc.*
-import mods.eln.misc.series.SerieEE
+import mods.eln.misc.series.SeriesMap
 import mods.eln.node.NodeBase
 import mods.eln.node.transparent.*
 import mods.eln.sim.ElectricalLoad
@@ -34,21 +33,19 @@ import java.io.DataOutputStream
 
 // TODO: Make the whole thing brighter when it heats up, not just redder.
 
-class LargeRheostatDescriptor(name: String, val dissipator: ThermalDissipatorPassiveDescriptor, val cable: GenericCableDescriptor, val series: SerieEE) :
+class LargeRheostatDescriptor(name: String, val dissipator: ThermalDissipatorPassiveDescriptor, val cable: GenericCableDescriptor, val series: SeriesMap) :
     TransparentNodeDescriptor(name, LargeRheostatElement::class.java, LargeRheostatRender::class.java) {
 
     init {
         voltageTier = VoltageTier.NEUTRAL
     }
 
-    override fun addInformation(itemStack: ItemStack?, entityPlayer: EntityPlayer?, list: MutableList<String>?, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
-        if (list != null) {
-            // TODO: Substantiate this with some data
-            list.add(tr("Set resistance with coal dust"))
-            list.add(tr("Control resistance with signal"))
-            list.add(tr("Dissapates ~4kW of heat passively"))
-        }
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
+        // TODO: Substantiate this with some data
+        list.add(tr("Set resistance with coal dust"))
+        list.add(tr("Control resistance with signal"))
+        list.add(tr("Dissapates ~4kW of heat passively"))
 
     }
 
@@ -165,11 +162,11 @@ class LargeRheostatElement(node: TransparentNode, desc_: TransparentNodeDescript
     override fun multiMeterString(side: Direction): String {
         val u = -Math.abs(aLoad.u - bLoad.u)
         val i = Math.abs(resistor.i)
-        return Utils.plotOhm(Utils.plotUIP(u, i), resistor.r) + Utils.plotPercent("C", control.normalized)
+        return Utils.plotOhm(resistor.r, Utils.plotUIP(u, i)) + Utils.plotPercent(control.normalized, "Control Signal:")
     }
 
     override fun thermoMeterString(side: Direction) =
-        Utils.plotCelsius("T: ", thermalLoad.Tc) + Utils.plotPower("P: ", thermalLoad.power)
+        Utils.plotCelsius(thermalLoad.Tc) + Utils.plotPower(thermalLoad.power, "Thermal Power:")
 
     override fun initialize() {
         desc.dissipator.applyTo(thermalLoad)
@@ -181,8 +178,8 @@ class LargeRheostatElement(node: TransparentNode, desc_: TransparentNodeDescript
 
     override fun networkSerialize(stream: DataOutputStream) {
         super.networkSerialize(stream)
-        stream.writeFloat(thermalLoad.Tc.toFloat())
-        stream.writeFloat(control.normalized.toFloat())
+        stream.writeDouble(thermalLoad.Tc)
+        stream.writeDouble(control.normalized)
     }
 
     override fun hasGui() = true
@@ -191,9 +188,9 @@ class LargeRheostatElement(node: TransparentNode, desc_: TransparentNodeDescript
     override fun newContainer(side: Direction?, player: EntityPlayer?) = ResistorContainer(player, inventory)
 
     override fun getWaila(): Map<String, String> = mutableMapOf(
-        Pair(I18N.tr("Resistance"), Utils.plotOhm("", resistor.r)),
-        Pair(I18N.tr("Temperature"), Utils.plotCelsius("", thermalLoad.t)),
-        Pair(I18N.tr("Power loss"), Utils.plotPower("", resistor.p))
+        Pair(tr("Resistance"), Utils.plotOhm(resistor.r)),
+        Pair(tr("Temperature"), Utils.plotCelsius(thermalLoad.t)),
+        Pair(tr("Power loss"), Utils.plotPower(resistor.p))
     )
 }
 
@@ -208,10 +205,10 @@ class LargeRheostatRender(entity: TransparentNodeEntity, desc: TransparentNodeDe
 
     val baseColor = BlackBodyColor(1f, 1f, 1f)
     var color = BlackBodyTemperature(0f)
-    val positionAnimator = SlewLimiter(0.3f)
+    val positionAnimator = SlewLimiter(0.3)
 
     init {
-        positionAnimator.target = -1f
+        positionAnimator.target = -1.0
     }
 
     override fun draw() {
@@ -219,10 +216,10 @@ class LargeRheostatRender(entity: TransparentNodeEntity, desc: TransparentNodeDe
         // TODO: Get this thing *really* glowing.
         // glColor doesn't let me exceed 1.0, the way I'd quite like to do.
         GL11.glColor3f(color.red, color.green, color.blue)
-        desc.draw(positionAnimator.position)
+        desc.draw(positionAnimator.position.toFloat())
     }
 
-    override fun refresh(deltaT: Float) {
+    override fun refresh(deltaT: Double) {
         super.refresh(deltaT)
         positionAnimator.step(deltaT)
     }
@@ -235,11 +232,11 @@ class LargeRheostatRender(entity: TransparentNodeEntity, desc: TransparentNodeDe
         var bbc = c * (p / desc.dissipator.nominalP.toFloat())
         color = (bbc + baseColor).normalize()
 
-        if (positionAnimator.target == -1f) {
-            positionAnimator.target = stream.readFloat()
+        if (positionAnimator.target == -1.0) {
+            positionAnimator.target = stream.readDouble()
             positionAnimator.position = positionAnimator.target
         } else {
-            positionAnimator.target = stream.readFloat()
+            positionAnimator.target = stream.readDouble()
         }
     }
 
@@ -253,7 +250,7 @@ class LargeRheostatGUI(player: EntityPlayer, inventory: IInventory, internal var
     GuiContainerEln(ResistorContainer(player, inventory)) {
 
     override fun postDraw(f: Float, x: Int, y: Int) {
-        helper.drawString(8, 12, -16777216, tr("Nom. Resistance: %1$", Utils.plotValue(render.desc.getRsValue(render.inventory), "Ohm")))
+        helper.drawString(8, 12, -16777216, tr("Nom. Resistance: %1$", Utils.plotValue(value = render.desc.getRsValue(render.inventory), unit = "Ohm")))
         super.postDraw(f, x, y)
     }
 

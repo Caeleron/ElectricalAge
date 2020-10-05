@@ -1,10 +1,9 @@
 package mods.eln.transparentnode.powercapacitor;
 
-import mods.eln.Eln;
 import mods.eln.item.DielectricItem;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.VoltageTier;
-import mods.eln.misc.series.ISerie;
+import mods.eln.misc.series.ISeriesMapping;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -14,10 +13,10 @@ public class PowerCapacitorDescriptor extends TransparentNodeDescriptor {
     private Obj3D obj;
 
     public PowerCapacitorDescriptor(
-        String name,
-        Obj3D obj,
-        ISerie serie,
-        double dischargeTao
+            String name,
+            Obj3D obj,
+            ISeriesMapping serie,
+            double dischargeTao
 
     ) {
         super(name, PowerCapacitorElement.class, PowerCapacitorRender.class);
@@ -30,7 +29,7 @@ public class PowerCapacitorDescriptor extends TransparentNodeDescriptor {
 
     }
 
-    ISerie serie;
+    ISeriesMapping serie;
     public double dischargeTao;
 
     public double getCValue(int cableCount, double nominalDielVoltage) {

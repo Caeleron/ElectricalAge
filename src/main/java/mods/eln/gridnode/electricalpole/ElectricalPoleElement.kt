@@ -122,8 +122,8 @@ class ElectricalPoleElement(node: TransparentNode, descriptor: TransparentNodeDe
 
     override fun multiMeterString(side: Direction): String {
         if (trafo != null) {
-            return (Utils.plotVolt("GridU:", electricalLoad.u) + Utils.plotAmpere("GridP:", electricalLoad.current)
-                + Utils.plotVolt("  GroundU:", trafo.secondaryLoad.u) + Utils.plotAmpere("GroundP:", trafo.secondaryLoad.current))
+            return (Utils.plotVolt(electricalLoad.u, "GridU:") + Utils.plotAmpere(electricalLoad.current, "GridP:")
+                + Utils.plotVolt(trafo.secondaryLoad.u, "GroundU:") + Utils.plotAmpere(trafo.secondaryLoad.current, "GroundP:"))
         } else {
             return super.multiMeterString(side)
         }
@@ -163,9 +163,9 @@ class ElectricalPoleElement(node: TransparentNode, descriptor: TransparentNodeDe
         node.lrduCubeMask.getTranslate(front.down()).serialize(stream)
         try {
             if (trafo != null && secondaryMaxCurrent != 0f) {
-                stream.writeFloat((trafo.secondaryLoad.i / secondaryMaxCurrent).toFloat())
+                stream.writeDouble((trafo.secondaryLoad.i / secondaryMaxCurrent))
             } else {
-                stream.writeFloat(0f)
+                stream.writeDouble(0.0)
             }
         } catch (e: IOException) {
             e.printStackTrace()

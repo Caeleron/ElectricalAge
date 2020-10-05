@@ -50,7 +50,7 @@ public class HeatFurnaceContainer extends BasicContainer implements INodeContain
         filters[0] = new IItemStackFilter() {
             @Override
             public boolean tryItemStack(ItemStack itemStack) {
-                return Utils.getItemEnergie(itemStack) > 0;
+                return Utils.getItemEnergy(itemStack) > 0;
             }
         };
         return filters;

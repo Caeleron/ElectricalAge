@@ -8,7 +8,7 @@ import mods.eln.misc.Direction
 import mods.eln.misc.FunctionTableYProtect
 import mods.eln.misc.IFunction
 import mods.eln.misc.VoltageTier
-import mods.eln.misc.series.SerieEE
+import mods.eln.misc.series.SeriesMap
 import mods.eln.node.six.SixNodeDescriptor
 import mods.eln.sixnode.Amplifier
 import mods.eln.sixnode.AmplifierElement
@@ -672,35 +672,35 @@ class SixNodeRegistry {
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Power Capacitor")
                 val desc = PowerCapacitorSixDescriptor(
-                    name, Eln.obj.getObj("PowerElectricPrimitives"), SerieEE.newE6(-1.0), (60 * 2000).toDouble()
+                    name, Eln.obj.getObj("PowerElectricPrimitives"), SeriesMap.newE6(-1.0), (60 * 2000).toDouble()
                 )
                 registerSixNode(id, 4, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Power Inductor")
                 val desc = PowerInductorSixDescriptor(
-                    name, Eln.obj.getObj("PowerElectricPrimitives"), SerieEE.newE6(-1.0)
+                    name, Eln.obj.getObj("PowerElectricPrimitives"), SeriesMap.newE6(-1.0)
                 )
                 registerSixNode(id, 5, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Power Resistor")
                 val desc = ResistorDescriptor(
-                    name, Eln.obj.getObj("PowerElectricPrimitives"), SerieEE.newE12(-2.0), 0.0, false
+                    name, Eln.obj.getObj("PowerElectricPrimitives"), SeriesMap.newE12(-2.0), 0.0, false
                 )
                 registerSixNode(id, 6, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Rheostat")
                 val desc = ResistorDescriptor(
-                    name, Eln.obj.getObj("PowerElectricPrimitives"), SerieEE.newE12(-2.0), 0.0, true
+                    name, Eln.obj.getObj("PowerElectricPrimitives"), SeriesMap.newE12(-2.0), 0.0, true
                 )
                 registerSixNode(id, 7, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Thermistor")
                 val desc = ResistorDescriptor(
-                    name, Eln.obj.getObj("PowerElectricPrimitives"), SerieEE.newE12(-2.0), -0.01, false
+                    name, Eln.obj.getObj("PowerElectricPrimitives"), SeriesMap.newE12(-2.0), -0.01, false
                 )
                 registerSixNode(id, 8, desc)
             }

@@ -28,7 +28,7 @@ public class ThermalDissipatorActiveRender extends TransparentNodeElementRender 
     }
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         rc.setTarget(powerFactor);
         rc.step(deltaT);
         alpha += rc.get() * 360f * deltaT;

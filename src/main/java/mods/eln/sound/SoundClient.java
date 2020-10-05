@@ -23,12 +23,12 @@ public class SoundClient {
             distanceFactor = (float) ((p.rangeMax - distance) / (p.rangeMax - p.rangeNominal));
         }
 
-        float blockFactor = Utils.traceRay(p.world, player.posX, player.posY, player.posZ, p.x, p.y, p.z, new Utils.TraceRayWeightOpaque()) * p.blockFactor;
+        double blockFactor = Utils.traceRay(p.world, player.posX, player.posY, player.posZ, p.x, p.y, p.z, new Utils.TraceRayWeightOpaque()) * p.blockFactor;
 
         int trackCount = SoundLoader.getTrackCount(p.track);
 
         if (trackCount == 1) {
-            float temp = 1.0f / (1 + blockFactor);
+            float temp = 1.0f / (1 + (float)blockFactor);
             p.volume *= Math.pow(temp, 2);
             p.volume *= distanceFactor;
             if (p.volume <= 0) return;
@@ -38,10 +38,9 @@ public class SoundClient {
             for (int idx = 0; idx < trackCount; idx++) {
                 float bandVolume = p.volume;
                 bandVolume *= distanceFactor;
-                float normalizedBlockFactor = blockFactor;
 
-                bandVolume -= ((trackCount - 1 - idx) / (trackCount - 1f) + 0.2) * normalizedBlockFactor;
-                Utils.print(bandVolume + " ");
+                bandVolume -= ((trackCount - 1 - idx) / (trackCount - 1f) + 0.2) * (float)blockFactor;
+                Utils.println(bandVolume + " ");
                 p.world.playSound(player.posX + 2 * (p.x - player.posX) / distance, player.posY + 2 * (p.y - player.posY) / distance, player.posZ + 2 * (p.z - player.posZ) / distance, p.track + "_" + idx + "x", bandVolume, p.pitch, false);
             }
             Utils.println("");

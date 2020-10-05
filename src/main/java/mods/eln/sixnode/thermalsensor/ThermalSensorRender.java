@@ -64,8 +64,8 @@ public class ThermalSensorRender extends SixNodeElementRender {
             typeOfSensor = b & 0x3;
             lowValue = (float) (stream.readFloat() + PhysicalConstant.Tamb);
             highValue = (float) (stream.readFloat() + PhysicalConstant.Tamb);
-            ItemStack stack = Utils.unserialiseItemStack(stream);
-            GenericItemBlockUsingDamageDescriptor desc = ThermalCableDescriptor.getDescriptor(stack);
+            ItemStack stack = Utils.unserializeItemStack(stream);
+            GenericItemBlockUsingDamageDescriptor desc = GenericItemBlockUsingDamageDescriptor.Companion.getDescriptor(stack);
             if (desc instanceof ThermalCableDescriptor) cable = (ThermalCableDescriptor) desc;
             else cable = null;
             if (desc instanceof GenericCableDescriptor) ecable = (GenericCableDescriptor) desc;

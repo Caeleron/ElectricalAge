@@ -73,7 +73,7 @@ public class TurretElement extends TransparentNodeElement implements IConfigurab
         return descriptor;
     }
 
-    public float getTurretAngle() {
+    public double getTurretAngle() {
         return simulation.getTurretAngle();
     }
 
@@ -81,7 +81,7 @@ public class TurretElement extends TransparentNodeElement implements IConfigurab
         if (simulation.setTurretAngle(angle)) needPublish();
     }
 
-    public float getGunPosition() {
+    public double getGunPosition() {
         return simulation.getGunPosition();
     }
 
@@ -160,15 +160,15 @@ public class TurretElement extends TransparentNodeElement implements IConfigurab
     public void networkSerialize(DataOutputStream stream) {
         super.networkSerialize(stream);
         try {
-            stream.writeFloat(simulation.getTurretTargetAngle());
-            stream.writeFloat(simulation.getGunTargetPosition());
-            stream.writeFloat(simulation.getGunTargetElevation());
+            stream.writeDouble(simulation.getTurretTargetAngle());
+            stream.writeDouble(simulation.getGunTargetPosition());
+            stream.writeDouble(simulation.getGunTargetElevation());
             stream.writeBoolean(simulation.inSeekMode());
             stream.writeBoolean(simulation.isShooting());
             stream.writeBoolean(simulation.isEnabled());
             Utils.serialiseItemStack(stream, acceptingInventory.getInventory().getStackInSlot(TurretContainer.filterId));
             stream.writeBoolean(filterIsSpare);
-            stream.writeFloat((float) chargePower);
+            stream.writeDouble(chargePower);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -236,13 +236,13 @@ public class TurretElement extends TransparentNodeElement implements IConfigurab
 
     @Override
     public Map<String, String> getWaila() {
-        Map<String, String> info = new HashMap<String, String>();
-        info.put(I18N.tr("Charge power"), Utils.plotPower("", chargePower));
+        Map<String, String> info = new HashMap<>();
+        info.put(I18N.tr("Charge power"), Utils.plotPower(chargePower, ""));
 
         ItemStack filterStack = acceptingInventory.getInventory().getStackInSlot(TurretContainer.filterId);
         if (filterStack != null) {
             GenericItemUsingDamageDescriptor gen = EntitySensorFilterDescriptor.getDescriptor(filterStack);
-            if (gen != null && gen instanceof EntitySensorFilterDescriptor) {
+            if (gen instanceof EntitySensorFilterDescriptor) {
                 EntitySensorFilterDescriptor filter = (EntitySensorFilterDescriptor) gen;
                 String target = I18N.tr("Shoot ");
                 if (filterIsSpare) {
@@ -269,7 +269,7 @@ public class TurretElement extends TransparentNodeElement implements IConfigurab
 
         if (Eln.wailaEasyMode) {
             info.put(I18N.tr("Charge level"),
-                Utils.plotPercent("", energyBuffer / descriptor.getProperties().impulseEnergy));
+                Utils.plotPercent(energyBuffer / descriptor.getProperties().impulseEnergy, ""));
         }
         return info;
     }

@@ -30,7 +30,7 @@ import java.io.DataInputStream
 import java.io.DataOutputStream
 
 class MotorDescriptor(
-    val name: String,
+    name: String,
     obj: Obj3D,
     cable: GenericCableDescriptor,
     nominalRads: Float,
@@ -77,16 +77,17 @@ class MotorDescriptor(
 
     init {
         thermalLoadInitializer.setMaximalPower(nominalP.toDouble())
-        voltageTier = VoltageTier.INDUSTRIAL;
+        voltageTier = VoltageTier.INDUSTRIAL
+        this.name = name
     }
 
-    override fun addInformation(stack: ItemStack, player: EntityPlayer, list: MutableList<String>, par4: Boolean) {
+    override fun addInfo(stack: ItemStack, player: EntityPlayer, list: MutableList<String>) {
         list.add("Converts electricity into mechanical energy, or (badly) vice versa.")
         list.add("Nominal usage ->")
-        list.add(Utils.plotVolt("  Voltage in: ", nominalU.toDouble()))
-        list.add(Utils.plotPower("  Power in: ", nominalP.toDouble()))
-        list.add(Utils.plotRads("  rad/s: ", nominalRads.toDouble()))
-        list.add(Utils.plotRads("Max rad/s: ", absoluteMaximumShaftSpeed))
+        list.add(Utils.plotVolt(nominalU.toDouble(), "Nominal Voltage:"))
+        list.add(Utils.plotPower(nominalP.toDouble(), "Nominal Power:"))
+        list.add(Utils.plotRads(nominalRads.toDouble(), "Nominal Speed:"))
+        list.add(Utils.plotRads(absoluteMaximumShaftSpeed, "Absolute Maximum Speed:"))
     }
 }
 
@@ -118,7 +119,7 @@ class MotorRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescripto
     inner class MotorLoopedSound(sound: String, coord: Coordonate) :
         LoopedSound(sound, coord) {
         override fun getPitch() = Math.max(0.05, rads / desc.nominalRads).toFloat()
-        override fun getVolume() = volumeSetting.position
+        override fun getVolume() = volumeSetting.position.toFloat()
     }
 
     init {
@@ -163,7 +164,7 @@ class MotorRender(entity: TransparentNodeEntity, desc_: TransparentNodeDescripto
         val power = stream.readDouble()
 
         setPower(power)
-        volumeSetting.target = Math.min(1.0f, Math.abs(power / desc.maxP).toFloat()) / 4f
+        volumeSetting.target = Math.min(1.0, Math.abs(power / desc.maxP)) / 4.0
     }
 }
 
@@ -293,7 +294,7 @@ class MotorElement(node: TransparentNode, desc_: TransparentNodeDescriptor) :
         Utils.plotER(shaft.energy, shaft.rads) +
             Utils.plotUIP(powerSource.u, powerSource.i)
 
-    override fun thermoMeterString(side: Direction?) = Utils.plotCelsius("T", thermal.t)
+    override fun thermoMeterString(side: Direction?) = Utils.plotCelsius(thermal.t)
 
     override fun onBlockActivated(entityPlayer: EntityPlayer?, side: Direction?, vx: Float, vy: Float, vz: Float) =
         false
@@ -304,13 +305,13 @@ class MotorElement(node: TransparentNode, desc_: TransparentNodeDescriptor) :
     }
 
     override fun getWaila(): MutableMap<String, String> {
-        var info = mutableMapOf<String, String>()
-        info.put("Energy", Utils.plotEnergy("", shaft.energy))
-        info.put("Speed", Utils.plotRads("", shaft.rads))
+        val info = mutableMapOf<String, String>()
+        info["Energy"] = Utils.plotEnergy(shaft.energy)
+        info["Speed"] = Utils.plotRads(shaft.rads)
         if(Eln.wailaEasyMode) {
-            info.put("Voltage", Utils.plotVolt("", powerSource.u))
-            info.put("Current", Utils.plotAmpere("", powerSource.i))
-            info.put("Temperature", Utils.plotCelsius("", thermal.t))
+            info["Voltage"] = Utils.plotVolt(powerSource.u)
+            info["Current"] = Utils.plotAmpere( powerSource.i)
+            info["Temperature"] = Utils.plotCelsius( thermal.t)
         }
         return info
     }

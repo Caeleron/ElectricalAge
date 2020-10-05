@@ -556,7 +556,7 @@ public class SixNode extends Node {
                 //if(sixNodeCacheMapId != sixNodeCacheMapIdOld)
                 {
                     Chunk chunk = coordonate.world().getChunkFromBlockCoords(coordonate.x, coordonate.z);
-                    Utils.generateHeightMap(chunk);
+                    // Utils.generateHeightMap(chunk); // TODO: I hope we didn't need that...
                     Utils.updateSkylight(chunk);
                     chunk.generateSkylightMap();
                     Utils.updateAllLightTypes(coordonate.world(), coordonate.x, coordonate.y, coordonate.z);

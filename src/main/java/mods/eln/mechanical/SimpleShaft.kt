@@ -84,7 +84,7 @@ open class ShaftRender(entity: TransparentNodeEntity, desc: TransparentNodeDescr
     var cableRefresh = true
     // Sound:
     private var soundLooper: ShaftSoundLooper? = null
-    val volumeSetting = SlewLimiter(0.5f)
+    val volumeSetting = SlewLimiter(0.5)
 
     private open inner class ShaftSoundLooper(sound: String, coord: Coordonate) : LoopedSound(sound, coord) {
         override fun getPitch(): Float {
@@ -96,17 +96,17 @@ open class ShaftRender(entity: TransparentNodeEntity, desc: TransparentNodeDescr
         override fun getVolume(): Float {
             if (this.sample == "eln:FuelGenerator") {
                 if (volumeSetting.position < 0.001) {
-                    return 0.0f
+                    return 0f
                 }
-                return 1.0f
+                return 1f
             }
-            return volumeSetting.position
+            return volumeSetting.position.toFloat()
         }
     }
 
     open fun initSound(desc: SimpleShaftDescriptor) {
-        volumeSetting.target = 1f
-        volumeSetting.position = 0f
+        volumeSetting.target = 1.0
+        volumeSetting.position = 0.0
         val sound = desc.sound
         if (sound != null) {
             soundLooper = ShaftSoundLooper(sound, coordonate())
@@ -163,7 +163,7 @@ open class ShaftRender(entity: TransparentNodeEntity, desc: TransparentNodeDescr
         }
     }
 
-    override fun refresh(deltaT: Float) {
+    override fun refresh(deltaT: Double) {
         super.refresh(deltaT)
         angle += logRads * deltaT
         volumeSetting.step(deltaT)

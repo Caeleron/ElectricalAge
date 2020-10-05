@@ -6,7 +6,6 @@ import mods.eln.misc.FunctionTable;
 import mods.eln.misc.Obj3D;
 import mods.eln.misc.Obj3D.Obj3DPart;
 import mods.eln.misc.Utils;
-import mods.eln.misc.VoltageLevelColor;
 import mods.eln.misc.VoltageTierHelpers;
 import mods.eln.node.transparent.TransparentNodeDescriptor;
 import mods.eln.sim.ElectricalLoad;
@@ -14,6 +13,7 @@ import mods.eln.sim.PhysicalConstant;
 import mods.eln.sim.ThermalLoad;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -97,8 +97,8 @@ public class TurbineDescriptor extends TransparentNodeDescriptor {
     }
 
     @Override
-    public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List list, boolean par4) {
-        super.addInformation(itemStack, entityPlayer, list, par4);
+    public void addInfo(@NotNull ItemStack itemStack, @NotNull EntityPlayer entityPlayer, @NotNull List list) {
+        super.addInfo(itemStack, entityPlayer, list);
 
         list.add(tr("Generates electricity using heat."));
         list.add(tr("Nominal usage:"));

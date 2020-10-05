@@ -75,10 +75,10 @@ class FuelHeatFurnaceDescriptor(name: String, model: Obj3D, val thermal: Thermal
     override fun renderItem(type: IItemRenderer.ItemRenderType?, item: ItemStack?, vararg data: Any?) =
         if (type == IItemRenderer.ItemRenderType.INVENTORY) super.renderItem(type, item, *data) else draw()
 
-    override fun addInformation(itemStack: ItemStack?, entityPlayer: EntityPlayer?, list: MutableList<String>, par4: Boolean) {
-        super.addInformation(itemStack, entityPlayer, list, par4)
+    override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
+        super.addInfo(itemStack, entityPlayer, list)
         list.add(I18N.tr("Generates heat when supplied with fuel."))
-        list.add(Utils.plotCelsius(I18N.tr("  Max. temperature: "), thermal.warmLimit))
+        list.add(Utils.plotCelsius(thermal.warmLimit, I18N.tr("Max. temperature:")))
     }
 }
 
@@ -170,9 +170,9 @@ class FuelHeatFurnaceElement(transparentNode: TransparentNode, descriptor: Trans
 
     override fun getFluidHandler() = tank
 
-    override fun multiMeterString(side: Direction?) = Utils.plotPower("P:", thermalLoad.power)
+    override fun multiMeterString(side: Direction?) = Utils.plotPower(thermalLoad.power)
 
-    override fun thermoMeterString(side: Direction) = Utils.plotCelsius("T:", thermalLoad.Tc)
+    override fun thermoMeterString(side: Direction) = Utils.plotCelsius(thermalLoad.Tc)
 
     override fun initialize() {
         (descriptor as FuelHeatFurnaceDescriptor).thermal.applyTo(thermalLoad)
@@ -238,8 +238,8 @@ class FuelHeatFurnaceElement(transparentNode: TransparentNode, descriptor: Trans
 
     override fun getWaila(): MutableMap<String, String> {
         val info = HashMap<String, String>()
-        info.put(I18N.tr("Temperature"), Utils.plotCelsius("", thermalLoad.Tc))
-        info.put(I18N.tr("Power"), Utils.plotPower("", actualHeatPower))
+        info[I18N.tr("Temperature")] = Utils.plotCelsius(thermalLoad.Tc)
+        info[I18N.tr("Power")] = Utils.plotPower(actualHeatPower)
         return info
     }
 
@@ -369,8 +369,8 @@ class FuelHeatFurnaceGui(player: EntityPlayer, val inventory: IInventory, val re
         }
         manualControl.setEnable(inventory.getStackInSlot(FuelHeatFurnaceContainer.RegulatorSlot) == null &&
             !render.externalControlled)
-        manualControl.setComment(0, I18N.tr("Control value at %1$", Utils.plotPercent("", manualControl.value.toDouble())))
-        manualControl.setComment(1, I18N.tr("Heat Power: %1$", Utils.plotPower("", render.heatPower.toDouble())))
+        manualControl.setComment(0, I18N.tr("Control value at %1$", Utils.plotPercent(manualControl.value.toDouble())))
+        manualControl.setComment(1, I18N.tr("Heat Power: %1$", Utils.plotPower(render.heatPower.toDouble())))
 
         if (render.setTemperature.pending) {
             setTemperature.value = render.setTemperature.value
@@ -379,9 +379,9 @@ class FuelHeatFurnaceGui(player: EntityPlayer, val inventory: IInventory, val re
             !render.externalControlled)
         setTemperature.temperatureHit = Math.max(0f, render.actualTemperature)
         setTemperature.setComment(0, I18N.tr("Temperature"))
-        setTemperature.setComment(1, I18N.tr("Actual: %1$", Utils.plotCelsius("", render.actualTemperature.toDouble())))
+        setTemperature.setComment(1, I18N.tr("Actual: %1$", Utils.plotCelsius(render.actualTemperature.toDouble())))
         if (!render.externalControlled)
-            setTemperature.setComment(2, I18N.tr("Set point: %1$", Utils.plotCelsius("", setTemperature.value.toDouble())))
+            setTemperature.setComment(2, I18N.tr("Set point: %1$", Utils.plotCelsius(setTemperature.value.toDouble())))
     }
 
     override fun guiObjectEvent(sender: IGuiObject?) {

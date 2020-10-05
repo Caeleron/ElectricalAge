@@ -39,7 +39,7 @@ public class SolarPanelRender extends TransparentNodeElementRender {
     }
 
     @Override
-    public void refresh(float deltaT) {
+    public void refresh(double deltaT) {
         float alpha;
         if (hasTracker == false) {
             alpha = (float) descriptor.alphaTrunk(pannelAlphaSyncValue);

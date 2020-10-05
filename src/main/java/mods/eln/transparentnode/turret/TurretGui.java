@@ -31,7 +31,7 @@ public class TurretGui extends GuiContainerEln {
         chargePower.setStepIdMax(49);
         chargePower.setRange(100, 5000);
         chargePower.setComment(0, tr("Recharge power:"));
-        chargePower.setValue(render.chargePower);
+        chargePower.setValue((float)render.chargePower);
     }
 
     @Override
