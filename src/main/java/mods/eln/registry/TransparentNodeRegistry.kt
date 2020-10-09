@@ -28,6 +28,7 @@ import mods.eln.node.transparent.TransparentNodeDescriptor
 import mods.eln.sim.ThermalLoadInitializer
 import mods.eln.sim.ThermalLoadInitializerByPowerDrop
 import mods.eln.sound.SoundCommand
+import mods.eln.transparentnode.ArcFurnaceDescriptor
 import mods.eln.transparentnode.FuelGeneratorDescriptor
 import mods.eln.transparentnode.FuelHeatFurnaceDescriptor
 import mods.eln.transparentnode.LargeRheostatDescriptor
@@ -543,34 +544,10 @@ class TransparentNodeRegistry {
         private fun registerArcFurnace(id: Int) {
             var name: String
             run {
-                name = I18N.TR_NAME(I18N.Type.NONE, "Old 800V Arc Furnace")
-                val desc = OldArcFurnaceDescriptor(
-                    name,
-                    obj.getObj("arcfurnaceold"),
-                    VoltageTier.HIGH_HOUSEHOLD.voltage, 10000.0,
-                    VoltageTier.HIGH_HOUSEHOLD.voltage * 1.25,
-                    ThermalLoadInitializer(80.0, (-100).toDouble(), 10.0, 100000.0),
-                    Eln.smallInsulationMediumCurrentCopperCable,
-                    Eln.arcFurnaceRecipes)
-                desc.setRunningSound("eln:arc_furnace")
+                name = I18N.TR_NAME(I18N.Type.NONE, "800V Arc Furnace")
+                val desc = ArcFurnaceDescriptor(name, obj.getObj("arcfurnace"));
                 registerTransparentNode(id, 0, desc)
             }
-            /*
-
-            To be released at a later date. Needs a bit of code in the backend, and there's a rendering bug and some other
-            minor issues to be resolved.
-
-            {
-                subId = 1;
-                name = TR_NAME(Type.NONE, "800V Arc Furnace");
-
-                ArcFurnaceDescriptor desc = new ArcFurnaceDescriptor(name, obj.getObj("arcfurnace"));
-
-                transparentNodeItem.addDescriptor(subId + (id << 6), desc);
-                //desc.setRunningSound("eln:arc_furnace");
-
-            }
-            */
         }
 
         private fun registerCompressor(id: Int) {

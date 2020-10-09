@@ -48,6 +48,7 @@ import mods.eln.sixnode.electricallightsensor.ElectricalLightSensorDescriptor
 import mods.eln.sixnode.electricalmath.ElectricalMathDescriptor
 import mods.eln.sixnode.electricalredstoneinput.ElectricalRedstoneInputDescriptor
 import mods.eln.sixnode.electricalredstoneoutput.ElectricalRedstoneOutputDescriptor
+import mods.eln.sixnode.electricalrelay.ElectricRelayDescriptor
 import mods.eln.sixnode.electricalrelay.ElectricalRelayDescriptor
 import mods.eln.sixnode.electricalsensor.ElectricalSensorDescriptor
 import mods.eln.sixnode.electricalsource.ElectricalSourceDescriptor
@@ -94,32 +95,32 @@ class SixNodeRegistry {
     companion object {
 
         enum class SNID (val id: Int) {
-            GROUND(0),
-            ELECTRICAL_SOURCE(1),
-            ELECTRICAL_CABLE(2),
-            THERMAL_CABLE(3),
-            LAMP_SOCKET(4),
-            LAMP_SUPPLY(5),
-            BATTERY_CHARGER(6),
-            WIRELESS_SIGNAL(7),
-            ELECTRICAL_DATALOGGER(8),
-            ELECTRICAL_RELAY(9),
-            ELECTRICAL_GATE_SOURCE(10),
-            PASSIVE_COMPONENT(11),
-            SWITCH(12),
-            CIRCUIT_BREAKER(13),
-            ELECTRICAL_SENSOR(14),
-            THERMAL_SENSOR(15),
-            ELECTRICAL_VU_METER(16),
-            ELECTRICAL_ALARM(17),
-            ENVIRONMENTAL_SENSOR(18),
-            ELECTRICAL_REDSTONE(19),
-            ELECTRICAL_GATE(20),
-            TREE_RESIN_COLLECTOR(21),
-            MISC(22),
-            LOGIC_GATES(23),
-            ANALOG_CHIPS(24),
-            DEV_TRASH(25)
+            GROUND(1),
+            ELECTRICAL_SOURCE(2),
+            ELECTRICAL_CABLE(3),
+            THERMAL_CABLE(4),
+            LAMP_SOCKET(5),
+            LAMP_SUPPLY(6),
+            BATTERY_CHARGER(7),
+            WIRELESS_SIGNAL(8),
+            ELECTRICAL_DATALOGGER(9),
+            ELECTRICAL_RELAY(10),
+            ELECTRICAL_GATE_SOURCE(11),
+            PASSIVE_COMPONENT(12),
+            SWITCH(13),
+            CIRCUIT_BREAKER(14),
+            ELECTRICAL_SENSOR(15),
+            THERMAL_SENSOR(16),
+            ELECTRICAL_VU_METER(17),
+            ELECTRICAL_ALARM(18),
+            ENVIRONMENTAL_SENSOR(19),
+            ELECTRICAL_REDSTONE(20),
+            ELECTRICAL_GATE(21),
+            TREE_RESIN_COLLECTOR(22),
+            MISC(23),
+            LOGIC_GATES(24),
+            ANALOG_CHIPS(25),
+            DEV_TRASH(26)
         }
 
         fun register() {
@@ -151,15 +152,27 @@ class SixNodeRegistry {
             registerDevStuff(SNID.DEV_TRASH.id)
         }
 
+        val registeredList = mutableMapOf<Int, String>()
+
         @Suppress("MemberVisibilityCanBePrivate")
         fun registerSixNode(group: Int, subId: Int, descriptor: SixNodeDescriptor) {
             println("Registering SixNode: ${descriptor.name}")
+            val full = subId + (group shl 6)
+            if (registeredList[full] != null) {
+                System.out.println("${descriptor.name} tried to register on top of ${registeredList[full]}!")
+            }
+            registeredList[full] = descriptor.name
             Eln.sixNodeItem.addDescriptor(subId + (group shl 6), descriptor)
         }
 
         @Suppress("MemberVisibilityCanBePrivate")
         fun registerHiddenSixNode(group: Int, subId: Int, descriptor: SixNodeDescriptor) {
             println("Shadow registering SixNode: ${descriptor.name}")
+            val full = subId + (group shl 6)
+            if (registeredList[full] != null) {
+                System.out.println("${descriptor.name} tried to register on top of ${registeredList[full]}!")
+            }
+            registeredList[full] = descriptor.name
             Eln.sixNodeItem.addWithoutRegistry(subId + (group shl 6), descriptor)
         }
 
@@ -566,14 +579,14 @@ class SixNodeRegistry {
                 val desc = ElectricalRelayDescriptor(
                     name, Eln.obj.getObj("RelaySmall"),
                     Eln.smallInsulationLowCurrentCopperCable)
-                registerSixNode(id, 4, desc)
+                registerSixNode(id, 0, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Relay")
                 val desc = ElectricalRelayDescriptor(
                     name, Eln.obj.getObj("RelayBig"),
                     Eln.smallInsulationMediumCurrentCopperCable)
-                registerSixNode(id, 0, desc)
+                registerSixNode(id, 1, desc)
             }
             run {
                 name = I18N.TR_NAME(I18N.Type.NONE, "High Current Relay")
@@ -581,6 +594,21 @@ class SixNodeRegistry {
                     name, Eln.obj.getObj("relay800"),
                     Eln.smallInsulationHighCurrentCopperCable)
                 registerSixNode(id, 2, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Low Current Relay2")
+                val desc = ElectricRelayDescriptor(name, Eln.obj.getObj("RelaySmall"), Eln.smallInsulationLowCurrentRender)
+                registerSixNode(id, 3, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "Medium Current Relay2")
+                val desc = ElectricRelayDescriptor(name, Eln.obj.getObj("RelayBig"), Eln.smallInsulationMediumCurrentRender)
+                registerSixNode(id, 4, desc)
+            }
+            run {
+                name = I18N.TR_NAME(I18N.Type.NONE, "High Current Relay2")
+                val desc = ElectricRelayDescriptor(name, Eln.obj.getObj("relay800"), Eln.smallInsulationHighCurrentRender)
+                registerSixNode(id, 5, desc)
             }
         }
 

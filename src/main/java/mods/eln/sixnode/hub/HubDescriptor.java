@@ -8,6 +8,7 @@ import mods.eln.misc.VoltageTier;
 import mods.eln.node.six.SixNodeDescriptor;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
@@ -56,5 +57,29 @@ public class HubDescriptor extends SixNodeDescriptor {
     @Override
     public LRDU getFrontFromPlace(Direction side, EntityPlayer player) {
         return LRDU.Up;
+    }
+
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return type != ItemRenderType.INVENTORY;
+    }
+
+    @Override
+    public boolean shouldUseRenderHelperEln(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return type != ItemRenderType.INVENTORY;
+    }
+
+    @Override
+    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+        return true;
+    }
+
+    @Override
+    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        if (type == ItemRenderType.INVENTORY) {
+            super.renderItem(type, item, data);
+        }else {
+            draw(new boolean[6]);
+        }
     }
 }

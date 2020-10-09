@@ -79,4 +79,19 @@ public class ThermalCableDescriptor extends SixNodeDescriptor {
         Collections.addAll(list, tr("Low serial resistance\n => High conductivity.").split("\n"));
         Collections.addAll(list, tr("High parallel resistance\n => Low power dissipation.").split("\n"));
     }
+
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return type != ItemRenderType.INVENTORY;
+    }
+
+    @Override
+    public boolean shouldUseRenderHelperEln(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return type != ItemRenderType.INVENTORY;
+    }
+
+    @Override
+    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+        return true;
+    }
 }

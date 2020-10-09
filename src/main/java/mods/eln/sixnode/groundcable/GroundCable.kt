@@ -21,17 +21,30 @@ import mods.eln.sim.mna.component.VoltageSource
 import mods.eln.sim.nbt.NbtElectricalLoad
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
+import net.minecraftforge.client.IItemRenderer
 
 class GroundCableDescriptor(name: String, obj3D: Obj3D): SixNodeDescriptor(name, GroundCableElement::class.java, GroundCableRender::class.java) {
-    var main: Obj3DPart? = null
+    var main: Obj3DPart = obj3D.getPart("main")
 
     init {
-        main = obj3D.getPart("main")
         voltageTier = VoltageTier.NEUTRAL
     }
 
     fun draw() {
-        if (main != null) main!!.draw()
+        main.draw()
+    }
+
+    override fun shouldUseRenderHelper(type: IItemRenderer.ItemRenderType, item: ItemStack?, helper: IItemRenderer.ItemRendererHelper?) = type != IItemRenderer.ItemRenderType.INVENTORY
+    override fun shouldUseRenderHelperEln(type: IItemRenderer.ItemRenderType, item: ItemStack?, helper: IItemRenderer.ItemRendererHelper?) = type != IItemRenderer.ItemRenderType.INVENTORY
+
+    override fun handleRenderType(item: ItemStack?, type: IItemRenderer.ItemRenderType?) = true
+
+    override fun renderItem(type: IItemRenderer.ItemRenderType, item: ItemStack?, vararg data: Any?) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
+            super.renderItem(type, item, *data)
+        } else {
+            draw()
+        }
     }
 
     override fun addInfo(itemStack: ItemStack, entityPlayer: EntityPlayer, list: MutableList<String>) {
@@ -89,9 +102,9 @@ class GroundCableRender(tileEntity: SixNodeEntity, side: Direction, descriptor: 
 
     override fun draw() {
         super.draw()
-        if (side.isY) {
-            front.glRotateOnX()
-        }
+        //if (side.isY) {
+        //    front.glRotateOnX()
+        //}
         descriptor.draw()
     }
 

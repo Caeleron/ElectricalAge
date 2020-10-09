@@ -8,7 +8,10 @@ import mods.eln.i18n.I18N
 import mods.eln.misc.VoltageTier
 import mods.eln.node.NodeManager
 import mods.eln.node.simple.SimpleNodeItem
+import mods.eln.ore.DictTypes
+import mods.eln.ore.MetalsData
 import mods.eln.ore.OreDescriptor
+import mods.eln.ore.OreInfo
 import mods.eln.simplenode.computerprobe.ComputerProbeBlock
 import mods.eln.simplenode.computerprobe.ComputerProbeEntity
 import mods.eln.simplenode.computerprobe.ComputerProbeNode
@@ -79,19 +82,17 @@ class BlockRegistry {
         }
 
         private fun registerOre() {
-            var id: Int
-            var name: String?
-            run {
-                id = 1
-                name = I18N.TR_NAME(I18N.Type.NONE, "Copper Ore")
-                val desc = OreDescriptor(name, id,
-                    30 * if (Eln.genCopper) 1 else 0, 6, 10, 0, 80
-                )
-                Eln.oreCopper = desc
-                Eln.oreItem.addDescriptor(id, desc)
-                CraftingRegistry.addToOre("oreCopper", desc.newItemStack())
+            var i = 1
+            for (ore in OreInfo.values()) {
+                val cleanName = ore.name.replace("Native ","").replace(" ", "")
+                val desc = OreDescriptor(ore.name, i, 30, 6, 10,0,80)
+                System.out.println("Adding (${i}) ore$cleanName to registry")
+                Eln.oreItem.addDescriptor(i, desc)
+                CraftingRegistry.addToOre("${DictTypes.ORE}$cleanName", desc.newItemStack())
+                i += 1
             }
-            run {
+
+            /*run {
                 id = 4
                 name = I18N.TR_NAME(I18N.Type.NONE, "Lead Ore")
                 val desc = OreDescriptor(name, id,
@@ -99,25 +100,7 @@ class BlockRegistry {
                 )
                 Eln.oreItem.addDescriptor(id, desc)
                 CraftingRegistry.addToOre("oreLead", desc.newItemStack())
-            }
-            run {
-                id = 5
-                name = I18N.TR_NAME(I18N.Type.NONE, "Tungsten Ore")
-                val desc = OreDescriptor(name, id,
-                    6 * if (Eln.genTungsten) 1 else 0, 3, 9, 0, 32
-                )
-                Eln.oreItem.addDescriptor(id, desc)
-                CraftingRegistry.addToOre(Eln.dictTungstenOre, desc.newItemStack())
-            }
-            run {
-                id = 6
-                name = I18N.TR_NAME(I18N.Type.NONE, "Cinnabar Ore")
-                val desc = OreDescriptor(name, id,
-                    3 * if (Eln.genCinnabar) 1 else 0, 3, 9, 0, 32
-                )
-                Eln.oreItem.addDescriptor(id, desc)
-                CraftingRegistry.addToOre("oreCinnabar", desc.newItemStack())
-            }
+            }*/
         }
     }
 }

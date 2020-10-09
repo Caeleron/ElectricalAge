@@ -222,7 +222,6 @@ public class Eln {
     public static  double carbonLampLife;
     public static  double ledLampLife;
     public static boolean ledLampInfiniteLife = false;
-    public static OreDescriptor oreCopper, oreSilver;
     public static Item swordCopper, hoeCopper, shovelCopper, pickaxeCopper, axeCopper;
     public static ItemArmor helmetCopper, plateCopper, legsCopper, bootsCopper;
     public static ItemArmor helmetECoal, plateECoal, legsECoal, bootsECoal;

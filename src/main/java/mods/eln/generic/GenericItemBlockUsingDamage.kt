@@ -73,7 +73,7 @@ open class GenericItemBlockUsingDamage<Descriptor : GenericItemBlockUsingDamageD
     }
 
     @SideOnly(Side.CLIENT)
-    override fun getSubItems(itemID: Item, tabs: CreativeTabs, list: MutableList<*>) {
+    override fun getSubItems(itemID: Item, tabs: CreativeTabs?, list: MutableList<*>?) {
         // You can also take a more direct approach and do each one individual but I prefer the lazy / right way
         for (id in orderList) {
             val stack = Utils.newItemStack(itemID, 1, id)

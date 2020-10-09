@@ -112,4 +112,18 @@ public class ElectricalDigitalDisplayDescriptor extends SixNodeDescriptor {
         UtilsClient.disableBlend();
     }
 
+    @Override
+    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return type != ItemRenderType.INVENTORY;
+    }
+
+    @Override
+    public boolean shouldUseRenderHelperEln(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+        return type != ItemRenderType.INVENTORY;
+    }
+
+    @Override
+    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+        return true;
+    }
 }

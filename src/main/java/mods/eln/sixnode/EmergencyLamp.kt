@@ -21,6 +21,7 @@ import net.minecraft.client.gui.GuiButton
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraftforge.client.IItemRenderer
 import org.lwjgl.opengl.GL11
 import java.io.DataInputStream
 import java.io.DataOutputStream
@@ -82,6 +83,19 @@ class EmergencyLampDescriptor(name: String, val cable: GenericCableDescriptor, v
             add("the lamp turns on and runs on batteries.")
             add(Utils.plotVolt(cable.electricalNominalVoltage, "Nominal voltage:"))
             add(Utils.plotEnergy(batteryCapacity, "Battery capacity:"))
+        }
+    }
+
+    override fun shouldUseRenderHelper(type: IItemRenderer.ItemRenderType, item: ItemStack?, helper: IItemRenderer.ItemRendererHelper?) = type != IItemRenderer.ItemRenderType.INVENTORY
+    override fun shouldUseRenderHelperEln(type: IItemRenderer.ItemRenderType, item: ItemStack?, helper: IItemRenderer.ItemRendererHelper?) = type != IItemRenderer.ItemRenderType.INVENTORY
+
+    override fun handleRenderType(item: ItemStack?, type: IItemRenderer.ItemRenderType?) = true
+
+    override fun renderItem(type: IItemRenderer.ItemRenderType, item: ItemStack?, vararg data: Any?) {
+        if (type == IItemRenderer.ItemRenderType.INVENTORY) {
+            super.renderItem(type, item, *data)
+        } else {
+            draw()
         }
     }
 }
